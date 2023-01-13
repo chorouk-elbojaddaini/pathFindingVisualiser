@@ -14,7 +14,7 @@ export class GridComponent implements OnInit {
   constructor(private elem: ElementRef) { }
   
   ngOnInit(): void {
-    let widthGrid = this.elem.nativeElement.offsetWidth-5;
+    let widthGrid = 1260;
     console.log("width grid",widthGrid);
     this.numberSquares = Math.trunc(widthGrid/this.widthSquare);
     console.log("width of one squere",this.widthSquare);
