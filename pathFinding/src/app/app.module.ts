@@ -3,10 +3,16 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { CarreComponent } from './carre/carre.component';
+import { BigCarreComponent } from './big-carre/big-carre.component';
+import { GridComponent } from './grid/grid.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    CarreComponent,
+    BigCarreComponent,
+    GridComponent
   ],
   imports: [
     BrowserModule,
