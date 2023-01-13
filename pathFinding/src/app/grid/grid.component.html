@@ -1,1 +1,13 @@
-<app-carre ></app-carre>
+<div class="ligne">
+    <div *ngFor="let square of squares;">
+        <div class="square">
+
+        
+        <div  *ngFor="let littleSquare of square;">
+            <app-carre class="littlSquare"></app-carre>
+            
+        </div>
+
+    </div>
+    </div>
+</div>

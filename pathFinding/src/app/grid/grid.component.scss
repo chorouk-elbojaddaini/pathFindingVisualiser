@@ -1,0 +1,18 @@
+.ligne{
+    display: grid;
+    grid-template-columns: repeat(31,1fr);
+    padding: 0;
+}
+.square{
+   padding: 0;
+    border: 0.5px solid rgb(21, 83, 103); 
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+   
+}
+
+.littlSquare{
+    width: 50%;
+    height: 50%;
+    padding: 0;
+}

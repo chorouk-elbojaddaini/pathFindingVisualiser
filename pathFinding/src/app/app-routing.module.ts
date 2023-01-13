@@ -1,9 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CarreComponent } from './carre/carre.component';
+import { GridComponent } from './grid/grid.component';
 
 const routes: Routes = [
-  { path: '', component: CarreComponent }
+  { path: '', component: GridComponent }
 ];
 
 @NgModule({
