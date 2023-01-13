@@ -14,7 +14,7 @@ export class GridComponent implements OnInit {
   constructor(private elem: ElementRef) { }
   
   ngOnInit(): void {
-    let widthGrid = window.innerWidth;
+    let widthGrid = this.elem.nativeElement.offsetWidth-5;
     console.log("width grid",widthGrid);
     this.numberSquares = Math.trunc(widthGrid/this.widthSquare);
     console.log("width of one squere",this.widthSquare);
@@ -24,10 +24,10 @@ export class GridComponent implements OnInit {
   }
   initialiseGrid(){
     this.squares = [];
-    for(let i=0; i<this.numberSquares;i++){
+    for(let i=0; i<this.numberSquares-1;i++){
       this.squares[i] = [];
       for(let j=0;j<4;j++){
-       this.squares[i][j] = new Square(0,20,0,0,0);
+       this.squares[i][j] = new Square(20,20,0,0,0);
         this.squares[i][j].boxNumber=i+1;
        if(j==0){
         this.squares[i][j].x=1;
