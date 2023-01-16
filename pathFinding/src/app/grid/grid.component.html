@@ -4,7 +4,7 @@
             <div class="square">
     
             
-            <div  *ngFor="let littleSquare of square;" [ngClass]="drawStartingTargetBox(littleSquare)">
+            <div  *ngFor="let littleSquare of square;" cdkDrag [ngClass]="drawStartingTargetBox(littleSquare)">
                 <app-carre class="littlSquare" (click)="details(littleSquare)" ></app-carre>
                 
             </div>

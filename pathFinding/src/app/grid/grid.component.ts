@@ -13,7 +13,7 @@ export class GridComponent implements OnInit {
   numberSquares:number;
   constructor(private elem: ElementRef) { }
   details(x:Square){
-    console.log(x.boxNumber,x.x,x.y);
+    console.log(x.boxNumber,x.x,x.y,x.isStartingbox);
     }
     
   
