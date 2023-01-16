@@ -20,7 +20,7 @@ export class GrilleComponent implements AfterViewInit {
     let wi = window.innerWidth;
 
     this.numberSquares = Math.trunc(wi/this.widthSquare);
-
+    console.log("this is number squares");
     console.log(this.numberSquares);
     this.initialiseGrid();
     console.log(this.squares);
@@ -31,8 +31,8 @@ export class GrilleComponent implements AfterViewInit {
     this.squares = [];
     for(let i=0;i<this.numberSquares*18;i++){
       this.squares[i] = new Square(20,20,0,0,false,false,false,false);
-      this.squares[i].x = 0;
-      this.squares[i].y = 0;
+      this.squares[i].x = i*20+10;
+      this.squares[i].y = i*20+10;
       this.squares[i].width = 20;
       this.squares[i].height=20;
       this.squares[i].isStartingbox = false;
@@ -44,5 +44,8 @@ export class GrilleComponent implements AfterViewInit {
   }
   getCoordonates(square){
     console.log(square);
+  }
+  collision(){
+    
   }
 }

@@ -1,8 +1,11 @@
 <div class="container" >
     <div class="ligne">
         <div #carre class="square" *ngFor="let square of squares;" >         
-                <app-carre ng-init = "getCoordonates(carre.getBoundingClientRect())"></app-carre>
+                <app-carre (click) = "getCoordonates(carre.getBoundingClientRect())"></app-carre>
                
         </div>
+        <div #circle>
+        <app-starting-node  class="startNode" (click)="getCoordonates(circle.getBoundingClientRect())"></app-starting-node>
+    </div>
     </div>
 </div>
