@@ -6,13 +6,15 @@ import { AppComponent } from './app.component';
 import { CarreComponent } from './carre/carre.component';
 import { BigCarreComponent } from './big-carre/big-carre.component';
 import { GridComponent } from './grid/grid.component';
+import { GrilleComponent } from './grille/grille.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     CarreComponent,
     BigCarreComponent,
-    GridComponent
+    GridComponent,
+    GrilleComponent
   ],
   imports: [
     BrowserModule,

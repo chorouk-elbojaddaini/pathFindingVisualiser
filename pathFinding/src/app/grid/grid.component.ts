@@ -12,11 +12,11 @@ export class GridComponent implements OnInit {
   widthSquare:number=42;
   numberSquares:number;
   constructor(private elem: ElementRef) { }
-  details(x:Square){
+ /* details(x:Square){
     console.log(x.boxNumber,x.x,x.y,x.isStartingbox);
     }
     
-  
+  */
   ngOnInit(): void {
     let widthGrid = 1230;
     let wi = window.innerWidth;
@@ -25,10 +25,10 @@ export class GridComponent implements OnInit {
     this.numberSquares = Math.trunc(wi/this.widthSquare);
     console.log("width of one squere",this.widthSquare);
     console.log("numbers squares",this.numberSquares);
-    this.initialiseGrid();
+    //this.initialiseGrid();
     console.log(this.squares);
   }
-  initialiseGrid(){
+  /*initialiseGrid(){
     this.squares = [];
     for(let i=0; i<this.numberSquares*10;i++){
       this.squares[i] = [];
@@ -59,7 +59,7 @@ export class GridComponent implements OnInit {
         }
       }
     }
-  }
+  }*/
   startingBox(){
       return this.numberSquares*10/2 - this.numberSquares/2 - 5;
   }

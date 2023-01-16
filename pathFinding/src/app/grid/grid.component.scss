@@ -15,7 +15,8 @@
     border: 0.5px solid rgb(21, 83, 103); 
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-   
+  
+    position: relative;
 }
 
 .littlSquare{
@@ -29,4 +30,14 @@
 
 .targetBox{
     background-color: aqua;
+}
+.circle{
+    position: absolute;
+    top: 0;
+    left: 0;
+    content: '';
+    z-index: 100;
+    width: 15px;
+    height: 15px;
+    background-color: cadetblue;
 }
