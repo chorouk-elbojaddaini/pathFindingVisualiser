@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { Square } from '../shared/squareModele';
 
 @Component({
   selector: 'app-carre',
@@ -17,5 +18,6 @@ export class CarreComponent implements OnInit {
 
   ngOnInit(): void {
   }
+  
 
 }

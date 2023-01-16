@@ -12,6 +12,10 @@ export class GridComponent implements OnInit {
   widthSquare:number=42;
   numberSquares:number;
   constructor(private elem: ElementRef) { }
+  details(x:Square){
+    console.log(x.boxNumber,x.x,x.y);
+    }
+    
   
   ngOnInit(): void {
     let widthGrid = 1230;
@@ -29,7 +33,7 @@ export class GridComponent implements OnInit {
     for(let i=0; i<this.numberSquares*10;i++){
       this.squares[i] = [];
       for(let j=0;j<4;j++){
-       this.squares[i][j] = new Square(20,20,0,0,0);
+       this.squares[i][j] = new Square(20,20,0,0,0,false,false,false,false);
         this.squares[i][j].boxNumber=i+1;
        if(j==0){
         this.squares[i][j].x=1;
@@ -47,9 +51,32 @@ export class GridComponent implements OnInit {
         this.squares[i][j].x=2;
         this.squares[i][j].y=2;
        }
-
+         if(this.squares[i][j].boxNumber==this.startingBox() && this.squares[i][j].x==1 && this.squares[i][j].y==1){
+                  this.squares[i][j].isStartingbox =true;
+         }
+         if(this.squares[i][j].boxNumber==this.targetBox() && this.squares[i][j].x==1 && this.squares[i][j].y==1){
+          this.squares[i][j].isTargetBox = true;
+        }
       }
     }
   }
-
+  startingBox(){
+      return this.numberSquares*10/2 - this.numberSquares/2 - 5;
+  }
+  targetBox(){
+    return this.numberSquares*10/2 - this.numberSquares/2 + 5;
+  }
+  drawStartingTargetBox(val:Square) {
+  
+    if (val.isStartingbox == true) {
+      return 'startingBox';
+    }else if(val.isTargetBox == true){
+      return 'targetBox';
+    }else{
+      return 'wall';
+    }
+  }
+  stateOfSquare(square:Square){
+   
+  }
 }

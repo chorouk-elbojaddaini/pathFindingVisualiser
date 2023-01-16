@@ -4,8 +4,8 @@
             <div class="square">
     
             
-            <div  *ngFor="let littleSquare of square;">
-                <app-carre class="littlSquare"></app-carre>
+            <div  *ngFor="let littleSquare of square;" [ngClass]="drawStartingTargetBox(littleSquare)">
+                <app-carre class="littlSquare" (click)="details(littleSquare)" ></app-carre>
                 
             </div>
     
