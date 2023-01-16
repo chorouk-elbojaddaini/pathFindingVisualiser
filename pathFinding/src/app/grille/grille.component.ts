@@ -43,6 +43,6 @@ export class GrilleComponent implements AfterViewInit {
     
   }
   getCoordonates(square){
-    console.log(square.nativeElement);
+    console.log(square);
   }
 }
