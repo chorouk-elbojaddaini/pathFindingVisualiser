@@ -1,11 +1,17 @@
-<div class="container" >
-    <div class="ligne">
-        <div #carre class="square" *ngFor="let square of squares;" >         
-                <app-carre (click) = "getCoordonates(carre.getBoundingClientRect())"></app-carre>
-               
-        </div>
-        <div #circle>
-        <app-starting-node  class="startNode" (click)="getCoordonates(circle.getBoundingClientRect())"></app-starting-node>
+<div class="container">
+  <div class="ligne">
+    <div #carre class="square" *ngFor="let square of squares">
+      <app-carre
+        (click)="getCoordonates(carre.getBoundingClientRect())"
+      ></app-carre>
     </div>
+    <div #circle>
+      <app-starting-node
+        class="startNode"
+        cdkDrag
+        cdkDragBoundary=".container"
+        (cdkDragEnded)="onDragEnded($event)"
+      ></app-starting-node>
     </div>
+  </div>
 </div>
