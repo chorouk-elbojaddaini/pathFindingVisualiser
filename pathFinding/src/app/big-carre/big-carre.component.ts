@@ -1,3 +1,4 @@
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -10,6 +11,9 @@ export class BigCarreComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+  }
+  drop(event: CdkDragDrop<string[]>) {
+    
   }
 
 }

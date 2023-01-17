@@ -1,0 +1,26 @@
+td{
+    width: 20px;
+    height: 20px;
+    margin: 0;
+    padding: 0;
+    border: 1px solid cadetblue;
+}
+table{
+    margin: 0;
+    padding: 0;
+    border-spacing: 0;
+    border-collapse: collapse;
+}
+.hhh{
+    
+    position: relative;
+}
+.hhh::after{
+    content: '';
+    width: 10px;
+    height: 10px;
+    background-color: crimson;
+    position: absolute;
+    top: 0;
+    left: 0;
+}

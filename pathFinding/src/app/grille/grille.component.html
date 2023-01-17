@@ -1,17 +1,21 @@
 <div class="container">
   <div class="ligne">
-    <div #carre class="square" *ngFor="let square of squares">
+    <div #carre class="square" *ngFor="let square of squares" >
       <app-carre
         (click)="getCoordonates(carre.getBoundingClientRect())"
+        cdkDropList id="list-one" [cdkDropListConnectedTo]="['list-two']"
       ></app-carre>
     </div>
-    <div #circle>
+    <div #circle >
       <app-starting-node
         class="startNode"
-        cdkDrag
+        
         cdkDragBoundary=".container"
-        (cdkDragEnded)="onDragEnded($event)"
+        
+        cdkDropList id="list-two" [cdkDropListConnectedTo]="['list-one']"
+        cdkDrag
       ></app-starting-node>
     </div>
   </div>
+  <app-big-carre></app-big-carre>
 </div>
