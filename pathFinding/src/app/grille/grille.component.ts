@@ -23,6 +23,9 @@ export class GrilleComponent {
     console.log("hi");
     console.log(this.numberSquares);
   }
+  ngOnchange(){
+
+  }
   test(node:Square){
     console.log(` this is i=>${node.row} ,this is j =>${node.col}`);
   }
@@ -34,12 +37,12 @@ export class GrilleComponent {
     this.nodes = [];
     for(let i=0;i<window.innerHeight/30;i++){
       this.nodes[i] = [];
-      for(let j=0;j<this.numberSquares-1;j++){
+      for(let j=0;j<Math.trunc(window.innerWidth/20);j++){
         this.nodes[i][j] = new Square(i,j,false,false,false,false);
-        if(i==8&& j== this.numberSquares/2-15){
+        if(i==8 && j== Math.trunc(this.numberSquares/2)-15){
           this.nodes[i][j].isStartingbox=true;
         }
-        if(i==8&& j== this.numberSquares/2+10){
+        if(i==8&& j== Math.trunc(this.numberSquares/2)+10){
           this.nodes[i][j].isTargetBox=true;
         }
       }
@@ -77,8 +80,11 @@ export class GrilleComponent {
   mouseUp(node:Square){
     if(this.board.mouseEnter){
       this.board.mouseUp = true;
+      this.board.mouseEnter=false;
+      this.board.mouseDown=false;
       this.board.enteredNode = node;
-      let element = document.getElementById(`${this.board.enteredNode.row}-${this.board.enteredNode.col}`)
+      let element = document.getElementById(`${this.board.enteredNode.row}-${this.board.enteredNode.col}`).parentElement
+      console.log(element);
       element.style.backgroundColor ='red';
       console.log(`this is the MOUSE UP ${node.row} ${node.col}`);
     }
