@@ -64,6 +64,9 @@ export class GrilleComponent {
     if (node.isTargetBox) {
       return 'target';
     }
+    if(node.isWall){
+      return 'wall';
+    }
     return 'normal';
   }
   eventsListener() {
@@ -121,6 +124,7 @@ export class GrilleComponent {
       this.board.mouseEnter = false;
       this.board.mouseDown = false;
       this.board.enteredNode = node;
+      this.board.isSelectedNodeStart=false;
       if(!node.isTargetBox){
         node.isStartingbox = true;
       }
@@ -138,5 +142,11 @@ export class GrilleComponent {
 
       console.log(`this is the MOUSE UP ${node.row} ${node.col}`);
     }
+  }
+  addWall(node:Square){
+    if(!node.isStartingbox && !node.isTargetBox){
+      node.isWall = !node.isWall;
+    }
+   
   }
 }
