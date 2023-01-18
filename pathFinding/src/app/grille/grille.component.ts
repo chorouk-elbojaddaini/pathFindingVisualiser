@@ -1,65 +1,55 @@
-import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
+import { Board } from '../shared/boardModele';
 import { Square } from '../shared/squareModele';
+
 @Component({
   selector: 'app-grille',
   templateUrl: './grille.component.html',
-  styleUrls: ['./grille.component.scss'],
+  styleUrls: ['./grille.component.scss']
 })
-export class GrilleComponent implements AfterViewInit {
-  ngAfterViewInit(): void {
-    // const {x, y} = this.carreElement.nativeElement.getBoundingClientRect();
-    //console.log({x,y});
-  }
-  squares: Square[];
-  numberSquares: number;
-  widthSquare = 20;
-  // @ViewChild('square') carreElement: ElementRef;
-
+export class GrilleComponent {
+  numberSquares:number;
+  board:Board;
+  nodes:Square[][];
+  
   ngOnInit(): void {
+   
     let wi = window.innerWidth;
-
-    this.numberSquares = Math.trunc(wi / this.widthSquare);
-    console.log('this is number squares');
-    console.log(this.numberSquares);
+    this.numberSquares = Math.trunc(wi/20);
+    this.board  = new Board(window.innerWidth,this.numberSquares*3);
     this.initialiseGrid();
-    console.log(this.squares);
+    
+    console.log(this.nodes);
+    console.log("hi");
+    console.log(this.numberSquares);
+  }
+  test(node:Square){
+    console.log(` this is i=>${node.row} ,this is j =>${node.col}`);
+  }
+  initialiseGrid(){
+    this.nodes = [];
+    for(let i=0;i<18;i++){
+      this.nodes[i] = [];
+      for(let j=0;j<this.numberSquares;j++){
+        this.nodes[i][j] = new Square(i,j,false,false,false,false);
+        if(i==this.board.height/2 && j== this.numberSquares/2-5){
+          this.nodes[i][j].isStartingbox=true;
+        }
+        if(i==this.board.height/2 && j== this.numberSquares/2+5){
+          this.nodes[i][j].isTargetBox=true;
+        }
+      }
+    }
   }
 
-  initialiseGrid() {
-    this.squares = [];
-    for (let i = 0; i < this.numberSquares * 18; i++) {
-      this.squares[i] = new Square(20, 20, 0, 0, false, false, false, false);
-      this.squares[i].x = i * 20 + 10;
-      this.squares[i].y = i * 20 + 10;
-      this.squares[i].width = 20;
-      this.squares[i].height = 20;
-      this.squares[i].isStartingbox = false;
-      this.squares[i].isTargetBox = false;
-      this.squares[i].isBomb = false;
-      this.squares[i].isWall = false;
+  statusNode(node:Square):string{
+    if(node.isStartingbox){
+      return "start";
     }
-  }
-  getCoordonates(square) {
-    console.log(square);
-  }
-  collision() {}
-  getPosition(el) {
-    let x = 0;
-    let y = 0;
-    while (el && !isNaN(el.offsetLeft) && !isNaN(el.offsetTop)) {
-      x += el.offsetLeft - el.scrollLeft;
-      y += el.offsetTop - el.scrollTop;
-      el = el.offsetParent;
+    if(node.isTargetBox){
+      return "target";
     }
-    return { top: y, left: x };
+    return "normal";
   }
-  onDragEnded(event) {
-    let element = event.source.getRootElement();
-    let boundingClientRect = element.getBoundingClientRect();
-    let parentPosition = this.getPosition(element);
-    console.log(
-      'x: ' + (boundingClientRect.x ),
-      'y: ' + (boundingClientRect.y )
-    );
-  }
+
 }

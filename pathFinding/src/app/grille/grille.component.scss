@@ -1,12 +1,14 @@
-.ligne{
+.square{
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
 }
-.startNode{
-    position: absolute;
-    top: 182px;
-    left: 422px;
-    margin: 0;
-    padding: 0;
+.start{
+    background-color: greenyellow;
+}
+.target{
+    background-color: rosybrown;
+}
+.normal{
+    
 }
