@@ -14,7 +14,7 @@ export class GrilleComponent {
 
   ngOnInit(): void {
     let wi = window.innerWidth;
-    this.numberSquares = Math.trunc(wi / 20);
+    this.numberSquares = Math.trunc(wi / 30);
     this.board = new Board(
       window.innerWidth,
       this.numberSquares * 3,
@@ -43,9 +43,9 @@ export class GrilleComponent {
 
   initialiseGrid() {
     this.nodes = [];
-    for (let i = 0; i < window.innerHeight / 30; i++) {
+    for (let i = 0; i < window.innerHeight / 40; i++) {
       this.nodes[i] = [];
-      for (let j = 0; j < Math.trunc(window.innerWidth / 20); j++) {
+      for (let j = 0; j < Math.trunc(window.innerWidth / 30); j++) {
         this.nodes[i][j] = new Square(i, j, false, false, false, false);
         if (i == 8 && j == Math.trunc(this.numberSquares / 2) - 15) {
           this.nodes[i][j].isStartingbox = true;

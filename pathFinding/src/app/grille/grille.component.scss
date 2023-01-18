@@ -1,7 +1,8 @@
+
 .square{
     display: flex;
     flex-direction: row;
-    
+   
     margin: 0;
     padding: 0;
     justify-content: center;
@@ -20,8 +21,13 @@
     
 }
 .start{
-    background-color: greenyellow;
+    
+    background-image: url('../../assets/images/pixel-art-taxi-85603184.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    
 }
+
 .target{
     background-color: rosybrown;
 }
