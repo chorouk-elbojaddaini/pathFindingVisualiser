@@ -1,6 +1,11 @@
+
 .square{
     display: flex;
     flex-direction: row;
+<<<<<<< HEAD
+=======
+   
+>>>>>>> 9f671734947cf36a30ebffd07e7b9b36dde734a2
     margin: 0;
     padding: 0;
     justify-content: center;
@@ -19,10 +24,19 @@
     
 }
 .start{
+<<<<<<< HEAD
     background-image: url("../../assets/images/R.png");
     background-repeat: no-repeat;
     background-size: cover;
+=======
+    
+    background-image: url('../../assets/images/pixel-art-taxi-85603184.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    
+>>>>>>> 9f671734947cf36a30ebffd07e7b9b36dde734a2
 }
+
 .target{
     background-color: rosybrown;
 }
