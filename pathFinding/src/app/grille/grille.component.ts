@@ -25,6 +25,7 @@ export class GrilleComponent {
       false,
       false,
       false,
+      false,
       false
     );
     this.initialiseGrid();
@@ -46,12 +47,14 @@ export class GrilleComponent {
     for (let i = 0; i < window.innerHeight / 40; i++) {
       this.nodes[i] = [];
       for (let j = 0; j < Math.trunc(window.innerWidth / 30); j++) {
-        this.nodes[i][j] = new Square(i, j, false, false, false, false);
+        this.nodes[i][j] = new Square(i, j, false, false, false, false,true);
         if (i == 8 && j == Math.trunc(this.numberSquares / 2) - 15) {
           this.nodes[i][j].isStartingbox = true;
+          this.nodes[i][j].isNormal = false; 
         }
         if (i == 8 && j == Math.trunc(this.numberSquares / 2) + 10) {
           this.nodes[i][j].isTargetBox = true;
+          this.nodes[i][j].isNormal = false; 
         }
       }
     }
@@ -83,11 +86,15 @@ export class GrilleComponent {
       this.board.isSelectedNodeStart=true;
       console.log(`this is the MOUSE DOWN ${node.row} ${node.col}`);
     }
-    if(node.isTargetBox){
+    else if(node.isTargetBox){
       this.board.mouseDown = true;
       this.board.currentNode = node;
       this.board.isSelectedNodeEnd=true;
     }
+    else if(node.isNormal){
+      this.board.isWallDrawing=true
+    }
+    
   }
   mouseLeave(node: Square) {
     if (this.board.mouseDown && this.board.isSelectedNodeStart) {
@@ -105,11 +112,10 @@ export class GrilleComponent {
       if(!node.isTargetBox){
         node.isStartingbox = true;
       }
-      
 
       console.log(`this is the MOUSE ENTER ${node.row} ${node.col}`);
     }
-    if(this.board.mouseDown && this.board.isSelectedNodeEnd){
+    else if(this.board.mouseDown && this.board.isSelectedNodeEnd){
       this.board.mouseEnter = true;
       this.board.enteredNode = node;
       if(!node.isStartingbox){
@@ -117,6 +123,12 @@ export class GrilleComponent {
       }
      
     }
+    else if(this.board.isWallDrawing){
+      node.isWall = !node.isWall;
+
+    }
+     
+    
   }
   mouseUp(node: Square) {
     if (this.board.mouseEnter && this.board.isSelectedNodeStart && !node.isTargetBox) {
@@ -131,7 +143,7 @@ export class GrilleComponent {
 
       console.log(`this is the MOUSE UP ${node.row} ${node.col}`);
     }
-    if(this.board.mouseEnter && this.board.isSelectedNodeEnd &&!node.isStartingbox){
+    else if(this.board.mouseEnter && this.board.isSelectedNodeEnd &&!node.isStartingbox){
       this.board.mouseUp = true;
       this.board.mouseEnter = false;
       this.board.mouseDown = false;
@@ -141,6 +153,9 @@ export class GrilleComponent {
       }
 
       console.log(`this is the MOUSE UP ${node.row} ${node.col}`);
+    }
+    else if(this.board.isWallDrawing){
+      this.board.isWallDrawing=false;
     }
   }
   addWall(node:Square){
