@@ -1,8 +1,17 @@
 <div class="container">
-    <div class="ligne">
-      <div *ngFor="let row of nodes">
-        <div class="square">
-          <div *ngFor="let columnNode of row" >
-            <app-carre (click)="test(columnNode)" class="littlSquare" [ngClass] = "statusNode(columnNode)" ></app-carre>
-          </div>
+  <div class="ligne">
+    <div *ngFor="let row of nodes;">
+      <div class="square">
+        <div  *ngFor="let columnNode of row;" [ngClass]="statusNode(columnNode)">
+          <app-carre
+            id="{{columnNode.row}}-{{columnNode.col}}"
+            (mousedown)="mouseDown(columnNode)"
+            (mouseenter) = "mouseEnter(columnNode)"
+            (mouseup) = "mouseUp(columnNode)"
+            class="littlSquare"
+          ></app-carre>
         </div>
+      </div>
+    </div>
+  </div>
+</div>

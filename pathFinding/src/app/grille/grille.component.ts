@@ -16,7 +16,7 @@ export class GrilleComponent {
    
     let wi = window.innerWidth;
     this.numberSquares = Math.trunc(wi/20);
-    this.board  = new Board(window.innerWidth,this.numberSquares*3);
+    this.board  = new Board(window.innerWidth,this.numberSquares*3,null,null,false,false,false,false);
     this.initialiseGrid();
     
     console.log(this.nodes);
@@ -26,16 +26,20 @@ export class GrilleComponent {
   test(node:Square){
     console.log(` this is i=>${node.row} ,this is j =>${node.col}`);
   }
+  test2(){
+    console.log("click events");
+  }
+
   initialiseGrid(){
     this.nodes = [];
-    for(let i=0;i<18;i++){
+    for(let i=0;i<window.innerHeight/30;i++){
       this.nodes[i] = [];
-      for(let j=0;j<this.numberSquares;j++){
+      for(let j=0;j<this.numberSquares-1;j++){
         this.nodes[i][j] = new Square(i,j,false,false,false,false);
-        if(i==this.board.height/2 && j== this.numberSquares/2-5){
+        if(i==8&& j== this.numberSquares/2-15){
           this.nodes[i][j].isStartingbox=true;
         }
-        if(i==this.board.height/2 && j== this.numberSquares/2+5){
+        if(i==8&& j== this.numberSquares/2+10){
           this.nodes[i][j].isTargetBox=true;
         }
       }
@@ -51,5 +55,32 @@ export class GrilleComponent {
     }
     return "normal";
   }
-
+  eventsListener(){
+    // for(let i=0;i<window.innerHeight/30;i++){
+    //   for(let j=0;j<this.numberSquares-1;j++){
+    //     this.nodes[i][j].
+    //   }
+    // }
+  }
+  mouseDown(node:Square){
+    this.board.mouseDown = true;
+    this.board.currentNode=node;
+    console.log(`this is the MOUSE DOWN ${node.row} ${node.col}`);
+  }
+  mouseEnter(node:Square){
+    if(this.board.mouseDown){
+      this.board.mouseEnter  = true;
+      this.board.enteredNode = node;
+      console.log(`this is the MOUSE ENTER ${node.row} ${node.col}`);
+    }
+  }
+  mouseUp(node:Square){
+    if(this.board.mouseEnter){
+      this.board.mouseUp = true;
+      this.board.enteredNode = node;
+      let element = document.getElementById(`${this.board.enteredNode.row}-${this.board.enteredNode.col}`)
+      element.style.backgroundColor ='red';
+      console.log(`this is the MOUSE UP ${node.row} ${node.col}`);
+    }
+  }
 }
