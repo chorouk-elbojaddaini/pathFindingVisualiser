@@ -265,7 +265,7 @@ export class GrilleComponent {
     }
   }
   addWall(node:Square){
-    if(!node.isStartingbox && !node.isTargetBox){
+    if(!node.isStartingbox && !node.isTargetBox && !node.isPath){
       node.isWall = !node.isWall;
     }
    
