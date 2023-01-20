@@ -5,7 +5,7 @@
         <div  *ngFor="let columnNode of row;" [ngClass]="statusNode(columnNode)">
           <app-carre
             id="{{columnNode.row}}-{{columnNode.col}}"
-            
+            (click) = "addWall(columnNode)"
             (mousedown)="mouseDown(columnNode)"
             (mouseenter) = "mouseEnter(columnNode)"
             (mouseleave)="mouseLeave(columnNode)"
