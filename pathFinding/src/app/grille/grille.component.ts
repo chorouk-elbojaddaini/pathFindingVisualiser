@@ -52,7 +52,7 @@ export class GrilleComponent {
 
   initialiseGrid() {
     this.nodes = [];
-    for (let i = 0; i < window.innerHeight / 40; i++) {
+    for (let i = 0; i < window.innerHeight / 35; i++) {
       this.nodes[i] = [];
       for (let j = 0; j < Math.trunc(window.innerWidth / 30); j++) {
         this.nodes[i][j] = new Square(i, j, false, false, false, false,true,[],false,false,null,false);

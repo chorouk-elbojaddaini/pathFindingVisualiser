@@ -8,6 +8,7 @@ import { BigCarreComponent } from './big-carre/big-carre.component';
 import { GridComponent } from './grid/grid.component';
 import { GrilleComponent } from './grille/grille.component';
 import { StartingNodeComponent } from './starting-node/starting-node.component';
+import { NavbarComponent } from './navbar/navbar.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { StartingNodeComponent } from './starting-node/starting-node.component';
     BigCarreComponent,
     GridComponent,
     GrilleComponent,
-    StartingNodeComponent
+    StartingNodeComponent,
+    NavbarComponent
   ],
   imports: [
     BrowserModule,
