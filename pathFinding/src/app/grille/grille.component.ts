@@ -124,7 +124,7 @@ export class GrilleComponent {
 
         this.dijkstraService.dijkstraAlgorithm(this.startingBox, node);
       }
-    } else if (this.board.isWallDrawing) {
+    } else if (this.board.isWallDrawing && !node.isPath) {
       node.isWall = !node.isWall;
     }
   }
