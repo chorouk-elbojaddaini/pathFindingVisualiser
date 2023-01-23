@@ -33,12 +33,26 @@ export class GrilleComponent {
   }
   ngDoCheck(){
     this.verify = this.dijkstraService.verify;
-console.log(this.verify);
-    if(this.verify){
+console.log("hadiii verify",this.verify);
 
+    if(this.verify){
       this.searchStartAndTarget();
-      // this.dijkstraService.dijkstraAlgorithm(this.startingBox,this.targetBox);
-      this.dijkstraService.aStarSearchAlgo(this.startingBox,this.targetBox);
+      switch(this.dijkstraService.chosenAlgo){
+        case 'A* Search':
+        this.dijkstraService.aStarSearchAlgo(this.startingBox,this.targetBox);
+        break;
+        case "Dijkstra's Algorithm" : 
+      this.dijkstraService.dijkstraAlgorithm(this.startingBox,this.targetBox);
+      break;
+
+      }
+      
+      console.log("chosennalgo",this.dijkstraService.chosenAlgo);
+
+      
+      // console.log("startiiing",this.startingBox);
+      // console.log("targeeeeet",this.targetBox);
+      
     }
   }
 
@@ -87,6 +101,9 @@ console.log(this.verify);
     if (node.isPath) {
       return 'path';
     }
+    if(node.visited){
+      return 'visited';
+    }
     return 'normal';
   }
 
@@ -95,8 +112,15 @@ console.log(this.verify);
       this.board.mouseDown = true;
       this.startingBox = node;
       if(this.verify){
-      // this.dijkstraService.dijkstraAlgorithm(node, this.targetBox);
-      this.dijkstraService.aStarSearchAlgo(node, this.targetBox);
+      switch(this.dijkstraService.chosenAlgo){
+        case 'A* Search':
+          this.dijkstraService.aStarSearchAlgo(node, this.targetBox);
+        break;
+        case "Dijkstra's Algorithm" : 
+        this.dijkstraService.dijkstraAlgorithm(node, this.targetBox);
+        break;
+
+      }
 
     }
 
@@ -106,8 +130,16 @@ console.log(this.verify);
       this.board.mouseDown = true;
       this.targetBox = node;
       if(this.verify){
-      // this.dijkstraService.dijkstraAlgorithm(this.startingBox, node);
-      this.dijkstraService.aStarSearchAlgo(this.startingBox, node);
+      switch(this.dijkstraService.chosenAlgo){
+        case 'A* Search':
+          this.dijkstraService.aStarSearchAlgo(this.startingBox, node);
+          break;
+        case "Dijkstra's Algorithm" : 
+        this.dijkstraService.dijkstraAlgorithm(this.startingBox, node);
+        break;
+
+      }
+
 
       
     }
@@ -132,9 +164,17 @@ console.log(this.verify);
       if (!node.isTargetBox) {
         node.isStartingbox = true;
         this.startingBox = node;
+        
         if(this.verify){
-        // this.dijkstraService.dijkstraAlgorithm(node, this.targetBox);
-        this.dijkstraService.aStarSearchAlgo(node, this.targetBox);
+          switch(this.dijkstraService.chosenAlgo){
+            case 'A* Search':
+              this.dijkstraService.aStarSearchAlgo(node, this.targetBox);
+              break;
+            case "Dijkstra's Algorithm" : 
+            this.dijkstraService.dijkstraAlgorithm(node, this.targetBox);
+            break;
+    
+          }
 
       }
       }
@@ -145,8 +185,16 @@ console.log(this.verify);
         node.isTargetBox = true;
         this.targetBox = node;
         if(this.verify){
-        // this.dijkstraService.dijkstraAlgorithm(this.startingBox, node);
-        this.dijkstraService.aStarSearchAlgo(this.startingBox, node);
+          switch(this.dijkstraService.chosenAlgo){
+            case 'A* Search':
+              this.dijkstraService.aStarSearchAlgo(this.startingBox, node);
+              break;
+            case "Dijkstra's Algorithm" : 
+        this.dijkstraService.dijkstraAlgorithm(this.startingBox, node);
+        break;
+    
+          }
+
 
         
       
@@ -172,8 +220,15 @@ console.log(this.verify);
         node.isStartingbox = true;
         this.startingBox = node;
         if(this.verify){
-        // this.dijkstraService.dijkstraAlgorithm(node, this.targetBox);
-        this.dijkstraService.aStarSearchAlgo(node, this.targetBox);
+          switch(this.dijkstraService.chosenAlgo){
+            case 'A* Search':
+              this.dijkstraService.aStarSearchAlgo(node, this.targetBox);
+              break;
+            case "Dijkstra's Algorithm" : 
+         this.dijkstraService.dijkstraAlgorithm(node, this.targetBox);
+        break;
+    
+          }
 
         
       

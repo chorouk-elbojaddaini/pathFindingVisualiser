@@ -84,6 +84,7 @@ export class DijkstraService {
       for (let j = 0; j < Math.trunc(window.innerWidth / 30); j++) {
         this.nodes[i][j].queued = false;
         this.nodes[i][j].isPath = false;
+        this.nodes[i][j].visited = false;
       }
     }
   }
@@ -104,7 +105,7 @@ export class DijkstraService {
      
       this.currentBox = this.queue.shift();
 
-      nodeStart.visited = true;
+      this.currentBox.visited = true;
       
       if (this.currentBox == nodeTarget) {
         this.searching = false;
@@ -120,8 +121,7 @@ export class DijkstraService {
             neighbour.prior = this.currentBox;
             
             this.queue.push(neighbour);
-            if (neighbour.row == 8 && neighbour.col == 42) {
-            }
+           
           }
         });
       }
@@ -133,51 +133,7 @@ export class DijkstraService {
   getBoard(){
     return this.board;
   }
-  aStarSearchAlgo(nodeStart,nodeTarget){
-    this.board.path = [];
-    this.openSet = [];
-    this.closedSet = [];
-    this.openSet.push(nodeStart);
-     while(this.openSet.length>0){
-      let best = 0;
-      for(let i=0;i<this.openSet.length;i++){
-        if(this.openSet[i].f <= this.openSet[best].f){
-          best = i;
-        }
-      }
-      this.currentBox = this.openSet[best];
-      if(this.currentBox == nodeTarget){
-         while(this.currentBox.prior){
-          this.board.path.push(this.currentBox);
-          this.currentBox = this.currentBox.prior;
-          this.currentBox.isPath = true;
-          console.log("boooooaaard pathhh",this.board.path);
-          
-         }
-         
-      }
-      this.removeElement(this.openSet,this.currentBox);
-      this.closedSet.push(this.currentBox);
-      this.currentBox.neighbours.forEach((neighbour) =>{
-        let tmpG ;
-           if(!this.closedSet.includes(neighbour)){
-            tmpG = neighbour.g + 1 ;
-            if(this.openSet.includes(neighbour)){
-              if(tmpG < neighbour.g){
-                neighbour.g = tmpG;
-              }
-            }else{
-                neighbour.g = tmpG;
-                this.openSet.push(neighbour);
-            }
-           }
-           neighbour.h = this.heuristic(neighbour,nodeTarget);
-           neighbour.f = neighbour.g + neighbour.h;
-           neighbour.prior = this.currentBox;
-      })
-    }
-    return this.board.path;
-  }
+ 
    removeElement(arr, element) {
     var index = arr.indexOf(element);
     if (index > -1) {
@@ -186,10 +142,65 @@ export class DijkstraService {
     return arr;
   }
 
-  heuristic(elmt,target){
-    let distance = Math.abs(elmt.row-target.row) + Math.abs(elmt.col-target.col);
-    return distance
-  }
   
+  aStarSearchAlgo(nodeStart: Square, nodeTarget: Square) {
+    
+    this.reinitialisePathQueued();
+    this.openSet = [nodeStart];
+    this.closedSet = [];
+    this.board.path=[];
+    nodeStart.g = 0;
+    nodeStart.h = this.heuristic(nodeStart, nodeTarget);
+    nodeStart.f = nodeStart.g + nodeStart.h;
+
+    while (this.openSet.length > 0) {
+      let best = 0;
+      for(let i=0;i<this.openSet.length;i++){
+        
+        if(this.openSet[i].f < this.openSet[best].f){
+          best = i;
+        }
+      }
+      this.currentBox = this.openSet[best];
+
+        if (this.currentBox === nodeTarget) {
+             this.board.path = [this.currentBox];
+             do {
+              this.board.path.push(this.currentBox);
+              this.currentBox.isPath = true;
+              this.currentBox = this.currentBox.prior;
+            } while (this.currentBox != nodeStart);
+            return this.board.path;
+        }
+
+        this.removeElement(this.openSet,this.currentBox);
+        this.closedSet.push(this.currentBox);
+
+        for (let neighbor of this.currentBox.neighbours) {
+          if (this.closedSet.includes(neighbor)) {
+              continue;
+          }
+          let tmpG = this.currentBox.g + 1;
+          if (!this.openSet.includes(neighbor)) {
+              this.openSet.push(neighbor);
+          } else if (tmpG >= neighbor.g) {
+              continue;
+          }
+
+            neighbor.prior = this.currentBox;
+            neighbor.g = tmpG;
+            neighbor.h = this.heuristic(neighbor, nodeTarget);
+            neighbor.f = neighbor.g + neighbor.h;
+        }
+    }
+    return [];
+}
+
+heuristic(node:Square, target:Square){
+    return Math.abs(node.row - target.row) + Math.abs(node.col - target.col);
+}
+
+
+
 
 }
