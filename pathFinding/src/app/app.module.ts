@@ -9,6 +9,7 @@ import { GridComponent } from './grid/grid.component';
 import { GrilleComponent } from './grille/grille.component';
 import { StartingNodeComponent } from './starting-node/starting-node.component';
 import { NavbarComponent } from './navbar/navbar.component';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { NavbarComponent } from './navbar/navbar.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    DragDropModule
+    DragDropModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

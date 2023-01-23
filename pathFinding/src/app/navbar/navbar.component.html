@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg bg-body-tertiary"  style="background-color: #e3f2fd;">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#">PathFinding</a>
+      <a class="navbar-brand" href="#">PathFinding Visualiser</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -8,47 +8,57 @@
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           
             <li class="nav-item dropdown">
-                <button class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                  Dropdown
-                </button>
-                <ul class="dropdown-menu dropdown-menu-dark">
-                  <li><a class="dropdown-item" href="#">Action</a></li>
-                  <li><a class="dropdown-item" href="#">Another action</a></li>
-                  <li><a class="dropdown-item" href="#">Something else here</a></li>
-                </ul>
+                
+                <form [formGroup]="typeAlgorithm" (ngSubmit)="choseAlgorithme()">
+                  <select formControlName="algo" >
+                <option><a #dijkstra class="dropdown-item"  href="#">Dijkstra's Algorithm</a></option>
+                <option><a class="dropdown-item" href="#">A* Search</a></option>
+                <option><a class="dropdown-item" href="#">Greedy Best-first Search</a></option>
+                <option><a class="dropdown-item" href="#">Convergent Swarm Algorithm</a></option>
+                <option><a class="dropdown-item" href="#">Bidirectional Swarm Algorithm</a></option>
+                <option><a class="dropdown-item" href="#">Breadth-first Search</a></option>
+                <option><a class="dropdown-item" href="#">Depth-first Search</a></option>
+              </select>
+              <button type="submit">submit</button>
+              </form>
               </li>
           
               <li class="nav-item dropdown">
-                <button class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                  Dropdown
+                <button class="btn  dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                  Mazes & Patterns
                 </button>
-                <ul class="dropdown-menu dropdown-menu-dark">
-                  <li><a class="dropdown-item" href="#">Action</a></li>
-                  <li><a class="dropdown-item" href="#">Another action</a></li>
-                  <li><a class="dropdown-item" href="#">Something else here</a></li>
+                <ul class="dropdown-menu ">
+                  <li><a class="dropdown-item" href="#">Recursive Division</a></li>
+                  <li><a class="dropdown-item" href="#">Recursive Division (vertical skew)</a></li>
+                  <li><a class="dropdown-item" href="#">Recursive Division (horizontal skew)</a></li>
+                  <li><a class="dropdown-item" href="#">Basic Random Maze</a></li>
+                  <li><a class="dropdown-item" href="#">Simple Stair Pattern</a></li>
                 </ul>
               </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Add client</a>
+            <a class="nav-link" href="#">Add Person</a>
           </li>
           <li class="nav-item">
-            <button type="button" class="btn btn-primary">Primary</button>
+            <button type="button" class="btn ">Visualise {{chosenAlgo}}</button>
           </li>
           <li class="nav-item">
-            <button type="button" class="btn btn-outline-warning">Warning</button>
+            <button type="button" class="btn ">Clear Board</button>
           </li>
           <li class="nav-item">
-            <button type="button" class="btn btn-outline-warning">Warning</button>
+            <button type="button" class="btn ">Clear Walls </button>
+          </li>
+          <li class="nav-item">
+            <button type="button" class="btn ">Clear Path </button>
           </li>
         </ul>
         <li class="nav-item dropdown">
-            <button class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-              Dropdown
+            <button class="btn  dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+              Speed : Fast
             </button>
             <ul class="dropdown-menu dropdown-menu-dark">
-              <li><a class="dropdown-item" href="#">Action</a></li>
-              <li><a class="dropdown-item" href="#">Another action</a></li>
-              <li><a class="dropdown-item" href="#">Something else here</a></li>
+              <li><a class="dropdown-item" href="#">Fast</a></li>
+              <li><a class="dropdown-item" href="#">Average</a></li>
+              <li><a class="dropdown-item" href="#">Slow</a></li>
             </ul>
           </li>
       </div>
