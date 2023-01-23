@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { NavbarComponent } from '../navbar/navbar.component';
 import { Board } from '../shared/boardModele';
 import { DijkstraService } from '../shared/pathFindingAlgorithms/dijkstra.service';
 import { Square } from '../shared/squareModele';
@@ -17,15 +18,26 @@ export class GrilleComponent {
   searching: boolean = true;
   queue: Square[];
   currentBox: Square;
+  verify:boolean;
+  
   constructor(public dijkstraService: DijkstraService) {}
   ngOnInit(): void {
     let wi = window.innerWidth;
     this.numberSquares = Math.trunc(wi / 30);
-
+    
     this.getNodes();
     this.searchStartAndTarget();
     this.initialiseNodesNeighbours();
     this.board = this.dijkstraService.getBoard();
+    
+  }
+  ngDoCheck(){
+    this.verify = this.dijkstraService.verify;
+    console.log("veriiify",this.verify);
+    if(this.verify){
+      this.searchStartAndTarget();
+      this.dijkstraService.dijkstraAlgorithm(this.startingBox,this.targetBox);
+    }
   }
 
   getNodes() {
@@ -80,14 +92,16 @@ export class GrilleComponent {
     if (node.isStartingbox) {
       this.board.mouseDown = true;
       this.startingBox = node;
-      this.dijkstraService.dijkstraAlgorithm(node, this.targetBox);
+      if(this.verify){
+      this.dijkstraService.dijkstraAlgorithm(node, this.targetBox);}
 
       this.board.currentNode = node;
       this.board.isSelectedNodeStart = true;
     } else if (node.isTargetBox) {
       this.board.mouseDown = true;
       this.targetBox = node;
-      this.dijkstraService.dijkstraAlgorithm(this.startingBox, node);
+      if(this.verify){
+      this.dijkstraService.dijkstraAlgorithm(this.startingBox, node);}
       this.board.currentNode = node;
       this.board.isSelectedNodeEnd = true;
     } else if (node.isNormal) {
@@ -109,7 +123,8 @@ export class GrilleComponent {
       if (!node.isTargetBox) {
         node.isStartingbox = true;
         this.startingBox = node;
-        this.dijkstraService.dijkstraAlgorithm(node, this.targetBox);
+        if(this.verify){
+        this.dijkstraService.dijkstraAlgorithm(node, this.targetBox);}
       }
     } else if (this.board.mouseDown && this.board.isSelectedNodeEnd) {
       this.board.mouseEnter = true;
@@ -117,8 +132,8 @@ export class GrilleComponent {
       if (!node.isStartingbox) {
         node.isTargetBox = true;
         this.targetBox = node;
-
-        this.dijkstraService.dijkstraAlgorithm(this.startingBox, node);
+        if(this.verify){
+        this.dijkstraService.dijkstraAlgorithm(this.startingBox, node);}
       }
     } else if (this.board.isWallDrawing && !node.isPath) {
       node.isWall = !node.isWall;
@@ -138,7 +153,8 @@ export class GrilleComponent {
       if (!node.isTargetBox) {
         node.isStartingbox = true;
         this.startingBox = node;
-        this.dijkstraService.dijkstraAlgorithm(node, this.targetBox);
+        if(this.verify){
+        this.dijkstraService.dijkstraAlgorithm(node, this.targetBox);}
       }
     } else if (
       this.board.mouseEnter &&
@@ -152,7 +168,8 @@ export class GrilleComponent {
       if (!node.isStartingbox) {
         node.isTargetBox = true;
         this.targetBox = node;
-        this.dijkstraService.dijkstraAlgorithm(this.startingBox, node);
+        if(this.verify){
+        this.dijkstraService.dijkstraAlgorithm(this.startingBox, node);}
       }
     } else if (this.board.isWallDrawing) {
       this.board.isWallDrawing = false;

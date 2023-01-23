@@ -23,7 +23,8 @@ export class NavbarComponent implements OnInit {
   }
   choseAlgorithme(){
 
-    this.dijkstraService.chosenAlgo =this.typeAlgorithm.value.algo 
+    this.dijkstraService.chosenAlgo =this.typeAlgorithm.value.algo;
+    this.dijkstraService.verify = true;
   }
 
 }
