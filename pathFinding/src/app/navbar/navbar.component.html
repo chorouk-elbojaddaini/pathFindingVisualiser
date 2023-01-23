@@ -9,7 +9,7 @@
           
             <li class="nav-item dropdown">
                 
-                <form [formGroup]="typeAlgorithm" (ngSubmit)="choseAlgorithme()">
+                <form [formGroup]="typeAlgorithm" >
                   <select formControlName="algo" >
                 <option><a #dijkstra class="dropdown-item"  href="#">Dijkstra's Algorithm</a></option>
                 <option><a class="dropdown-item" href="#">A* Search</a></option>
@@ -19,7 +19,7 @@
                 <option><a class="dropdown-item" href="#">Breadth-first Search</a></option>
                 <option><a class="dropdown-item" href="#">Depth-first Search</a></option>
               </select>
-              <button type="submit">submit</button>
+              
               </form>
               </li>
           
@@ -39,7 +39,7 @@
             <a class="nav-link" href="#">Add Person</a>
           </li>
           <li class="nav-item">
-            <button type="button" class="btn" (click)="choseAlgorithme()">Visualise {{chosenAlgo}}</button>
+            <button type="button" class="btn" (click)="choseAlgorithme()">Visualise {{dijkstraService.chosenAlgo}}</button>
           </li>
           <li class="nav-item">
             <button type="button" class="btn ">Clear Board</button>

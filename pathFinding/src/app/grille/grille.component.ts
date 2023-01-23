@@ -33,7 +33,7 @@ export class GrilleComponent {
   }
   ngDoCheck(){
     this.verify = this.dijkstraService.verify;
-    console.log("veriiify",this.verify);
+    console.log("veriiify",this.dijkstraService.chosenAlgo);
     if(this.verify){
       this.searchStartAndTarget();
       this.dijkstraService.dijkstraAlgorithm(this.startingBox,this.targetBox);

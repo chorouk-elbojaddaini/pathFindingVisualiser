@@ -9,7 +9,7 @@ import { DijkstraService } from '../shared/pathFindingAlgorithms/dijkstra.servic
 export class NavbarComponent implements OnInit {
   chosenAlgo:string;
   typeAlgorithm:FormGroup
-  constructor(private fb: FormBuilder,private dijkstraService:DijkstraService) {
+  constructor(private fb: FormBuilder,public dijkstraService:DijkstraService) {
     this.initAlgoForm();
    }
 
