@@ -24,7 +24,7 @@ export class DijkstraService {
     false,
     false,
     false,
-    null
+    []
   );
   searching: boolean = true;
   constructor() {}
@@ -80,5 +80,51 @@ export class DijkstraService {
         this.nodes[i][j].isPath = false;
       }
     }
+  }
+
+  dijkstraAlgorithm(nodeStart: Square, nodeTarget: Square) {
+    
+    this.searching = true;
+    this.board.path = [];
+    
+    this.reinitialisePathQueued();
+  
+    this.queue = [];
+    this.queue.push(nodeStart);
+   
+    nodeStart.queued = true;
+   
+    while (this.queue.length > 0 && this.searching) {
+     
+      this.currentBox = this.queue.shift();
+
+      nodeStart.visited = true;
+      
+      if (this.currentBox == nodeTarget) {
+        this.searching = false;
+        do {
+          this.board.path.push(this.currentBox);
+          this.currentBox.isPath = true;
+          this.currentBox = this.currentBox.prior;
+        } while (this.currentBox != nodeStart);
+      } else {
+        this.currentBox.neighbours.forEach((neighbour) => {
+          if (!neighbour.queued && !neighbour.isWall) {
+            neighbour.queued = true;
+            neighbour.prior = this.currentBox;
+            
+            this.queue.push(neighbour);
+            if (neighbour.row == 8 && neighbour.col == 42) {
+            }
+          }
+        });
+      }
+     
+    }
+
+    return this.board.path;
+  }
+  getBoard(){
+    return this.board;
   }
 }

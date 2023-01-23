@@ -21,24 +21,12 @@ export class GrilleComponent {
   ngOnInit(): void {
     let wi = window.innerWidth;
     this.numberSquares = Math.trunc(wi / 30);
-    this.board = new Board(
-      window.innerWidth,
-      this.numberSquares * 3,
-      null,
-      null,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
-      []
-    );
+  
 
     this.getNodes();
     this.searchStartAndTarget();
     this.initialiseNodesNeighbours();
+    this.board = this.dijkstraService.getBoard();
   }
 
   getNodes() {
@@ -73,61 +61,7 @@ export class GrilleComponent {
     }
   }
 
-  dijkstraAlgorithm(nodeStart: Square, nodeTarget: Square) {
-    console.log('dijksta');
-    console.log('nodes in dijkstra', this.nodes);
-    this.reinitialisePathQueued();
-    console.log('hadi starting', nodeStart);
-    this.queue = [];
-    this.queue.push(nodeStart);
-    console.log('hadi queue', this.queue);
-    console.log('this is the target', nodeTarget);
-    nodeStart.queued = true;
-    let compteur = 0;
-    while (this.queue.length > 0 && this.searching) {
-      compteur++;
-      console.log('dakhl l while');
-      this.currentBox = this.queue.shift();
-
-      nodeStart.visited = true;
-      console.log('node target', nodeTarget);
-      console.log('current', this.currentBox);
-      if (this.currentBox == nodeTarget) {
-        console.log('chorouk dkiya o rim hmara');
-        this.searching = false;
-        do {
-          this.board.path.push(this.currentBox);
-          this.currentBox.isPath = true;
-          this.currentBox = this.currentBox.prior;
-        } while (this.currentBox != nodeStart);
-      } else {
-        console.log('hadi elseee');
-        console.log('current box', this.currentBox);
-        console.log('neighbouuurs ', this.currentBox.neighbours);
-        this.currentBox.neighbours.forEach((neighbour) => {
-          if (!neighbour.queued && !neighbour.isWall) {
-            neighbour.queued = true;
-            neighbour.prior = this.currentBox;
-            console.log(
-              'haada howaa lpriiorr++++++++++++++++++++++',
-              neighbour.prior
-            );
-            this.queue.push(neighbour);
-            if (neighbour.row == 8 && neighbour.col == 42) {
-              console.log(
-                'hadaa howa neighboor=============================================================================='
-              );
-            }
-            console.log('neighb');
-          }
-          // console.log("neighb",this.currentBox.neighbours);
-        });
-      }
-      console.log(compteur);
-    }
-    console.log('pathhhhhhh', this.board.path);
-    return this.board.path;
-  }
+ 
   statusNode(node: Square): string {
     if (node.isStartingbox) {
       return 'start';
@@ -147,21 +81,15 @@ export class GrilleComponent {
   mouseDown(node: Square) {
     if (node.isStartingbox) {
       this.board.mouseDown = true;
-      this.searching = true;
-      this.board.path = [];
       this.startingBox = node;
-      console.log('HANAYA FL MOUSE DOWN ', this.targetBox);
-      this.dijkstraAlgorithm(node, this.targetBox);
+      this.dijkstraService.dijkstraAlgorithm(node, this.targetBox);
 
       this.board.currentNode = node;
       this.board.isSelectedNodeStart = true;
-      // console.log(`this is the MOUSE DOWN ${node.row} ${node.col}`);
     } else if (node.isTargetBox) {
       this.board.mouseDown = true;
-      this.searching = true;
-      this.board.path = [];
       this.targetBox = node;
-      this.dijkstraAlgorithm(this.startingBox, node);
+      this.dijkstraService.dijkstraAlgorithm(this.startingBox, node);
       this.board.currentNode = node;
       this.board.isSelectedNodeEnd = true;
     } else if (node.isNormal) {
@@ -172,7 +100,6 @@ export class GrilleComponent {
     if (this.board.mouseDown && this.board.isSelectedNodeStart) {
       node.isStartingbox = false;
 
-      // console.log(`this is the MOUSE LEAVE ${node.row} ${node.col}`);
     }
     if (this.board.mouseDown && this.board.isSelectedNodeEnd) {
       node.isTargetBox = false;
@@ -184,23 +111,18 @@ export class GrilleComponent {
       this.board.enteredNode = node;
       if (!node.isTargetBox) {
         node.isStartingbox = true;
-        this.searching = true;
-        this.board.path = [];
         this.startingBox = node;
-        this.dijkstraAlgorithm(node, this.targetBox);
+        this.dijkstraService.dijkstraAlgorithm(node, this.targetBox);
       }
 
-      // console.log(`this is the MOUSE ENTER ${node.row} ${node.col}`);
     } else if (this.board.mouseDown && this.board.isSelectedNodeEnd) {
       this.board.mouseEnter = true;
       this.board.enteredNode = node;
       if (!node.isStartingbox) {
         node.isTargetBox = true;
-        this.searching = true;
-        this.board.path = [];
         this.targetBox = node;
 
-        this.dijkstraAlgorithm(this.startingBox, node);
+        this.dijkstraService.dijkstraAlgorithm(this.startingBox, node);
       }
     } else if (this.board.isWallDrawing) {
       node.isWall = !node.isWall;
@@ -219,13 +141,10 @@ export class GrilleComponent {
       this.board.isSelectedNodeStart = false;
       if (!node.isTargetBox) {
         node.isStartingbox = true;
-        this.searching = true;
-        this.board.path = [];
         this.startingBox = node;
-        this.dijkstraAlgorithm(node, this.targetBox);
+        this.dijkstraService.dijkstraAlgorithm(node, this.targetBox);
       }
 
-      // console.log(`this is the MOUSE UP ${node.row} ${node.col}`);
     } else if (
       this.board.mouseEnter &&
       this.board.isSelectedNodeEnd &&
@@ -237,13 +156,10 @@ export class GrilleComponent {
       this.board.enteredNode = node;
       if (!node.isStartingbox) {
         node.isTargetBox = true;
-        this.searching = true;
-        this.board.path = [];
         this.targetBox = node;
-        this.dijkstraAlgorithm(this.startingBox, node);
+        this.dijkstraService.dijkstraAlgorithm(this.startingBox, node);
       }
 
-      // console.log(`this is the MOUSE UP ${node.row} ${node.col}`);
     } else if (this.board.isWallDrawing) {
       this.board.isWallDrawing = false;
     }
