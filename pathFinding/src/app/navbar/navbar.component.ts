@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Form } from '@angular/forms';
+import { DijkstraService } from '../shared/pathFindingAlgorithms/dijkstra.service';
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
@@ -8,7 +9,7 @@ import { FormGroup, FormBuilder, Form } from '@angular/forms';
 export class NavbarComponent implements OnInit {
   chosenAlgo:string;
   typeAlgorithm:FormGroup
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder,private dijkstraService:DijkstraService) {
     this.initAlgoForm();
    }
 
@@ -21,8 +22,8 @@ export class NavbarComponent implements OnInit {
     });
   }
   choseAlgorithme(){
-    this.chosenAlgo = this.typeAlgorithm.value.algo;
-    console.log(this.chosenAlgo);
+
+    this.dijkstraService.chosenAlgo =this.typeAlgorithm.value.algo 
   }
 
 }

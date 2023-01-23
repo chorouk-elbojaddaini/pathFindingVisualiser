@@ -12,6 +12,7 @@ export class DijkstraService {
   numberSquares: number = 0;
   startingBox: Square;
   targetBox: Square;
+  chosenAlgo:string;
   board = new Board(
     window.innerWidth,
     this.numberSquares * 3,

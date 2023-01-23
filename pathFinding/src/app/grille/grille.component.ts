@@ -17,11 +17,10 @@ export class GrilleComponent {
   searching: boolean = true;
   queue: Square[];
   currentBox: Square;
-  constructor(private dijkstraService: DijkstraService) {}
+  constructor(public dijkstraService: DijkstraService) {}
   ngOnInit(): void {
     let wi = window.innerWidth;
     this.numberSquares = Math.trunc(wi / 30);
-  
 
     this.getNodes();
     this.searchStartAndTarget();
@@ -61,7 +60,6 @@ export class GrilleComponent {
     }
   }
 
- 
   statusNode(node: Square): string {
     if (node.isStartingbox) {
       return 'start';
@@ -99,7 +97,6 @@ export class GrilleComponent {
   mouseLeave(node: Square) {
     if (this.board.mouseDown && this.board.isSelectedNodeStart) {
       node.isStartingbox = false;
-
     }
     if (this.board.mouseDown && this.board.isSelectedNodeEnd) {
       node.isTargetBox = false;
@@ -114,7 +111,6 @@ export class GrilleComponent {
         this.startingBox = node;
         this.dijkstraService.dijkstraAlgorithm(node, this.targetBox);
       }
-
     } else if (this.board.mouseDown && this.board.isSelectedNodeEnd) {
       this.board.mouseEnter = true;
       this.board.enteredNode = node;
@@ -144,7 +140,6 @@ export class GrilleComponent {
         this.startingBox = node;
         this.dijkstraService.dijkstraAlgorithm(node, this.targetBox);
       }
-
     } else if (
       this.board.mouseEnter &&
       this.board.isSelectedNodeEnd &&
@@ -159,7 +154,6 @@ export class GrilleComponent {
         this.targetBox = node;
         this.dijkstraService.dijkstraAlgorithm(this.startingBox, node);
       }
-
     } else if (this.board.isWallDrawing) {
       this.board.isWallDrawing = false;
     }
