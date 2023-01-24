@@ -61,7 +61,9 @@ export class DijkstraService {
           false,
           0,
           0,
-          0
+          0,
+          false,
+          false
         );
 
         if (i == 8 && j == Math.trunc(this.numberSquares / 2) - 15) {
@@ -178,7 +180,7 @@ export class DijkstraService {
 
         this.removeElement(this.openSet,this.currentBox);
         this.closedSet.push(this.currentBox);
-
+         this.currentBox.isClosedSet = true;
         for (let neighbor of this.currentBox.neighbours) {
           if(!neighbor.isWall){
             if (this.closedSet.includes(neighbor)) {
@@ -187,6 +189,8 @@ export class DijkstraService {
           let tmpG = this.currentBox.g + 1;
           if (!this.openSet.includes(neighbor)) {
               this.openSet.push(neighbor);
+              neighbor.isOpenSet = true;
+
           } else if (tmpG >= neighbor.g) {
               continue;
           }
