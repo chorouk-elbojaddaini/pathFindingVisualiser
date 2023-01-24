@@ -34,7 +34,7 @@ export class GrilleComponent {
     console.log("cheking");  
     this.isPerson = this.dijkstraService.isPerson;
     if (this.isPerson) {
-      this.nodes[3][15].isPerson = true;
+      this.nodes[3][25].isPerson = true;
       this.personNode = this.nodes[3][25];
     }
     this.searchStartAndTarget();
@@ -63,6 +63,10 @@ export class GrilleComponent {
         }
         break;
     }
+    console.log("startbo",this.startingBox);
+    console.log("targEt",this.targetBox);
+    console.log("hada person",this.personNode);
+
   }
 
   getNodes() {
@@ -129,10 +133,10 @@ export class GrilleComponent {
   }
 
   mouseDown(node: Square) {
-    if (node.isStartingbox) {
+    if (node.isStartingbox ) {
       this.board.mouseDown = true;
       this.startingBox = node;
-
+      
       // switch (this.dijkstraService.chosenAlgo) {
       //   case 'A* Search':
       //     this.dijkstraService.aStarSearchAlgo(node, this.targetBox);
@@ -145,7 +149,9 @@ export class GrilleComponent {
         case 'A* Search':
           this.dijkstraService.reinitialisePathQueued();
           if(this.isPerson){
+            
             this.dijkstraService.aStarSearchAlgo(node, this.personNode);
+            this.personNode.isStartingbox = true;
             this.dijkstraService.aStarSearchAlgo(this.personNode, this.targetBox);
           }
           else{
