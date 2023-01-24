@@ -116,10 +116,10 @@ export class GrilleComponent {
     if (node.visited && !node.isPerson) {
       return 'visited';
     }
-    if (node.isClosedSet) {
+    if (node.isClosedSet && !node.isPerson) {
       return 'closed';
     }
-    if (node.isOpenSet) {
+    if (node.isOpenSet && !node.isPerson) {
       return 'openset';
     }
     if (node.isPerson) {
