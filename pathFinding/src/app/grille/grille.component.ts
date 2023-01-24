@@ -18,42 +18,51 @@ export class GrilleComponent {
   searching: boolean = true;
   queue: Square[];
   currentBox: Square;
-  verify:boolean;
-  
+  isPerson: boolean;
+  personNode: Square;
   constructor(public dijkstraService: DijkstraService) {}
   ngOnInit(): void {
     let wi = window.innerWidth;
     this.numberSquares = Math.trunc(wi / 30);
-    
+
     this.getNodes();
     this.searchStartAndTarget();
     this.initialiseNodesNeighbours();
     this.board = this.dijkstraService.getBoard();
   }
-  ngDoCheck(){
-    this.verify = this.dijkstraService.verify;
-    // console.log("hadiii verify",this.verify);
-
-    
-      this.searchStartAndTarget();
-      switch(this.dijkstraService.algo){
-        case 'astar':
-        this.dijkstraService.reinitialisePathQueued();
-        this.dijkstraService.aStarSearchAlgo(this.startingBox,this.targetBox);
-        break;
-        case "dijkstra" : 
-        this.dijkstraService.reinitialisePathQueued();
-      this.dijkstraService.dijkstraAlgorithm(this.startingBox,this.targetBox);
-      break;
-      
-
-      
-      
-      // console.log("chosennalgo",this.dijkstraService.chosenAlgo);
-      
-      
+  ngDoCheck() {
+    console.log("cheking");  
+    this.isPerson = this.dijkstraService.isPerson;
+    if (this.isPerson) {
+      this.nodes[3][15].isPerson = true;
+      this.personNode = this.nodes[3][15];
     }
-    
+    this.searchStartAndTarget();
+    switch (this.dijkstraService.algo) {
+      case 'astar':
+        this.dijkstraService.reinitialisePathQueued();
+        if(this.isPerson){
+          this.dijkstraService.aStarSearchAlgo(this.startingBox, this.personNode);
+          this.dijkstraService.aStarSearchAlgo(this.personNode, this.targetBox);
+        }
+        else{
+          this.dijkstraService.aStarSearchAlgo(this.startingBox, this.targetBox);
+        }
+        
+        break;
+      case 'dijkstra':
+        this.dijkstraService.reinitialisePathQueued();
+
+        if(this.isPerson){
+          this.dijkstraService.dijkstraAlgorithm(this.startingBox, this.personNode);
+          this.dijkstraService.dijkstraAlgorithm(this.personNode, this.targetBox);
+        }
+        
+        else{
+          this.dijkstraService.dijkstraAlgorithm(this.startingBox, this.targetBox);
+        }
+        break;
+    }
   }
 
   getNodes() {
@@ -104,14 +113,17 @@ export class GrilleComponent {
     if (node.isPath) {
       return 'path';
     }
-    if(node.visited){
+    if (node.visited) {
       return 'visited';
     }
-    if(node.isClosedSet){
+    if (node.isClosedSet) {
       return 'closed';
     }
-    if(node.isOpenSet){
+    if (node.isOpenSet) {
       return 'openset';
+    }
+    if (node.isPerson) {
+      return 'person';
     }
     return 'normal';
   }
@@ -120,36 +132,29 @@ export class GrilleComponent {
     if (node.isStartingbox) {
       this.board.mouseDown = true;
       this.startingBox = node;
-      
-      switch(this.dijkstraService.chosenAlgo){
+
+      switch (this.dijkstraService.chosenAlgo) {
         case 'A* Search':
           this.dijkstraService.aStarSearchAlgo(node, this.targetBox);
-        break;
-        case "Dijkstra's Algorithm" : 
-        this.dijkstraService.dijkstraAlgorithm(node, this.targetBox);
-        break;
-
+          break;
+        case "Dijkstra's Algorithm":
+          this.dijkstraService.dijkstraAlgorithm(node, this.targetBox);
+          break;
       }
-
-    
 
       this.board.currentNode = node;
       this.board.isSelectedNodeStart = true;
     } else if (node.isTargetBox) {
       this.board.mouseDown = true;
       this.targetBox = node;
-      switch(this.dijkstraService.chosenAlgo){
+      switch (this.dijkstraService.chosenAlgo) {
         case 'A* Search':
           this.dijkstraService.aStarSearchAlgo(this.startingBox, node);
           break;
-        case "Dijkstra's Algorithm" : 
-        this.dijkstraService.dijkstraAlgorithm(this.startingBox, node);
-        break;
-
-
-
-      
-    }
+        case "Dijkstra's Algorithm":
+          this.dijkstraService.dijkstraAlgorithm(this.startingBox, node);
+          break;
+      }
       this.board.currentNode = node;
       this.board.isSelectedNodeEnd = true;
     } else if (node.isNormal) {
@@ -171,17 +176,15 @@ export class GrilleComponent {
       if (!node.isTargetBox) {
         node.isStartingbox = true;
         this.startingBox = node;
-        
-          switch(this.dijkstraService.chosenAlgo){
-            case 'A* Search':
-              this.dijkstraService.aStarSearchAlgo(node, this.targetBox);
-              break;
-            case "Dijkstra's Algorithm" : 
+
+        switch (this.dijkstraService.chosenAlgo) {
+          case 'A* Search':
+            this.dijkstraService.aStarSearchAlgo(node, this.targetBox);
+            break;
+          case "Dijkstra's Algorithm":
             this.dijkstraService.dijkstraAlgorithm(node, this.targetBox);
             break;
-    
-
-      }
+        }
       }
     } else if (this.board.mouseDown && this.board.isSelectedNodeEnd) {
       this.board.mouseEnter = true;
@@ -189,20 +192,14 @@ export class GrilleComponent {
       if (!node.isStartingbox) {
         node.isTargetBox = true;
         this.targetBox = node;
-          switch(this.dijkstraService.chosenAlgo){
-            case 'A* Search':
-              this.dijkstraService.aStarSearchAlgo(this.startingBox, node);
-              break;
-            case "Dijkstra's Algorithm" : 
-        this.dijkstraService.dijkstraAlgorithm(this.startingBox, node);
-        break;
-    
-
-
-        
-      
-      
-      }
+        switch (this.dijkstraService.chosenAlgo) {
+          case 'A* Search':
+            this.dijkstraService.aStarSearchAlgo(this.startingBox, node);
+            break;
+          case "Dijkstra's Algorithm":
+            this.dijkstraService.dijkstraAlgorithm(this.startingBox, node);
+            break;
+        }
       }
     } else if (this.board.isWallDrawing && !node.isPath) {
       node.isWall = !node.isWall;
@@ -222,18 +219,14 @@ export class GrilleComponent {
       if (!node.isTargetBox) {
         node.isStartingbox = true;
         this.startingBox = node;
-          switch(this.dijkstraService.chosenAlgo){
-            case 'A* Search':
-              this.dijkstraService.aStarSearchAlgo(node, this.targetBox);
-              break;
-            case "Dijkstra's Algorithm" : 
-         this.dijkstraService.dijkstraAlgorithm(node, this.targetBox);
-        break;
-    
-
-        
-      
-      }
+        switch (this.dijkstraService.chosenAlgo) {
+          case 'A* Search':
+            this.dijkstraService.aStarSearchAlgo(node, this.targetBox);
+            break;
+          case "Dijkstra's Algorithm":
+            this.dijkstraService.dijkstraAlgorithm(node, this.targetBox);
+            break;
+        }
       }
     } else if (
       this.board.mouseEnter &&
@@ -247,22 +240,16 @@ export class GrilleComponent {
       if (!node.isStartingbox) {
         node.isTargetBox = true;
         this.targetBox = node;
-        
-        switch(this.dijkstraService.chosenAlgo){
+
+        switch (this.dijkstraService.chosenAlgo) {
           case 'A* Search':
             this.dijkstraService.aStarSearchAlgo(this.startingBox, node);
             break;
-          case "Dijkstra's Algorithm" : 
-          this.dijkstraService.dijkstraAlgorithm(this.startingBox, node);
+          case "Dijkstra's Algorithm":
+            this.dijkstraService.dijkstraAlgorithm(this.startingBox, node);
 
-      break;
-  
-
-      
-    
-    }
-        
-      
+            break;
+        }
       }
     } else if (this.board.isWallDrawing) {
       this.board.isWallDrawing = false;
