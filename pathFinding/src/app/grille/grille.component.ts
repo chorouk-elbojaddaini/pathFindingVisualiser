@@ -110,10 +110,10 @@ export class GrilleComponent {
     if (node.isWall) {
       return 'wall';
     }
-    if (node.isPath) {
+    if (node.isPath && !node.isPerson) {
       return 'path';
     }
-    if (node.visited) {
+    if (node.visited && !node.isPerson) {
       return 'visited';
     }
     if (node.isClosedSet) {
