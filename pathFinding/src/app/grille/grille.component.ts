@@ -20,6 +20,7 @@ export class GrilleComponent {
   currentBox: Square;
   isPerson: boolean;
   personNode: Square;
+  ngDoCheckRunOnce:boolean=false;
   constructor(public dijkstraService: DijkstraService) {}
   ngOnInit(): void {
     let wi = window.innerWidth;
@@ -29,14 +30,17 @@ export class GrilleComponent {
     this.searchStartAndTarget();
     this.initialiseNodesNeighbours();
     this.board = this.dijkstraService.getBoard();
+     this.ngDoCheckRunOnce =false;
   }
   ngDoCheck() {
-    console.log("cheking");  
+
     this.isPerson = this.dijkstraService.isPerson;
-    if (this.isPerson) {
-      this.nodes[3][25].isPerson = true;
-      this.personNode = this.nodes[3][25];
+    if (!this.ngDoCheckRunOnce && this.isPerson) {
+        this.nodes[3][25].isPerson = true;
+        this.personNode = this.nodes[3][25];
+      this.ngDoCheckRunOnce = true;
     }
+    
     this.searchStartAndTarget();
     switch (this.dijkstraService.algo) {
       case 'astar':
@@ -133,7 +137,7 @@ export class GrilleComponent {
   }
 
   mouseDown(node: Square) {
-    if (node.isStartingbox ) {
+    if (node.isStartingbox) {
       this.board.mouseDown = true;
       this.startingBox = node;
       
@@ -240,6 +244,8 @@ export class GrilleComponent {
       node.isTargetBox = false;
     }
     if(this.board.mouseDown && this.board.isSelectedNodePerson){
+      console.log("leaveee");
+      this.nodes[3][25].isPerson = false;
       node.isPerson = false;
     }
   }
