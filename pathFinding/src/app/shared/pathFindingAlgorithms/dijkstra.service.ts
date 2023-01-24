@@ -89,6 +89,8 @@ export class DijkstraService {
         this.nodes[i][j].queued = false;
         this.nodes[i][j].isPath = false;
         this.nodes[i][j].visited = false;
+        this.nodes[i][j].isClosedSet = false;
+        this.nodes[i][j].isOpenSet=false;
         
       }
     }
