@@ -128,7 +128,7 @@ export class DijkstraService {
         } while (this.currentBox != nodeStart);
       } else {
         this.currentBox.neighbours.forEach((neighbour) => {
-          if (!neighbour.queued && !neighbour.isWall ) {
+          if (!neighbour.queued && !neighbour.isWall && !neighbour.isStartingbox) {
             neighbour.queued = true;
             neighbour.prior = this.currentBox;
 
