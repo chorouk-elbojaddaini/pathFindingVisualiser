@@ -20,7 +20,7 @@ export class GrilleComponent {
   currentBox: Square;
   isPerson: boolean;
   personNode: Square;
-  ngDoCheckRunOnce:boolean=false;
+  ngDoCheckRunOnce: boolean = false;
   constructor(public dijkstraService: DijkstraService) {}
   ngOnInit(): void {
     let wi = window.innerWidth;
@@ -30,58 +30,80 @@ export class GrilleComponent {
     this.searchStartAndTarget();
     this.initialiseNodesNeighbours();
     this.board = this.dijkstraService.getBoard();
-     this.ngDoCheckRunOnce =false;
+    this.ngDoCheckRunOnce = false;
   }
   ngDoCheck() {
-
     this.isPerson = this.dijkstraService.isPerson;
     if (!this.ngDoCheckRunOnce && this.isPerson) {
-        this.nodes[3][25].isPerson = true;
-        this.personNode = this.nodes[3][25];
+      this.nodes[3][25].isPerson = true;
+      this.personNode = this.nodes[3][25];
       this.ngDoCheckRunOnce = true;
     }
-    
+
     this.searchStartAndTarget();
     switch (this.dijkstraService.algo) {
       case 'astar':
         this.dijkstraService.reinitialisePathQueued();
-        if(this.isPerson){
-          this.dijkstraService.aStarSearchAlgo(this.startingBox, this.personNode);
+        if (this.isPerson) {
+          this.dijkstraService.aStarSearchAlgo(
+            this.startingBox,
+            this.personNode
+          );
+          if (this.board.path.length!=0) {
           this.dijkstraService.aStarSearchAlgo(this.personNode, this.targetBox);
         }
-        else{
-          this.dijkstraService.aStarSearchAlgo(this.startingBox, this.targetBox);
+        } else {
+          this.dijkstraService.aStarSearchAlgo(
+            this.startingBox,
+            this.targetBox
+          );
         }
-        
+
         break;
       case 'dijkstra':
         this.dijkstraService.reinitialisePathQueued();
 
-        if(this.isPerson){
-          this.dijkstraService.dijkstraAlgorithm(this.startingBox, this.personNode);
-          this.dijkstraService.dijkstraAlgorithm(this.personNode, this.targetBox);
-        }
-        
-        else{
-          this.dijkstraService.dijkstraAlgorithm(this.startingBox, this.targetBox);
+        if (this.isPerson) {
+          this.dijkstraService.dijkstraAlgorithm(
+            this.startingBox,
+            this.personNode
+          );
+          
+          if (this.board.path.length!=0) {
+            this.dijkstraService.dijkstraAlgorithm(
+              this.personNode,
+              this.targetBox
+            );
+          }
+          
+        } else {
+          this.dijkstraService.dijkstraAlgorithm(
+            this.startingBox,
+            this.targetBox
+          );
         }
         break;
-        case 'greedy':
+      case 'greedy':
         this.dijkstraService.reinitialisePathQueued();
 
-        if(this.isPerson){
-          this.dijkstraService.greedyBestFirstSearch(this.startingBox, this.personNode);
-          this.dijkstraService.greedyBestFirstSearch(this.personNode, this.targetBox);
-        }
-        
-        else{
-          this.dijkstraService.greedyBestFirstSearch(this.startingBox, this.targetBox);
+        if (this.isPerson) {
+          this.dijkstraService.greedyBestFirstSearch(
+            this.startingBox,
+            this.personNode
+          );
+          if (this.board.path.length!=0) {
+          this.dijkstraService.greedyBestFirstSearch(
+            this.personNode,
+            this.targetBox
+          );}
+        } else {
+          this.dijkstraService.greedyBestFirstSearch(
+            this.startingBox,
+            this.targetBox
+          );
         }
         break;
-
     }
-    
-
   }
 
   getNodes() {
@@ -101,7 +123,6 @@ export class GrilleComponent {
       for (let j = 0; j < Math.trunc(window.innerWidth / 30); j++) {
         if (this.nodes[i][j].isStartingbox) {
           this.startingBox = this.nodes[i][j];
-         
         }
         if (this.nodes[i][j].isTargetBox) {
           this.targetBox = this.nodes[i][j];
@@ -151,99 +172,98 @@ export class GrilleComponent {
     if (node.isStartingbox) {
       this.board.mouseDown = true;
       this.startingBox = node;
-      
-    
-      switch (this.dijkstraService.algo) {
-        case 'A* Search':
-          this.dijkstraService.reinitialisePathQueued();
-          if(this.isPerson){
-            
-            this.dijkstraService.aStarSearchAlgo(node, this.personNode);
-            this.personNode.isStartingbox = true;
-            this.dijkstraService.aStarSearchAlgo(this.personNode, this.targetBox);
-          }
-          else{
-            this.dijkstraService.aStarSearchAlgo(node, this.targetBox);
-          }
-          
-          break;
-        case "Dijkstra's Algorithm":
-          this.dijkstraService.reinitialisePathQueued();
-  
-          if(this.isPerson){
-            this.dijkstraService.dijkstraAlgorithm(node, this.personNode);
-            this.dijkstraService.dijkstraAlgorithm(this.personNode, this.targetBox);
-          }
-          
-          else{
-            this.dijkstraService.dijkstraAlgorithm(node, this.targetBox);
-          }
-          break;
-      }
+
+      // switch (this.dijkstraService.algo) {
+      //   case 'A* Search':
+      //     this.dijkstraService.reinitialisePathQueued();
+      //     if (this.isPerson) {
+      //       this.dijkstraService.aStarSearchAlgo(node, this.personNode);
+      //       this.personNode.isStartingbox = true;
+      //       this.dijkstraService.aStarSearchAlgo(
+      //         this.personNode,
+      //         this.targetBox
+      //       );
+      //     } else {
+      //       this.dijkstraService.aStarSearchAlgo(node, this.targetBox);
+      //     }
+
+      //     break;
+      //   case "Dijkstra's Algorithm":
+      //     this.dijkstraService.reinitialisePathQueued();
+
+      //     if (this.isPerson) {
+      //       this.dijkstraService.dijkstraAlgorithm(node, this.personNode);
+      //       this.dijkstraService.dijkstraAlgorithm(
+      //         this.personNode,
+      //         this.targetBox
+      //       );
+      //     } else {
+      //       this.dijkstraService.dijkstraAlgorithm(node, this.targetBox);
+      //     }
+      //     break;
+      // }
 
       this.board.currentNode = node;
       this.board.isSelectedNodeStart = true;
-    } 
-    else if (node.isTargetBox) {
+    } else if (node.isTargetBox) {
       this.board.mouseDown = true;
       this.targetBox = node;
-    
-      switch (this.dijkstraService.algo) {
-        case 'A* Search':
-          this.dijkstraService.reinitialisePathQueued();
-          if(this.isPerson){
-            this.dijkstraService.aStarSearchAlgo(this.startingBox, this.personNode);
-            this.dijkstraService.aStarSearchAlgo(this.personNode, node);
-          }
-          else{
-            this.dijkstraService.aStarSearchAlgo(this.startingBox, node);
-          }
-          
-          break;
-        case "Dijkstra's Algorithm":
-          this.dijkstraService.reinitialisePathQueued();
-  
-          if(this.isPerson){
-            this.dijkstraService.dijkstraAlgorithm(this.startingBox, this.personNode);
-            this.dijkstraService.dijkstraAlgorithm(this.personNode, node);
-          }
-          
-          else{
-            this.dijkstraService.dijkstraAlgorithm(this.startingBox, node);
-          }
-          break;
-      }
+
+      // switch (this.dijkstraService.algo) {
+      //   case 'A* Search':
+      //     this.dijkstraService.reinitialisePathQueued();
+      //     if (this.isPerson) {
+      //       this.dijkstraService.aStarSearchAlgo(
+      //         this.startingBox,
+      //         this.personNode
+      //       );
+      //       this.dijkstraService.aStarSearchAlgo(this.personNode, node);
+      //     } else {
+      //       this.dijkstraService.aStarSearchAlgo(this.startingBox, node);
+      //     }
+
+      //     break;
+      //   case "Dijkstra's Algorithm":
+      //     this.dijkstraService.reinitialisePathQueued();
+
+      //     if (this.isPerson) {
+      //       this.dijkstraService.dijkstraAlgorithm(
+      //         this.startingBox,
+      //         this.personNode
+      //       );
+      //       this.dijkstraService.dijkstraAlgorithm(this.personNode, node);
+      //     } else {
+      //       this.dijkstraService.dijkstraAlgorithm(this.startingBox, node);
+      //     }
+      //     break;
+      // }
       this.board.currentNode = node;
       this.board.isSelectedNodeEnd = true;
-    } 
-    else if(node.isPerson){
+    } else if (node.isPerson) {
       this.board.mouseDown = true;
       this.personNode = node;
-      switch (this.dijkstraService.algo) {
-        case 'A* Search':
-          this.dijkstraService.reinitialisePathQueued();
-          if(this.isPerson){
-            this.dijkstraService.aStarSearchAlgo(this.startingBox, node);
-            this.dijkstraService.aStarSearchAlgo(node, this.targetBox);
-          }
-          
-          
-          break;
-        case "Dijkstra's Algorithm":
-          this.dijkstraService.reinitialisePathQueued();
-  
-          if(this.isPerson){
-            this.dijkstraService.dijkstraAlgorithm(this.startingBox, node);
-            this.dijkstraService.dijkstraAlgorithm(node, this.targetBox);
-          }
-          
-         
-          break;
-      }
-      this.board.currentNode =node;
+      // switch (this.dijkstraService.algo) {
+      //   case 'A* Search':
+      //     this.dijkstraService.reinitialisePathQueued();
+      //     if (this.isPerson) {
+      //       this.dijkstraService.aStarSearchAlgo(this.startingBox, node);
+      //       this.dijkstraService.aStarSearchAlgo(node, this.targetBox);
+      //     }
+
+      //     break;
+      //   case "Dijkstra's Algorithm":
+      //     this.dijkstraService.reinitialisePathQueued();
+
+      //     if (this.isPerson) {
+      //       this.dijkstraService.dijkstraAlgorithm(this.startingBox, node);
+      //       this.dijkstraService.dijkstraAlgorithm(node, this.targetBox);
+      //     }
+
+      //     break;
+      // }
+      this.board.currentNode = node;
       this.board.isSelectedNodePerson = true;
-    }
-    else if (node.isNormal) {
+    } else if (node.isNormal) {
       this.board.isWallDrawing = true;
     }
   }
@@ -254,8 +274,7 @@ export class GrilleComponent {
     if (this.board.mouseDown && this.board.isSelectedNodeEnd) {
       node.isTargetBox = false;
     }
-    if(this.board.mouseDown && this.board.isSelectedNodePerson){
-     
+    if (this.board.mouseDown && this.board.isSelectedNodePerson) {
       this.nodes[3][25].isPerson = false;
       node.isPerson = false;
     }
@@ -268,101 +287,105 @@ export class GrilleComponent {
         node.isStartingbox = true;
         this.startingBox = node;
 
-       
-        switch (this.dijkstraService.algo) {
-          case 'A* Search':
-            this.dijkstraService.reinitialisePathQueued();
-            if(this.isPerson){
-              this.dijkstraService.aStarSearchAlgo(node, this.personNode);
-              this.dijkstraService.aStarSearchAlgo(this.personNode, this.targetBox);
-            }
-            else{
-              this.dijkstraService.aStarSearchAlgo(node, this.targetBox);
-            }
-            
-            break;
-          case "Dijkstra's Algorithm":
-            this.dijkstraService.reinitialisePathQueued();
-    
-            if(this.isPerson){
-              this.dijkstraService.dijkstraAlgorithm(node, this.personNode);
-              this.dijkstraService.dijkstraAlgorithm(this.personNode, this.targetBox);
-            }
-            
-            else{
-              this.dijkstraService.dijkstraAlgorithm(node, this.targetBox);
-            }
-            break;
-        }
+        // switch (this.dijkstraService.algo) {
+        //   case 'A* Search':
+        //     this.dijkstraService.reinitialisePathQueued();
+        //     if (this.isPerson) {
+        //       this.dijkstraService.aStarSearchAlgo(node, this.personNode);
+        //       this.dijkstraService.aStarSearchAlgo(
+        //         this.personNode,
+        //         this.targetBox
+        //       );
+        //     } else {
+        //       this.dijkstraService.aStarSearchAlgo(node, this.targetBox);
+        //     }
+
+        //     break;
+        //   case "Dijkstra's Algorithm":
+        //     this.dijkstraService.reinitialisePathQueued();
+
+        //     if (this.isPerson) {
+        //       this.dijkstraService.dijkstraAlgorithm(node, this.personNode);
+        //       this.dijkstraService.dijkstraAlgorithm(
+        //         this.personNode,
+        //         this.targetBox
+        //       );
+        //     } else {
+        //       this.dijkstraService.dijkstraAlgorithm(node, this.targetBox);
+        //     }
+        //     break;
+        // }
       }
-    }
-     else if (this.board.mouseDown && this.board.isSelectedNodeEnd) {
+    } else if (this.board.mouseDown && this.board.isSelectedNodeEnd) {
       this.board.mouseEnter = true;
       this.board.enteredNode = node;
       if (!node.isStartingbox) {
         node.isTargetBox = true;
         this.targetBox = node;
-        
-        switch (this.dijkstraService.algo) {
-          case 'A* Search':
-            this.dijkstraService.reinitialisePathQueued();
-            if(this.isPerson){
-              this.dijkstraService.aStarSearchAlgo(this.startingBox, this.personNode);
-              this.dijkstraService.aStarSearchAlgo(this.personNode, node);
-            }
-            else{
-              this.dijkstraService.aStarSearchAlgo(this.startingBox, node);
-            }
-            
-            break;
-          case "Dijkstra's Algorithm":
-            this.dijkstraService.reinitialisePathQueued();
-    
-            if(this.isPerson){
-              this.dijkstraService.dijkstraAlgorithm(this.startingBox, this.personNode);
-              this.dijkstraService.dijkstraAlgorithm(this.personNode, node);
-            }
-            
-            else{
-              this.dijkstraService.dijkstraAlgorithm(this.startingBox, node);
-            }
-            break;
-        }
+
+        // switch (this.dijkstraService.algo) {
+        //   case 'A* Search':
+        //     this.dijkstraService.reinitialisePathQueued();
+        //     if (this.isPerson) {
+        //       this.dijkstraService.aStarSearchAlgo(
+        //         this.startingBox,
+        //         this.personNode
+        //       );
+        //       this.dijkstraService.aStarSearchAlgo(this.personNode, node);
+        //     } else {
+        //       this.dijkstraService.aStarSearchAlgo(this.startingBox, node);
+        //     }
+
+        //     break;
+        //   case "Dijkstra's Algorithm":
+        //     this.dijkstraService.reinitialisePathQueued();
+
+        //     if (this.isPerson) {
+        //       this.dijkstraService.dijkstraAlgorithm(
+        //         this.startingBox,
+        //         this.personNode
+        //       );
+        //       this.dijkstraService.dijkstraAlgorithm(this.personNode, node);
+        //     } else {
+        //       this.dijkstraService.dijkstraAlgorithm(this.startingBox, node);
+        //     }
+        //     break;
+        // }
       }
-    } 
-    else if(this.board.mouseDown && this.board.isSelectedNodePerson){
-      this.board.mouseEnter =true;
+    } else if (this.board.mouseDown && this.board.isSelectedNodePerson) {
+      this.board.mouseEnter = true;
       this.board.enteredNode = node;
       node.isPerson = true;
       this.personNode = node;
-      switch (this.dijkstraService.algo) {
-        case 'A* Search':
-          this.dijkstraService.reinitialisePathQueued();
-          if(this.isPerson){
-            this.dijkstraService.aStarSearchAlgo(this.startingBox, node);
-            this.dijkstraService.aStarSearchAlgo(node, this.targetBox);
-          }
-          
-          
-          break;
-        case "Dijkstra's Algorithm":
-          this.dijkstraService.reinitialisePathQueued();
-  
-          if(this.isPerson){
-            this.dijkstraService.dijkstraAlgorithm(this.startingBox,node);
-            this.dijkstraService.dijkstraAlgorithm(node, this.targetBox);
-          }
-          
-         
-          break;
-      }
-    }
-    else if (this.board.isWallDrawing && !node.isPath) {
+      // switch (this.dijkstraService.algo) {
+      //   case 'A* Search':
+      //     this.dijkstraService.reinitialisePathQueued();
+      //     if (this.isPerson) {
+      //       this.dijkstraService.aStarSearchAlgo(this.startingBox, node);
+      //       this.dijkstraService.aStarSearchAlgo(node, this.targetBox);
+      //     }
+
+      //     break;
+      //   case "Dijkstra's Algorithm":
+      //     this.dijkstraService.reinitialisePathQueued();
+
+      //     if (this.isPerson) {
+      //       this.dijkstraService.dijkstraAlgorithm(this.startingBox, node);
+      //       this.dijkstraService.dijkstraAlgorithm(node, this.targetBox);
+      //     }
+
+      //     break;
+      // }
+    } else if (this.board.isWallDrawing && !node.isPath) {
       node.isWall = !node.isWall;
     }
   }
   mouseUp(node: Square) {
-    if ( this.board.mouseEnter &&this.board.isSelectedNodeStart &&!node.isTargetBox) {
+    if (
+      this.board.mouseEnter &&
+      this.board.isSelectedNodeStart &&
+      !node.isTargetBox
+    ) {
       this.board.mouseUp = true;
       this.board.mouseEnter = false;
       this.board.mouseDown = false;
@@ -371,34 +394,41 @@ export class GrilleComponent {
       if (!node.isTargetBox) {
         node.isStartingbox = true;
         this.startingBox = node;
-        
-        switch (this.dijkstraService.algo) {
-          case 'A* Search':
-            this.dijkstraService.reinitialisePathQueued();
-            if(this.isPerson){
-              this.dijkstraService.aStarSearchAlgo(node, this.personNode);
-              this.dijkstraService.aStarSearchAlgo(this.personNode, this.targetBox);
-            }
-            else{
-              this.dijkstraService.aStarSearchAlgo(node, this.targetBox);
-            }
-            
-            break;
-          case "Dijkstra's Algorithm":
-            this.dijkstraService.reinitialisePathQueued();
-    
-            if(this.isPerson){
-              this.dijkstraService.dijkstraAlgorithm(node, this.personNode);
-              this.dijkstraService.dijkstraAlgorithm(this.personNode, this.targetBox);
-            }
-            
-            else{
-              this.dijkstraService.dijkstraAlgorithm(node, this.targetBox);
-            }
-            break;
-        }
+
+        // switch (this.dijkstraService.algo) {
+        //   case 'A* Search':
+        //     this.dijkstraService.reinitialisePathQueued();
+        //     if (this.isPerson) {
+        //       this.dijkstraService.aStarSearchAlgo(node, this.personNode);
+        //       this.dijkstraService.aStarSearchAlgo(
+        //         this.personNode,
+        //         this.targetBox
+        //       );
+        //     } else {
+        //       this.dijkstraService.aStarSearchAlgo(node, this.targetBox);
+        //     }
+
+        //     break;
+        //   case "Dijkstra's Algorithm":
+        //     this.dijkstraService.reinitialisePathQueued();
+
+        //     if (this.isPerson) {
+        //       this.dijkstraService.dijkstraAlgorithm(node, this.personNode);
+        //       this.dijkstraService.dijkstraAlgorithm(
+        //         this.personNode,
+        //         this.targetBox
+        //       );
+        //     } else {
+        //       this.dijkstraService.dijkstraAlgorithm(node, this.targetBox);
+        //     }
+        //     break;
+        // }
       }
-    } else if (this.board.mouseEnter &&this.board.isSelectedNodeEnd &&!node.isStartingbox) {
+    } else if (
+      this.board.mouseEnter &&
+      this.board.isSelectedNodeEnd &&
+      !node.isStartingbox
+    ) {
       this.board.mouseUp = true;
       this.board.mouseEnter = false;
       this.board.mouseDown = false;
@@ -407,65 +437,70 @@ export class GrilleComponent {
         node.isTargetBox = true;
         this.targetBox = node;
 
-        
-        switch (this.dijkstraService.algo) {
-          case 'A* Search':
-            this.dijkstraService.reinitialisePathQueued();
-            if(this.isPerson){
-              this.dijkstraService.aStarSearchAlgo(this.startingBox, this.personNode);
-              this.dijkstraService.aStarSearchAlgo(this.personNode, node);
-            }
-            else{
-              this.dijkstraService.aStarSearchAlgo(this.startingBox, node);
-            }
-            
-            break;
-          case "Dijkstra's Algorithm":
-            this.dijkstraService.reinitialisePathQueued();
-    
-            if(this.isPerson){
-              this.dijkstraService.dijkstraAlgorithm(this.startingBox, this.personNode);
-              this.dijkstraService.dijkstraAlgorithm(this.personNode, node);
-            }
-            
-            else{
-              this.dijkstraService.dijkstraAlgorithm(this.startingBox, node);
-            }
-            break;
-        }
+        // switch (this.dijkstraService.algo) {
+        //   case 'A* Search':
+        //     this.dijkstraService.reinitialisePathQueued();
+        //     if (this.isPerson) {
+        //       this.dijkstraService.aStarSearchAlgo(
+        //         this.startingBox,
+        //         this.personNode
+        //       );
+        //       this.dijkstraService.aStarSearchAlgo(this.personNode, node);
+        //     } else {
+        //       this.dijkstraService.aStarSearchAlgo(this.startingBox, node);
+        //     }
+
+        //     break;
+        //   case "Dijkstra's Algorithm":
+        //     this.dijkstraService.reinitialisePathQueued();
+
+        //     if (this.isPerson) {
+        //       this.dijkstraService.dijkstraAlgorithm(
+        //         this.startingBox,
+        //         this.personNode
+        //       );
+        //       this.dijkstraService.dijkstraAlgorithm(this.personNode, node);
+        //     } else {
+        //       this.dijkstraService.dijkstraAlgorithm(this.startingBox, node);
+        //     }
+        //     break;
+        // }
       }
-    }
-     else if(this.board.mouseEnter && this.board.isSelectedNodePerson ){
+    } else if (this.board.mouseEnter && this.board.isSelectedNodePerson) {
       this.board.mouseUp = true;
       this.board.mouseEnter = false;
       this.board.mouseDown = false;
       this.board.enteredNode = node;
       node.isPerson = true;
       this.personNode = node;
-      switch (this.dijkstraService.algo) {
-        case 'A* Search':
-          this.dijkstraService.reinitialisePathQueued();
-          if(this.isPerson){
-            this.dijkstraService.aStarSearchAlgo(this.startingBox, node);
-            this.dijkstraService.aStarSearchAlgo(node, this.targetBox);
-          }
-          break;
-        case "Dijkstra's Algorithm":
-          this.dijkstraService.reinitialisePathQueued();
-  
-          if(this.isPerson){
-            this.dijkstraService.dijkstraAlgorithm(this.startingBox,node);
-            this.dijkstraService.dijkstraAlgorithm(node, this.targetBox);
-          }       
-          break;
-      }
-     }
-     else if (this.board.isWallDrawing) {
+      // switch (this.dijkstraService.algo) {
+      //   case 'A* Search':
+      //     this.dijkstraService.reinitialisePathQueued();
+      //     if (this.isPerson) {
+      //       this.dijkstraService.aStarSearchAlgo(this.startingBox, node);
+      //       this.dijkstraService.aStarSearchAlgo(node, this.targetBox);
+      //     }
+      //     break;
+      //   case "Dijkstra's Algorithm":
+      //     this.dijkstraService.reinitialisePathQueued();
+
+      //     if (this.isPerson) {
+      //       this.dijkstraService.dijkstraAlgorithm(this.startingBox, node);
+      //       this.dijkstraService.dijkstraAlgorithm(node, this.targetBox);
+      //     }
+      //     break;
+      // }
+    } else if (this.board.isWallDrawing) {
       this.board.isWallDrawing = false;
     }
   }
   addWall(node: Square) {
-    if (!node.isStartingbox && !node.isTargetBox && !node.isPath && !node.isPerson) {
+    if (
+      !node.isStartingbox &&
+      !node.isTargetBox &&
+      !node.isPath &&
+      !node.isPerson
+    ) {
       node.isWall = !node.isWall;
     }
   }
