@@ -35,7 +35,7 @@ export class GrilleComponent {
     this.isPerson = this.dijkstraService.isPerson;
     if (this.isPerson) {
       this.nodes[3][15].isPerson = true;
-      this.personNode = this.nodes[3][15];
+      this.personNode = this.nodes[3][25];
     }
     this.searchStartAndTarget();
     switch (this.dijkstraService.algo) {

@@ -94,12 +94,19 @@ export class DijkstraService {
       }
     }
   }
+  reinitialiseQueued(){
+    for (let i = 0; i < window.innerHeight / 35; i++) {
+      for (let j = 0; j < Math.trunc(window.innerWidth / 30); j++) {
+        this.nodes[i][j].queued = false;
+      }
+    }
+  }
 
   dijkstraAlgorithm(nodeStart: Square, nodeTarget: Square) {
     this.searching = true;
     this.board.path = [];
 
-    // this.reinitialisePathQueued();
+     this.reinitialiseQueued();
 
     this.queue = [];
     this.queue.push(nodeStart);
@@ -120,7 +127,7 @@ export class DijkstraService {
         } while (this.currentBox != nodeStart);
       } else {
         this.currentBox.neighbours.forEach((neighbour) => {
-          if (!neighbour.queued && !neighbour.isWall) {
+          if (!neighbour.queued && !neighbour.isWall ) {
             neighbour.queued = true;
             neighbour.prior = this.currentBox;
 
@@ -169,6 +176,7 @@ export class DijkstraService {
           this.currentBox.isPath = true;
           this.currentBox = this.currentBox.prior;
         } while (this.currentBox != nodeStart);
+        console.log("hada path d astar",this.board.path);
         return this.board.path;
       }
 
