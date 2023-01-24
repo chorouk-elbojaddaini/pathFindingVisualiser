@@ -15,8 +15,9 @@ export class DijkstraService {
   numberSquares: number = 0;
   startingBox: Square;
   targetBox: Square;
-  chosenAlgo:string;
+  chosenAlgo:string=null;
   verify:boolean=false;
+  algo:string;
   board = new Board(
     window.innerWidth,
     this.numberSquares * 3,
@@ -42,6 +43,7 @@ export class DijkstraService {
     this.numberSquares = Math.trunc(wi / 30);
     this.nodes = [];
     for (let i = 0; i < window.innerHeight / 35; i++) {
+      
       this.nodes[i] = [];
       for (let j = 0; j < Math.trunc(window.innerWidth / 30); j++) {
         this.nodes[i][j] = new Square(
@@ -80,11 +82,12 @@ export class DijkstraService {
   }
 
   reinitialisePathQueued() {
-    for (let i = 0; i < window.innerHeight / 40; i++) {
+    for (let i = 0; i < window.innerHeight / 35; i++) {
       for (let j = 0; j < Math.trunc(window.innerWidth / 30); j++) {
         this.nodes[i][j].queued = false;
         this.nodes[i][j].isPath = false;
         this.nodes[i][j].visited = false;
+        
       }
     }
   }
@@ -177,7 +180,8 @@ export class DijkstraService {
         this.closedSet.push(this.currentBox);
 
         for (let neighbor of this.currentBox.neighbours) {
-          if (this.closedSet.includes(neighbor)) {
+          if(!neighbor.isWall){
+            if (this.closedSet.includes(neighbor)) {
               continue;
           }
           let tmpG = this.currentBox.g + 1;
@@ -191,6 +195,7 @@ export class DijkstraService {
             neighbor.g = tmpG;
             neighbor.h = this.heuristic(neighbor, nodeTarget);
             neighbor.f = neighbor.g + neighbor.h;
+          }
         }
     }
     return [];

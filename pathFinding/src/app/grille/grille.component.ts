@@ -29,48 +29,51 @@ export class GrilleComponent {
     this.searchStartAndTarget();
     this.initialiseNodesNeighbours();
     this.board = this.dijkstraService.getBoard();
-    
   }
   ngDoCheck(){
     this.verify = this.dijkstraService.verify;
-console.log("hadiii verify",this.verify);
+    // console.log("hadiii verify",this.verify);
 
-    if(this.verify){
+    
       this.searchStartAndTarget();
-      switch(this.dijkstraService.chosenAlgo){
-        case 'A* Search':
+      switch(this.dijkstraService.algo){
+        case 'astar':
+        this.dijkstraService.reinitialisePathQueued();
         this.dijkstraService.aStarSearchAlgo(this.startingBox,this.targetBox);
         break;
-        case "Dijkstra's Algorithm" : 
+        case "dijkstra" : 
+        this.dijkstraService.reinitialisePathQueued();
       this.dijkstraService.dijkstraAlgorithm(this.startingBox,this.targetBox);
       break;
-
-      }
       
-      console.log("chosennalgo",this.dijkstraService.chosenAlgo);
 
       
-      // console.log("startiiing",this.startingBox);
-      // console.log("targeeeeet",this.targetBox);
+      
+      // console.log("chosennalgo",this.dijkstraService.chosenAlgo);
+      
       
     }
+    
   }
 
   getNodes() {
     this.nodes = this.dijkstraService.initialiseGrid();
   }
   initialiseNodesNeighbours() {
-    for (let i = 0; i < window.innerHeight / 40; i++) {
+    for (let i = 0; i < window.innerHeight / 35; i++) {
       for (let j = 0; j < Math.trunc(window.innerWidth / 30); j++) {
         this.nodes[i][j].setNeighbours(this.nodes);
       }
     }
   }
   searchStartAndTarget() {
-    for (let i = 0; i < window.innerHeight / 40; i++) {
+    let wi = window.innerWidth;
+    this.numberSquares = Math.trunc(wi / 30);
+    for (let i = 0; i < window.innerHeight / 35; i++) {
       for (let j = 0; j < Math.trunc(window.innerWidth / 30); j++) {
         if (this.nodes[i][j].isStartingbox) {
           this.startingBox = this.nodes[i][j];
+          // console.log("hADI START F SEARCHA0",this.startingBox);
         }
         if (this.nodes[i][j].isTargetBox) {
           this.targetBox = this.nodes[i][j];
@@ -80,7 +83,7 @@ console.log("hadiii verify",this.verify);
   }
 
   reinitialisePathQueued() {
-    for (let i = 0; i < window.innerHeight / 40; i++) {
+    for (let i = 0; i < window.innerHeight / 35; i++) {
       for (let j = 0; j < Math.trunc(window.innerWidth / 30); j++) {
         this.nodes[i][j].queued = false;
         this.nodes[i][j].isPath = false;
@@ -111,7 +114,7 @@ console.log("hadiii verify",this.verify);
     if (node.isStartingbox) {
       this.board.mouseDown = true;
       this.startingBox = node;
-      if(this.verify){
+      
       switch(this.dijkstraService.chosenAlgo){
         case 'A* Search':
           this.dijkstraService.aStarSearchAlgo(node, this.targetBox);
@@ -122,14 +125,13 @@ console.log("hadiii verify",this.verify);
 
       }
 
-    }
+    
 
       this.board.currentNode = node;
       this.board.isSelectedNodeStart = true;
     } else if (node.isTargetBox) {
       this.board.mouseDown = true;
       this.targetBox = node;
-      if(this.verify){
       switch(this.dijkstraService.chosenAlgo){
         case 'A* Search':
           this.dijkstraService.aStarSearchAlgo(this.startingBox, node);
@@ -138,7 +140,6 @@ console.log("hadiii verify",this.verify);
         this.dijkstraService.dijkstraAlgorithm(this.startingBox, node);
         break;
 
-      }
 
 
       
@@ -165,7 +166,6 @@ console.log("hadiii verify",this.verify);
         node.isStartingbox = true;
         this.startingBox = node;
         
-        if(this.verify){
           switch(this.dijkstraService.chosenAlgo){
             case 'A* Search':
               this.dijkstraService.aStarSearchAlgo(node, this.targetBox);
@@ -174,7 +174,6 @@ console.log("hadiii verify",this.verify);
             this.dijkstraService.dijkstraAlgorithm(node, this.targetBox);
             break;
     
-          }
 
       }
       }
@@ -184,7 +183,6 @@ console.log("hadiii verify",this.verify);
       if (!node.isStartingbox) {
         node.isTargetBox = true;
         this.targetBox = node;
-        if(this.verify){
           switch(this.dijkstraService.chosenAlgo){
             case 'A* Search':
               this.dijkstraService.aStarSearchAlgo(this.startingBox, node);
@@ -193,7 +191,6 @@ console.log("hadiii verify",this.verify);
         this.dijkstraService.dijkstraAlgorithm(this.startingBox, node);
         break;
     
-          }
 
 
         
@@ -219,7 +216,6 @@ console.log("hadiii verify",this.verify);
       if (!node.isTargetBox) {
         node.isStartingbox = true;
         this.startingBox = node;
-        if(this.verify){
           switch(this.dijkstraService.chosenAlgo){
             case 'A* Search':
               this.dijkstraService.aStarSearchAlgo(node, this.targetBox);
@@ -228,7 +224,6 @@ console.log("hadiii verify",this.verify);
          this.dijkstraService.dijkstraAlgorithm(node, this.targetBox);
         break;
     
-          }
 
         
       
@@ -246,12 +241,22 @@ console.log("hadiii verify",this.verify);
       if (!node.isStartingbox) {
         node.isTargetBox = true;
         this.targetBox = node;
-        if(this.verify){
-        // this.dijkstraService.dijkstraAlgorithm(this.startingBox, node);
-        this.dijkstraService.aStarSearchAlgo(this.startingBox, node);
-
         
-      }
+        switch(this.dijkstraService.chosenAlgo){
+          case 'A* Search':
+            this.dijkstraService.aStarSearchAlgo(this.startingBox, node);
+            break;
+          case "Dijkstra's Algorithm" : 
+          this.dijkstraService.dijkstraAlgorithm(this.startingBox, node);
+
+      break;
+  
+
+      
+    
+    }
+        
+      
       }
     } else if (this.board.isWallDrawing) {
       this.board.isWallDrawing = false;

@@ -18,16 +18,28 @@ export class NavbarComponent implements OnInit {
   }
   ngDoCheck(){
     this.fct();
+    
   }
   initAlgoForm(){
     this.typeAlgorithm = this.fb.group({
       algo: '',
     });
   }
+  
   choseAlgorithme(){
-    this.dijkstraService.verify = true;
+    switch(this.dijkstraService.chosenAlgo){
+      case 'A* Search':
+    this.dijkstraService.algo = 'astar';
+    break;
+    case "Dijkstra's Algorithm":
+    this.dijkstraService.algo = 'dijkstra';
+    break;
+    
+      
+    }
   }
    fct(){
     this.dijkstraService.chosenAlgo =this.typeAlgorithm.value.algo;
    }
+   
 }
