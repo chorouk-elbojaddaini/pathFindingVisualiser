@@ -30,7 +30,8 @@ export class DijkstraService {
     false,
     false,
     false,
-    []
+    [],
+    false
   );
   searching: boolean = true;
   constructor() {}
