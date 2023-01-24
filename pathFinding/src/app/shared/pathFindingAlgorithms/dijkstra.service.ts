@@ -18,6 +18,7 @@ export class DijkstraService {
   chosenAlgo: string = null;
   isPerson: boolean = false;
   algo: string;
+  visitedNode:Square[];
   board = new Board(
     window.innerWidth,
     this.numberSquares * 3,
@@ -257,6 +258,38 @@ export class DijkstraService {
       }
     }
     
+    return [];
+  }
+  breadthFirstSearch(nodeStart:Square,nodeTarget:Square){
+    this.queue = [];
+    this.visitedNode = [];
+    this.queue.push(nodeStart);
+    this.visitedNode.push(nodeStart);
+    this.board.path = [];
+    while(this.queue.length>0){
+     console.log("hi");
+      this.currentBox = this.queue.shift();
+     
+      // if(this.currentBox == nodeTarget){
+      
+      //   do {
+      //     this.board.path.push(this.currentBox);
+      //     this.currentBox.isPath = true;
+      //     this.currentBox = this.currentBox.prior;
+      //   } while (this.currentBox != nodeStart);
+      //   return this.board.path;
+      // }
+      this.currentBox.visited = true;
+      this.visitedNode.push(this.currentBox);
+      this.currentBox.neighbours.forEach(neighbor=>{
+        if(!neighbor.visited){
+          neighbor.prior = this.currentBox;
+          this.queue.push(neighbor);
+          // this.visitedNode.push(neighbor);
+        }
+        
+      })
+    }
     return [];
   }
 

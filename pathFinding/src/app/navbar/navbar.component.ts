@@ -39,6 +39,10 @@ export class NavbarComponent implements OnInit {
         break;
       case "Greedy Best-first Search":
         this.dijkstraService.algo = 'greedy'
+        break;
+      case "Breadth-first Search":
+       this.dijkstraService.algo = 'breadth'
+       break;
     }
   }
   addPerson() {
