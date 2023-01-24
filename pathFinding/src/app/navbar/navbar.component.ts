@@ -37,6 +37,8 @@ export class NavbarComponent implements OnInit {
       case "Dijkstra's Algorithm":
         this.dijkstraService.algo = 'dijkstra';
         break;
+      case "Greedy Best-first Search":
+        this.dijkstraService.algo = 'greedy'
     }
   }
   addPerson() {

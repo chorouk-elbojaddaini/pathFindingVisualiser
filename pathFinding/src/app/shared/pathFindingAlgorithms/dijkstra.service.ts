@@ -137,7 +137,7 @@ export class DijkstraService {
         });
       }
     }
-    console.log("the path===",this.board.path);
+   
     return this.board.path;
   }
   getBoard() {
@@ -177,7 +177,7 @@ export class DijkstraService {
           this.currentBox.isPath = true;
           this.currentBox = this.currentBox.prior;
         } while (this.currentBox != nodeStart);
-        console.log("hada path d astar",this.board.path);
+       
         return this.board.path;
       }
 
@@ -204,6 +204,59 @@ export class DijkstraService {
         }
       }
     }
+    return [];
+  }
+  greedyBestFirstSearch(nodeStart:Square,nodeTarget:Square){
+    this.openSet = [nodeStart];
+    this.closedSet = [];
+    this.board.path = [];
+    
+    nodeStart.h = this.heuristic(nodeStart, nodeTarget);
+    nodeStart.f = nodeStart.h;
+
+    while (this.openSet.length > 0) {
+      let best = 0;
+      for (let i = 0; i < this.openSet.length; i++) {
+        if (this.openSet[i].f < this.openSet[best].f) {
+          best = i;
+        }
+      }
+      this.currentBox = this.openSet[best];
+
+      if (this.currentBox === nodeTarget) {
+        this.board.path = [this.currentBox];
+        do {
+          this.board.path.push(this.currentBox);
+          this.currentBox.isPath = true;
+          this.currentBox = this.currentBox.prior;
+        } while (this.currentBox != nodeStart);
+        console.log("open set ++++++++++++",this.openSet);
+        console.log("closed sset==========",this.closedSet);
+        return this.board.path;
+      }
+
+      this.removeElement(this.openSet, this.currentBox);
+      this.closedSet.push(this.currentBox);
+      this.currentBox.isClosedSet = true;
+      for (let neighbor of this.currentBox.neighbours) {
+        if (!neighbor.isWall) {
+          if (this.closedSet.includes(neighbor)) {
+            continue;
+          }
+          
+          if (!this.openSet.includes(neighbor)) {
+            this.openSet.push(neighbor);
+            neighbor.isOpenSet = true;
+          } 
+
+          neighbor.prior = this.currentBox;
+         
+          neighbor.h = this.heuristic(neighbor, nodeTarget);
+          neighbor.f =  neighbor.h;
+        }
+      }
+    }
+    
     return [];
   }
 

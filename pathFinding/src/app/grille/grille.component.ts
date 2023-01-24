@@ -66,10 +66,21 @@ export class GrilleComponent {
           this.dijkstraService.dijkstraAlgorithm(this.startingBox, this.targetBox);
         }
         break;
+        case 'greedy':
+        this.dijkstraService.reinitialisePathQueued();
+
+        if(this.isPerson){
+          this.dijkstraService.greedyBestFirstSearch(this.startingBox, this.personNode);
+          this.dijkstraService.greedyBestFirstSearch(this.personNode, this.targetBox);
+        }
+        
+        else{
+          this.dijkstraService.greedyBestFirstSearch(this.startingBox, this.targetBox);
+        }
+        break;
+
     }
-    console.log("startbo",this.startingBox);
-    console.log("targEt",this.targetBox);
-    console.log("hada person",this.personNode);
+    
 
   }
 
@@ -90,7 +101,7 @@ export class GrilleComponent {
       for (let j = 0; j < Math.trunc(window.innerWidth / 30); j++) {
         if (this.nodes[i][j].isStartingbox) {
           this.startingBox = this.nodes[i][j];
-          // console.log("hADI START F SEARCHA0",this.startingBox);
+         
         }
         if (this.nodes[i][j].isTargetBox) {
           this.targetBox = this.nodes[i][j];
@@ -244,7 +255,7 @@ export class GrilleComponent {
       node.isTargetBox = false;
     }
     if(this.board.mouseDown && this.board.isSelectedNodePerson){
-      console.log("leaveee");
+     
       this.nodes[3][25].isPerson = false;
       node.isPerson = false;
     }
