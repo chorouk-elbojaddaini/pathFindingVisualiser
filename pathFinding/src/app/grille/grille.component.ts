@@ -108,6 +108,7 @@ export class GrilleComponent {
           this.dijkstraService.reinitialisePathQueued();
 
           if (this.isPerson) {
+            
             this.dijkstraService.breadthFirstSearch(
               this.startingBox,
               this.personNode
@@ -284,6 +285,7 @@ export class GrilleComponent {
       // }
       this.board.currentNode = node;
       this.board.isSelectedNodePerson = true;
+      this.board.isSelectedNodeEnd = false;
     } else if (node.isNormal) {
       this.board.isWallDrawing = true;
     }
@@ -293,6 +295,7 @@ export class GrilleComponent {
       node.isStartingbox = false;
     }
     if (this.board.mouseDown && this.board.isSelectedNodeEnd) {
+      this.board.isSelectedNodePerson = false;
       node.isTargetBox = false;
       
     }
@@ -377,6 +380,7 @@ export class GrilleComponent {
       }
     } else if (this.board.mouseDown && this.board.isSelectedNodePerson && !this.board.isSelectedNodeEnd) {
       this.board.mouseEnter = true;
+      this.board.isSelectedNodeEnd = false;
       this.board.enteredNode = node;
       node.isPerson = true;
       this.personNode = node;

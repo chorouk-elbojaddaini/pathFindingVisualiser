@@ -129,7 +129,7 @@ export class DijkstraService {
         } while (this.currentBox != nodeStart);
       } else {
         this.currentBox.neighbours.forEach((neighbour) => {
-          if (!neighbour.queued && !neighbour.isWall && !neighbour.isStartingbox) {
+          if (!neighbour.queued && !neighbour.isWall ) {
             neighbour.queued = true;
             neighbour.prior = this.currentBox;
 
@@ -172,6 +172,7 @@ export class DijkstraService {
       this.currentBox = this.openSet[best];
 
       if (this.currentBox === nodeTarget) {
+
         this.board.path = [this.currentBox];
         do {
           this.board.path.push(this.currentBox);
