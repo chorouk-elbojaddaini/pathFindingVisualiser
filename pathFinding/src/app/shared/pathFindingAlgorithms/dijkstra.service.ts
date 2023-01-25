@@ -264,31 +264,27 @@ export class DijkstraService {
     this.queue = [];
     this.visitedNode = [];
     this.queue.push(nodeStart);
-    this.visitedNode.push(nodeStart);
     this.board.path = [];
     while(this.queue.length>0){
-     console.log("hi");
       this.currentBox = this.queue.shift();
-     
-      // if(this.currentBox == nodeTarget){
-      
-      //   do {
-      //     this.board.path.push(this.currentBox);
-      //     this.currentBox.isPath = true;
-      //     this.currentBox = this.currentBox.prior;
-      //   } while (this.currentBox != nodeStart);
-      //   return this.board.path;
-      // }
       this.currentBox.visited = true;
       this.visitedNode.push(this.currentBox);
-      this.currentBox.neighbours.forEach(neighbor=>{
-        if(!neighbor.visited){
+      if(this.currentBox == nodeTarget){
+        do {
+          this.currentBox.isPath = true;
+          this.board.path.push(this.currentBox);
+          this.currentBox = this.currentBox.prior;
+        } while (this.currentBox != nodeStart);
+        return this.board.path;
+      }
+      
+      for (let neighbor of this.currentBox.neighbours) {
+        if (!this.visitedNode.includes(neighbor)) {
           neighbor.prior = this.currentBox;
-          this.queue.push(neighbor);
-          // this.visitedNode.push(neighbor);
+            this.queue.push(neighbor);
+            this.visitedNode.push(neighbor);
         }
-        
-      })
+    }
     }
     return [];
   }
