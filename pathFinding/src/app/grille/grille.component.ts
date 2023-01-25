@@ -260,7 +260,7 @@ export class GrilleComponent {
       // }
       this.board.currentNode = node;
       this.board.isSelectedNodeEnd = true;
-    } else if (node.isPerson) {
+    } else if (node.isPerson && !node.isTargetBox) {
       this.board.mouseDown = true;
       this.personNode = node;
       // switch (this.dijkstraService.algo) {
@@ -294,8 +294,10 @@ export class GrilleComponent {
     }
     if (this.board.mouseDown && this.board.isSelectedNodeEnd) {
       node.isTargetBox = false;
+      
     }
-    if (this.board.mouseDown && this.board.isSelectedNodePerson) {
+    if (this.board.mouseDown && this.board.isSelectedNodePerson ) {
+     this.board.isSelectedNodeEnd  = false;
       this.nodes[3][25].isPerson = false;
       node.isPerson = false;
     }
@@ -373,7 +375,7 @@ export class GrilleComponent {
         //     break;
         // }
       }
-    } else if (this.board.mouseDown && this.board.isSelectedNodePerson) {
+    } else if (this.board.mouseDown && this.board.isSelectedNodePerson && !this.board.isSelectedNodeEnd) {
       this.board.mouseEnter = true;
       this.board.enteredNode = node;
       node.isPerson = true;
@@ -449,6 +451,7 @@ export class GrilleComponent {
       this.board.mouseEnter &&
       this.board.isSelectedNodeEnd &&
       !node.isStartingbox
+    
     ) {
       this.board.mouseUp = true;
       this.board.mouseEnter = false;
@@ -487,7 +490,7 @@ export class GrilleComponent {
         //     break;
         // }
       }
-    } else if (this.board.mouseEnter && this.board.isSelectedNodePerson) {
+    } else if (this.board.mouseEnter && this.board.isSelectedNodePerson ) {
       this.board.mouseUp = true;
       this.board.mouseEnter = false;
       this.board.mouseDown = false;
