@@ -104,7 +104,6 @@ export class GrilleComponent {
         }
         break;
       case "breadth":
-          console.log("hello");
           this.dijkstraService.reinitialisePathQueued();
 
           if (this.isPerson) {
@@ -125,6 +124,29 @@ export class GrilleComponent {
             );
           }
           break;
+      case "swarm":
+        this.dijkstraService.reinitialisePathQueued();
+
+        if (this.isPerson) {
+          
+          this.dijkstraService.swarmAlgorithm(
+            this.startingBox,
+            this.personNode
+          );
+          if (this.board.path.length!=0) {
+          this.dijkstraService.swarmAlgorithm(
+            this.personNode,
+            this.targetBox
+          );}
+        } else {
+          this.dijkstraService.swarmAlgorithm(
+            this.startingBox,
+            this.targetBox
+          );
+        }
+        break;
+       
+    
     }
   }
 

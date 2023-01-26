@@ -18,6 +18,7 @@ export class DijkstraService {
   chosenAlgo: string = null;
   isPerson: boolean = false;
   algo: string;
+  agents:Square[];
   visitedNode:Square[];
   board = new Board(
     window.innerWidth,
@@ -290,7 +291,46 @@ export class DijkstraService {
     return [];
   }
 
+  swarmAlgorithm(startNode:Square,targetNode:Square){
+    this.agents =[];
+    this.agents.push(startNode);
+    this.visitedNode = [];
+    let shortestPathLength = Infinity;
+    let shortestPath=[];
+    let pathLenght;
+    let compteur = 0;
+    while(this.agents.length>0  && compteur<2){
+      this.currentBox = this.agents.shift();
+      this.visitedNode.push(this.currentBox);
+      this.currentBox.visited = true;
+      console.log("thes agents",this.agents);
+      console.log("current box",this.currentBox);
+      // if(this.currentBox == targetNode){
+      //   this.board.path = [];
+      //   do {
+      //     this.currentBox.isPath = true;
+      //     this.board.path.push(this.currentBox);
+      //     this.currentBox = this.currentBox.prior;
+      //   } while (this.currentBox != startNode);
+
+      //   if( this.board.path.length <shortestPathLength){
+      //     shortestPath = this.board.path.slice();
+      //     shortestPathLength = shortestPath.length;
+      //   }
+      // }
+      for (let neighbor of this.currentBox.neighbours) {
+        if (!neighbor.visited) {
+           // neighbor.prior = this.currentBox;
+            this.agents.push(neighbor);
+        }
+      }
+    compteur++;
+
+    }
+    return shortestPath;
+  }                       
   heuristic(node: Square, target: Square) {
+   
     return Math.abs(node.row - target.row) + Math.abs(node.col - target.col);
   }
 }
