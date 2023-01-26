@@ -45,6 +45,10 @@ export class NavbarComponent implements OnInit {
        break;
       case "Swarm Algorithm":
         this.dijkstraService.algo = 'swarm'
+        break;
+       case "Depth-first Search":
+        this.dijkstraService.algo = 'depth'
+        break;
     }
   }
   addPerson() {

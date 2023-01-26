@@ -8,6 +8,7 @@ import { Square } from '../squareModele';
 })
 export class DijkstraService {
   queue: Square[];
+  stack: Square[];
   openSet: Square[];
   closedSet: Square[];
   currentBox: Square;
@@ -20,6 +21,7 @@ export class DijkstraService {
   algo: string;
   agents:Square[];
   visitedNode:Square[];
+  visitedNodeSet;
   board = new Board(
     window.innerWidth,
     this.numberSquares * 3,
@@ -329,6 +331,38 @@ export class DijkstraService {
     }
     return shortestPath;
   }                       
+    DepthFirstSearch(nodeStart:Square,nodeTarget:Square){
+      this.stack = [nodeStart];
+      this.visitedNodeSet = new Set();
+      this.board.path = [];
+      while(this.stack.length>0){
+        this.currentBox = this.stack.pop();
+        if(this.visitedNodeSet.has(this.currentBox))
+          continue;
+        this.visitedNodeSet.add(this.currentBox);
+        this.currentBox.visited =true;
+        if(this.currentBox == nodeTarget){
+          do {
+            this.currentBox.isPath = true;
+            this.board.path.push(this.currentBox);
+            this.currentBox = this.currentBox.prior;
+          } while (this.currentBox != nodeStart);
+          return this.board.path.reverse();
+        }
+        
+        for (let neighbor of this.currentBox.neighbours) {
+          if (!this.visitedNodeSet.has(neighbor)) {
+              neighbor.prior = this.currentBox;
+              this.stack.push(neighbor);
+          }
+        }
+      }
+      return [];
+    
+  
+  }
+
+
   heuristic(node: Square, target: Square) {
    
     return Math.abs(node.row - target.row) + Math.abs(node.col - target.col);

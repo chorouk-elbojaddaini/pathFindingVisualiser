@@ -49,9 +49,12 @@ export class GrilleComponent {
             this.startingBox,
             this.personNode
           );
-          if (this.board.path.length!=0) {
-          this.dijkstraService.aStarSearchAlgo(this.personNode, this.targetBox);
-        }
+          if (this.board.path.length != 0) {
+            this.dijkstraService.aStarSearchAlgo(
+              this.personNode,
+              this.targetBox
+            );
+          }
         } else {
           this.dijkstraService.aStarSearchAlgo(
             this.startingBox,
@@ -68,14 +71,13 @@ export class GrilleComponent {
             this.startingBox,
             this.personNode
           );
-          
-          if (this.board.path.length!=0) {
+
+          if (this.board.path.length != 0) {
             this.dijkstraService.dijkstraAlgorithm(
               this.personNode,
               this.targetBox
             );
           }
-          
         } else {
           this.dijkstraService.dijkstraAlgorithm(
             this.startingBox,
@@ -91,11 +93,12 @@ export class GrilleComponent {
             this.startingBox,
             this.personNode
           );
-          if (this.board.path.length!=0) {
-          this.dijkstraService.greedyBestFirstSearch(
-            this.personNode,
-            this.targetBox
-          );}
+          if (this.board.path.length != 0) {
+            this.dijkstraService.greedyBestFirstSearch(
+              this.personNode,
+              this.targetBox
+            );
+          }
         } else {
           this.dijkstraService.greedyBestFirstSearch(
             this.startingBox,
@@ -103,50 +106,45 @@ export class GrilleComponent {
           );
         }
         break;
-      case "breadth":
-          this.dijkstraService.reinitialisePathQueued();
-
-          if (this.isPerson) {
-            
-            this.dijkstraService.breadthFirstSearch(
-              this.startingBox,
-              this.personNode
-            );
-            if (this.board.path.length!=0) {
-            this.dijkstraService.breadthFirstSearch(
-              this.personNode,
-              this.targetBox
-            );}
-          } else {
-            this.dijkstraService.breadthFirstSearch(
-              this.startingBox,
-              this.targetBox
-            );
-          }
-          break;
-      case "swarm":
+      case 'breadth':
         this.dijkstraService.reinitialisePathQueued();
 
         if (this.isPerson) {
-          
+          this.dijkstraService.breadthFirstSearch(
+            this.startingBox,
+            this.personNode
+          );
+          if (this.board.path.length != 0) {
+            this.dijkstraService.breadthFirstSearch(
+              this.personNode,
+              this.targetBox
+            );
+          }
+        } else {
+          this.dijkstraService.breadthFirstSearch(
+            this.startingBox,
+            this.targetBox
+          );
+        }
+        break;
+      case 'swarm':
+        this.dijkstraService.reinitialisePathQueued();
+
+        if (this.isPerson) {
           this.dijkstraService.swarmAlgorithm(
             this.startingBox,
             this.personNode
           );
-          if (this.board.path.length!=0) {
-          this.dijkstraService.swarmAlgorithm(
-            this.personNode,
-            this.targetBox
-          );}
+          if (this.board.path.length != 0) {
+            this.dijkstraService.swarmAlgorithm(
+              this.personNode,
+              this.targetBox
+            );
+          }
         } else {
-          this.dijkstraService.swarmAlgorithm(
-            this.startingBox,
-            this.targetBox
-          );
+          this.dijkstraService.swarmAlgorithm(this.startingBox, this.targetBox);
         }
         break;
-       
-    
     }
   }
 
@@ -319,10 +317,9 @@ export class GrilleComponent {
     if (this.board.mouseDown && this.board.isSelectedNodeEnd) {
       this.board.isSelectedNodePerson = false;
       node.isTargetBox = false;
-      
     }
-    if (this.board.mouseDown && this.board.isSelectedNodePerson ) {
-     this.board.isSelectedNodeEnd  = false;
+    if (this.board.mouseDown && this.board.isSelectedNodePerson) {
+      this.board.isSelectedNodeEnd = false;
       this.nodes[3][25].isPerson = false;
       node.isPerson = false;
     }
@@ -400,7 +397,11 @@ export class GrilleComponent {
         //     break;
         // }
       }
-    } else if (this.board.mouseDown && this.board.isSelectedNodePerson && !this.board.isSelectedNodeEnd) {
+    } else if (
+      this.board.mouseDown &&
+      this.board.isSelectedNodePerson &&
+      !this.board.isSelectedNodeEnd
+    ) {
       this.board.mouseEnter = true;
       this.board.isSelectedNodeEnd = false;
       this.board.enteredNode = node;
@@ -477,7 +478,6 @@ export class GrilleComponent {
       this.board.mouseEnter &&
       this.board.isSelectedNodeEnd &&
       !node.isStartingbox
-    
     ) {
       this.board.mouseUp = true;
       this.board.mouseEnter = false;
@@ -516,7 +516,7 @@ export class GrilleComponent {
         //     break;
         // }
       }
-    } else if (this.board.mouseEnter && this.board.isSelectedNodePerson ) {
+    } else if (this.board.mouseEnter && this.board.isSelectedNodePerson) {
       this.board.mouseUp = true;
       this.board.mouseEnter = false;
       this.board.mouseDown = false;
