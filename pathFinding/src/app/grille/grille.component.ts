@@ -127,6 +127,27 @@ export class GrilleComponent {
           );
         }
         break;
+        case 'depth':
+        this.dijkstraService.reinitialisePathQueued();
+
+        if (this.isPerson) {
+          this.dijkstraService.DepthFirstSearch(
+            this.startingBox,
+            this.personNode
+          );
+          if (this.board.path.length != 0) {
+            this.dijkstraService.DepthFirstSearch(
+              this.personNode,
+              this.targetBox
+            );
+          }
+        } else {
+          this.dijkstraService.DepthFirstSearch(
+            this.startingBox,
+            this.targetBox
+          );
+        }
+        break;
       case 'swarm':
         this.dijkstraService.reinitialisePathQueued();
 
