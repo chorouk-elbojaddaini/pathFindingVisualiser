@@ -287,7 +287,8 @@ export class DijkstraService {
       }
       
       for (let neighbor of this.currentBox.neighbours) {
-        if (!this.visitedNode.includes(neighbor)) {
+        if (!this.visitedNode.includes(neighbor) && !neighbor.isWall) {
+          
           neighbor.prior = this.currentBox;
             this.queue.push(neighbor);
             this.visitedNode.push(neighbor);
@@ -343,7 +344,7 @@ export class DijkstraService {
         }
         
         for (let neighbor of this.currentBox.neighbours) {
-          if (!this.visitedNodeSet.has(neighbor)) {
+          if (!this.visitedNodeSet.has(neighbor) && !neighbor.isWall) {
               neighbor.prior = this.currentBox;
               this.stack.push(neighbor);
           }
@@ -383,7 +384,7 @@ export class DijkstraService {
     for (i =1,j; i <= window.innerHeight / 35-1; i++,j++) {
        this.nodes[i][j].isWall = true;
     }
-    console.log("i b3d for 2",i);
+
     for (i = 16,j=36; i>0; i--,j++) {
       if( j>= Math.trunc(window.innerWidth / 30)-2){
         break;
