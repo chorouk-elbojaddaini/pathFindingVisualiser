@@ -405,7 +405,7 @@ export class DijkstraService {
 
         // Create a passage through the divider
         let passage = x1 + Math.floor(Math.random() * (x2-x1+1 ));
-        
+        let randomNum = Math.floor(Math.random() * (x2-x1+1));
         // Fill the area above and below the divider with walls
         for (let i = x1; i <= x2; i++) {
              if(divider ==1 || divider == y2){
@@ -417,7 +417,7 @@ export class DijkstraService {
                 grid[divider-1][i].isWall = false
                 grid[divider+1][i].isWall = false
            
-            
+                grid[divider][passage].isWall = false;
         }
         grid[divider][passage].isWall = false;
        

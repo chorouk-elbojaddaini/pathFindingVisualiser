@@ -180,7 +180,10 @@ export class GrilleComponent {
           case 'Simple Stair Pattern' :
             this.dijkstraService.simpleStairPattern();
           break;
-          case'Recursive Division':
+          case 'Recursive Division':
+            
+            break;
+          case'Horizontal Recursive Division':
            this.dijkstraService.drawWallsInCorners()
            this.dijkstraService.createMaze(this.nodes,1,1,Math.trunc(window.innerWidth / 30)-2, Math.trunc(window.innerHeight / 35)-2,1);
            break;
