@@ -1,5 +1,6 @@
 import { NgIf } from '@angular/common';
 import { Injectable } from '@angular/core';
+import { windowTime } from 'rxjs';
 import { Board } from '../boardModele';
 import { Particle } from '../particleModele';
 import { Square } from '../squareModele';
@@ -384,7 +385,7 @@ export class DijkstraService {
        this.nodes[i][j].isWall = true;
     }
     console.log("i b3d for 2",i);
-    for (i = 16,j=36; i>0; i--,j++) {
+    for (i = Math.trunc(window.innerHeight/35)-2,j; i>0; i--,j++) {
       if( j>= Math.trunc(window.innerWidth / 30)-2){
         break;
       }
