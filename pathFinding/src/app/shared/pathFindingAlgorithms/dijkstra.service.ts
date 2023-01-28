@@ -415,7 +415,9 @@ export class DijkstraService {
               break;
              }
               
-                grid[divider][i].isWall = true;
+             if( !grid[divider][i].isTargetBox ){
+              grid[divider][i].isWall = true;
+            }
                 
                 grid[divider-1][i].isWall = false
                 grid[divider+1][i].isWall = false
@@ -464,8 +466,10 @@ recursiveDivision(grid,x1,y1,x2,y2,minSize){
          if(divider ==1 || divider == y2){
           break;
          }
-          
+          if( !grid[divider][i].isTargetBox ){
             grid[divider][i].isWall = true;
+          }
+           
             
             grid[divider-1][i].isWall = false
             grid[divider+1][i].isWall = false
@@ -475,8 +479,8 @@ recursiveDivision(grid,x1,y1,x2,y2,minSize){
     grid[divider][passage].isWall = false;
    
     // Recursively divide the area above and below the divider
-    this.createMaze(grid, x1, y1, x2, divider - 1, minSize);
-    this.createMaze(grid, x1, divider + 1, x2, y2, minSize);
+    this.recursiveDivision(grid, x1, y1, x2, divider - 1, minSize);
+    this.recursiveDivision(grid, x1, divider + 1, x2, y2, minSize);
   } else {
     let divider = x1 + Math.floor(Math.random() * (x2-x1-minSize+1))+minSize ;
 
@@ -487,8 +491,11 @@ recursiveDivision(grid,x1,y1,x2,y2,minSize){
          if(divider ==1 || divider == x2){
           break;
          }
+         if(!grid[i][divider].isTargetBox ){
+          grid[i][divider].isWall = true;
+        } 
+
           
-            grid[i][divider].isWall = true;
             
             grid[i][divider-1].isWall = false
             grid[i][divider+1].isWall = false
@@ -498,8 +505,8 @@ recursiveDivision(grid,x1,y1,x2,y2,minSize){
     grid[passage][divider].isWall = false;
    
     // Recursively divide the area above and below the divider
-    this.verticalRecursive(grid, x1, y1,divider - 1,y2,minSize);
-    this.verticalRecursive(grid, divider + 1, y1, x2, y2, minSize);
+    this.recursiveDivision(grid, x1, y1,divider - 1,y2,minSize);
+    this.recursiveDivision(grid, divider + 1, y1, x2, y2, minSize);
   }
 }
 verticalRecursive(grid,x1,y1,x2,y2,minSize){
@@ -520,7 +527,9 @@ verticalRecursive(grid,x1,y1,x2,y2,minSize){
             break;
            }
             
-              grid[i][divider].isWall = true;
+           if( !grid[i][divider].isTargetBox ){
+            grid[i][divider].isWall = true;
+           } 
               
               grid[i][divider-1].isWall = false
               grid[i][divider+1].isWall = false
