@@ -8,7 +8,10 @@ import { DijkstraService } from '../shared/pathFindingAlgorithms/dijkstra.servic
 })
 export class NavbarComponent implements OnInit {
   chosenAlgo: string;
+  selectedMaze:string ;
   typeAlgorithm: FormGroup;
+  typeMazePattern:FormGroup;
+  
 
   constructor(
     private fb: FormBuilder,
@@ -19,14 +22,24 @@ export class NavbarComponent implements OnInit {
 
   ngOnInit(): void {
     this.initAlgoForm();
+    this.initMazePattern();
+
   }
   ngDoCheck() {
     this.chosenAlgoName();
+    // console.log("hadi choix",this.selectedMaze);
+    this.chosenMaze();
+
   }
   initAlgoForm() {
     this.typeAlgorithm = this.fb.group({
       algo: '',
     });
+  }
+  initMazePattern(){
+    this.typeMazePattern = this.fb.group({
+      mazePattern : ''
+    })
   }
 
   choseAlgorithme() {
@@ -56,5 +69,9 @@ export class NavbarComponent implements OnInit {
   }
   chosenAlgoName() {
     this.dijkstraService.chosenAlgo = this.typeAlgorithm.value.algo;
+  }
+  chosenMaze(){
+   
+    this.dijkstraService.mazePattern = this.typeMazePattern.value.mazePattern;
   }
 }

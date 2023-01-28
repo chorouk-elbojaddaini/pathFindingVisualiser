@@ -14,9 +14,8 @@
                 <option><a #dijkstra class="dropdown-item"  href="#">Dijkstra's Algorithm</a></option>
                 <option><a class="dropdown-item" href="#">A* Search</a></option>
                 <option><a class="dropdown-item" href="#">Greedy Best-first Search</a></option>
-                <option><a class="dropdown-item" href="#">Swarm Algorithm</a></option>
-                <option><a class="dropdown-item" href="#">Convergent Swarm Algorithm</a></option>
-                <option><a class="dropdown-item" href="#">Bidirectional Swarm Algorithm</a></option>
+                <option><a class="dropdown-item" href="#">Bellman Algorithm</a></option>
+                <option><a class="dropdown-item" href="#">Ford fulkrsen Algorithm</a></option>
                 <option><a class="dropdown-item" href="#">Breadth-first Search</a></option>
                 <option><a class="dropdown-item" href="#">Depth-first Search</a></option>
               </select>
@@ -25,7 +24,7 @@
               </li>
           
               <li class="nav-item dropdown">
-                <button class="btn  dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                <!-- <button class="btn  dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                   Mazes & Patterns
                 </button>
                 <ul class="dropdown-menu ">
@@ -34,7 +33,17 @@
                   <li><a class="dropdown-item" href="#">Recursive Division (horizontal skew)</a></li>
                   <li><a class="dropdown-item" href="#">Basic Random Maze</a></li>
                   <li><a class="dropdown-item" href="#">Simple Stair Pattern</a></li>
-                </ul>
+                </ul> -->
+                <form [formGroup]="typeMazePattern" >
+                  <select formControlName="mazePattern" >
+                <option><a #dijkstra class="dropdown-item"  href="#">Recursive Division</a></option>
+                <option><a class="dropdown-item" href="#">Recursive Division (vertical skew)</a></option>
+                <option><a class="dropdown-item" href="#">Recursive Division (horizontal skew)</a></option>
+                <option><a class="dropdown-item" href="#">Basic Random Maze</a></option>
+                <option><a class="dropdown-item" href="#">Simple Stair Pattern</a></option>
+              </select>
+              
+              </form>
               </li>
           <li class="nav-item">
             <a class="nav-link" href="#" (click) = "addPerson()">Add Person</a>

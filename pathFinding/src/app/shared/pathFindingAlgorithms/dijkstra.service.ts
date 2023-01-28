@@ -1,6 +1,7 @@
 import { NgIf } from '@angular/common';
 import { Injectable } from '@angular/core';
 import { Board } from '../boardModele';
+import { Particle } from '../particleModele';
 import { Square } from '../squareModele';
 
 @Injectable({
@@ -17,6 +18,8 @@ export class DijkstraService {
   startingBox: Square;
   targetBox: Square;
   chosenAlgo: string = null;
+  mazePattern:string= null;
+  mazeVerify:boolean=true;
   isPerson: boolean = false;
   algo: string;
   agents:Square[];
@@ -38,6 +41,9 @@ export class DijkstraService {
     false
   );
   searching: boolean = true;
+  numberParticles:number;
+  particles:Particle[];
+  globalBest:Square;
   constructor() {}
   getNodes() {
     this.initialiseGrid();
@@ -71,7 +77,7 @@ export class DijkstraService {
           false
         );
 
-        if (i == 8 && j == Math.trunc(this.numberSquares / 2) - 15) {
+        if (i == 8 && j == Math.trunc(this.numberSquares / 2) - 10) {
           this.nodes[i][j].isStartingbox = true;
           this.startingBox = this.nodes[i][j];
 
@@ -235,8 +241,6 @@ export class DijkstraService {
           this.currentBox.isPath = true;
           this.currentBox = this.currentBox.prior;
         } while (this.currentBox != nodeStart);
-        console.log("open set ++++++++++++",this.openSet);
-        console.log("closed sset==========",this.closedSet);
         return this.board.path;
       }
 
@@ -294,43 +298,31 @@ export class DijkstraService {
   }
 
   swarmAlgorithm(startNode:Square,targetNode:Square){
-    this.agents =[];
-    this.agents.push(startNode);
-    this.visitedNode = [];
-    let shortestPathLength = Infinity;
-    let shortestPath=[];
-    let pathLenght;
-    let compteur = 0;
-    while(this.agents.length>0  && compteur<2){
-      this.currentBox = this.agents.shift();
-      this.visitedNode.push(this.currentBox);
-      this.currentBox.visited = true;
-      console.log("thes agents",this.agents);
-      console.log("current box",this.currentBox);
-      // if(this.currentBox == targetNode){
-      //   this.board.path = [];
-      //   do {
-      //     this.currentBox.isPath = true;
-      //     this.board.path.push(this.currentBox);
-      //     this.currentBox = this.currentBox.prior;
-      //   } while (this.currentBox != startNode);
-
-      //   if( this.board.path.length <shortestPathLength){
-      //     shortestPath = this.board.path.slice();
-      //     shortestPathLength = shortestPath.length;
-      //   }
-      // }
-      for (let neighbor of this.currentBox.neighbours) {
-        if (!neighbor.visited) {
-           // neighbor.prior = this.currentBox;
-            this.agents.push(neighbor);
-        }
+      this.numberParticles = 20;
+      this.particles = [];
+      this.globalBest = startNode;
+      for(let i=0;i<this.numberParticles;i++){
+        this.particles[i] = new Particle(startNode,targetNode);
+        console.log("hadi particle",this.particles[i]);
       }
-    compteur++;
+      for (let i = 0; i < this.numberParticles; i++) {
+        this.particles[i].move();
+        console.log("hadi particle mnb3d mouvement",this.particles[i]);
 
+        // check if the path found by the particle is shorter than the global best path
+        if (this.particles[i].bestPosition.distance(targetNode) < this.globalBest.distance(targetNode)) {
+            this.globalBest = this.particles[i].bestPosition;
+        }
+        if(this.globalBest == targetNode){
+          console.log("wslna l target");
+          break;
+        }
+      
     }
-    return shortestPath;
-  }                       
+  }      
+  
+  
+
     DepthFirstSearch(nodeStart:Square,nodeTarget:Square){
       this.stack = [nodeStart];
       this.visitedNodeSet = new Set();
@@ -367,4 +359,45 @@ export class DijkstraService {
    
     return Math.abs(node.row - target.row) + Math.abs(node.col - target.col);
   }
+
+
+
+
+  /*====================Mazes and patterns================*/
+  randomMaze(){
+    for (let i = 0; i <100; i++) {
+         let x = Math.round(Math.random()*Math.trunc(window.innerHeight/35));
+         let y =  Math.round(Math.random()*Math.trunc(window.innerWidth/30));
+         if(x<window.innerHeight/35 && y<Math.trunc(window.innerWidth/30)){
+         this.nodes[x][y].isWall = true;
+         }
+      }
+    
+  }
+  simpleStairPattern(){
+    let j ;
+    let i;
+    for ( i = Math.trunc(window.innerHeight / 35),j=0; i >= 0 ; i--,j++) {
+      this.nodes[i][j].isWall = true;      
+    }
+    for (i =1,j; i <= window.innerHeight / 35-1; i++,j++) {
+       this.nodes[i][j].isWall = true;
+    }
+    console.log("i b3d for 2",i);
+    for (i = 16,j=36; i>0; i--,j++) {
+      if( j>= Math.trunc(window.innerWidth / 30)-2){
+        break;
+      }
+      this.nodes[i][j].isWall = true;
+      
+    }
+  }
+  reinitialiseWall(){
+    for (let i = 0; i < window.innerHeight / 35; i++) {
+      for (let j = 0; j < Math.trunc(window.innerWidth / 30); j++) {
+        this.nodes[i][j].isWall = false;
+      }
+    }
+  }
+
 }

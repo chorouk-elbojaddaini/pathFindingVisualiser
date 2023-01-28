@@ -21,6 +21,8 @@ export class GrilleComponent {
   isPerson: boolean;
   personNode: Square;
   ngDoCheckRunOnce: boolean = false;
+  ngDoCheckRun: boolean = false;
+  previousValue:string = 'maze';
   constructor(public dijkstraService: DijkstraService) {}
   ngOnInit(): void {
     let wi = window.innerWidth;
@@ -33,13 +35,14 @@ export class GrilleComponent {
     this.ngDoCheckRunOnce = false;
   }
   ngDoCheck() {
+    console.log("maze",this.dijkstraService.mazePattern);
     this.isPerson = this.dijkstraService.isPerson;
     if (!this.ngDoCheckRunOnce && this.isPerson) {
       this.nodes[3][25].isPerson = true;
       this.personNode = this.nodes[3][25];
       this.ngDoCheckRunOnce = true;
     }
-
+    
     this.searchStartAndTarget();
     switch (this.dijkstraService.algo) {
       case 'astar':
@@ -167,6 +170,27 @@ export class GrilleComponent {
         }
         break;
     }
+    if (this.dijkstraService.mazePattern !== this.previousValue) {
+      console.log("dkhlat");
+      this.dijkstraService.reinitialiseWall();
+      switch(this.dijkstraService.mazePattern){
+        case 'Basic Random Maze' :
+          this.dijkstraService.randomMaze();
+          break;
+          case 'Simple Stair Pattern' :
+            this.dijkstraService.simpleStairPattern();
+            break;
+    
+    }
+      this.previousValue = this.dijkstraService.mazePattern;
+    }
+  
+  
+  
+   
+  }
+  ngAfterViewInit(){
+    
   }
 
   getNodes() {

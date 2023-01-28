@@ -10,7 +10,6 @@ import { GrilleComponent } from './grille/grille.component';
 import { StartingNodeComponent } from './starting-node/starting-node.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -25,7 +24,8 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
     BrowserModule,
     AppRoutingModule,
     DragDropModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
