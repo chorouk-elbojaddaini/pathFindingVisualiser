@@ -171,7 +171,7 @@ export class GrilleComponent {
         break;
     }
     if (this.dijkstraService.mazePattern !== this.previousValue) {
-      console.log("dkhlat");
+      
       this.dijkstraService.reinitialiseWall();
       switch(this.dijkstraService.mazePattern){
         case 'Basic Random Maze' :
@@ -179,7 +179,11 @@ export class GrilleComponent {
           break;
           case 'Simple Stair Pattern' :
             this.dijkstraService.simpleStairPattern();
-            break;
+          break;
+          case'Recursive Division':
+           this.dijkstraService.drawWallsInCorners()
+           this.dijkstraService.createMaze(this.nodes,0,0,Math.trunc(window.innerWidth / 30)-1, Math.trunc(window.innerHeight / 35)-1,3);
+           break;
     
     }
       this.previousValue = this.dijkstraService.mazePattern;

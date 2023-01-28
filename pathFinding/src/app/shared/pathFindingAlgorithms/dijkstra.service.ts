@@ -394,12 +394,114 @@ export class DijkstraService {
       
     }
   }
-  reinitialiseWall(){
-    for (let i = 0; i < window.innerHeight / 35; i++) {
-      for (let j = 0; j < Math.trunc(window.innerWidth / 30); j++) {
-        this.nodes[i][j].isWall = false;
-      }
+  createMaze(grid,x1,y1,x2,y2,minSize){
+    // Base case: if the area is too small, return
+    if (x1 >= x2 || y1 >= y2 || x2 - x1 < minSize || y2 - y1 < minSize) return;
+
+    // Randomly choose a horizontal or vertical line to divide the area
+    // if (Math.random() < 0.5) {
+        // Divide horizontally
+        let divider = y1 + Math.floor(Math.random() * (y2 - y1 - minSize + 1)) + minSize;
+
+        // Create a passage through the divider
+        let passage = x1 + Math.floor(Math.random() * (x2 - x1 + 1));
+
+        // Fill the area above and below the divider with walls
+        for (let i = x1; i <= x2; i++) {
+            if (i != passage) {
+                grid[divider][i].isWall = true;
+            }
+        }
+        // if (x1 < passage-1) grid[divider][passage-1].isWall = false;
+        if (x2 > passage+1) grid[divider][passage+1].isWall = false;
+        // Recursively divide the area above and below the divider
+        this.createMaze(grid, x1, y1, x2, divider - 1, minSize);
+        this.createMaze(grid, x1, divider + 1, x2, y2, minSize);
+    // } else {
+    //     // Divide vertically
+    //     let divider = x1 + Math.floor(Math.random() * (x2 - x1 - minSize + 1)) + minSize;
+
+    //     // Create a passage through the divider
+    //     let passage = y1 + Math.floor(Math.random() * (y2 - y1 + 1));
+
+    //     // Fill the area left and right of the divider with walls
+    //     for (let i = y1; i <= y2; i++) {
+    //         if (i != passage) {
+    //             grid[i][divider].isWall = true;
+    //         }
+    //     }
+
+    //     // Recursively divide the area left and right of the divider
+    //     this.createMaze(grid, x1, y1, divider - 1, y2, minSize);
+    //     this.createMaze(grid, divider + 1, y1, x2, y2, minSize);
+    // }
+}
+
+divide(grid, mx, my, ax, ay) {
+  
+const N = 1, S = 2, E = 4, W = 8;
+const HORIZONTAL = 0, VERTICAL = 1;
+
+    let dx = ax - mx;
+    let dy = ay - my;
+    if (dx < 2 || dy < 2) {
+        // make a hallway
+        if (dx > 1) {
+            let y = my;
+            for (let x = mx; x < ax-1; x++) {
+                grid[y][x] |= E;
+                grid[y][x+1] |= W;
+            }
+        } else if (dy > 1) {
+            let x = mx;
+            for (let y = my; y < ay-1; y++) {
+                grid[y][x] |= S;
+                grid[y+1][x] |= N;
+            }
+        }
+        return;
+    }
+
+    let wall = dy > dx ? VERTICAL : (dx > dy ? HORIZONTAL : Math.floor(Math.random()*2));
+
+    let xp = Math.floor(Math.random() * (ax - (wall == VERTICAL ? 1 : 0))) + mx;
+    let yp = Math.floor(Math.random() * (ay - (wall == HORIZONTAL ? 1 : 0))) + my;
+
+    let x = xp, y = yp;
+    if (wall == HORIZONTAL) {
+        let ny = y + 1;
+        grid[y][x] |= S;
+        grid[ny][x] |= N;
+
+        this.divide(grid, mx, my, ax, ny);
+        this.divide(grid, mx, ny, ax, ay);
+    } else {
+        let nx = x + 1;
+        grid[y][x] |= E;
+        grid[y][nx] |= W;
+
+        this.divide(grid, mx, my, nx, ay);
+        this.divide(grid, nx, my, ax, ay);
+    }
+}
+drawWallsInCorners(){
+  for(let i=0;i< Math.trunc(window.innerHeight / 35);i++){
+       this.nodes[i][0].isWall = true;
+       this.nodes[i][this.nodes[i].length-1].isWall = true;
+  }
+  for (let i = 0; i < this.nodes[0].length; i++) {
+    this.nodes[0][i].isWall = true;
+    this.nodes[this.nodes.length-1][i].isWall = true;
+}
+}
+reinitialiseWall(){
+  
+  for (let i = 0; i < window.innerHeight / 35; i++) {
+    for (let j = 0; j < Math.trunc(window.innerWidth / 30); j++) {
+      this.nodes[i][j].isWall = false;
     }
   }
-
 }
+}
+
+
