@@ -181,7 +181,8 @@ export class GrilleComponent {
             this.dijkstraService.simpleStairPattern();
           break;
           case 'Recursive Division':
-            
+            this.dijkstraService.drawWallsInCorners()
+            this.dijkstraService.recursiveDivision(this.nodes,1,1,Math.trunc(window.innerWidth / 30)-2, Math.trunc(window.innerHeight / 35)-2,1);
             break;
           case'Horizontal Recursive Division':
            this.dijkstraService.drawWallsInCorners()

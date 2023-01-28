@@ -26,6 +26,7 @@ export class DijkstraService {
   agents:Square[];
   visitedNode:Square[];
   visitedNodeSet;
+ dividerArr = [];
   board = new Board(
     window.innerWidth,
     this.numberSquares * 3,
@@ -395,6 +396,7 @@ export class DijkstraService {
     }
   }
   createMaze(grid,x1,y1,x2,y2,minSize){
+    
     // Base case: if the area is too small, return
     if (x1 >= x2 || y1 >= y2 || x2 - x1 < minSize || y2 - y1 < minSize) return;
 
@@ -402,7 +404,8 @@ export class DijkstraService {
     // if (Math.random() < 0.5) {
         // Divide horizontally
         let divider = y1 + Math.floor(Math.random() * (y2-y1-minSize+1))+minSize ;
-
+        this.dividerArr.push(divider);
+        console.log(this.dividerArr);
         // Create a passage through the divider
         let passage = x1 + Math.floor(Math.random() * (x2-x1+1 ));
         let randomNum = Math.floor(Math.random() * (x2-x1+1));
@@ -443,7 +446,111 @@ export class DijkstraService {
     //     this.createMaze(grid, divider + 1, y1, x2, y2, minSize);
     // }
 }
+recursiveDivision(grid,x1,y1,x2,y2,minSize){
+    
+  // Base case: if the area is too small, return
+  if (x1 >= x2 || y1 >= y2 || x2 - x1 < minSize || y2 - y1 < minSize) return;
 
+  // Randomly choose a horizontal or vertical line to divide the area
+  if (Math.random() < 0.5) {
+    let divider = y1 + Math.floor(Math.random() * (y2-y1-minSize+1))+minSize ;
+    this.dividerArr.push(divider);
+    console.log(this.dividerArr);
+    // Create a passage through the divider
+    let passage = x1 + Math.floor(Math.random() * (x2-x1+1 ));
+    let randomNum = Math.floor(Math.random() * (x2-x1+1));
+    // Fill the area above and below the divider with walls
+    for (let i = x1; i <= x2; i++) {
+         if(divider ==1 || divider == y2){
+          break;
+         }
+          
+            grid[divider][i].isWall = true;
+            
+            grid[divider-1][i].isWall = false
+            grid[divider+1][i].isWall = false
+       
+            grid[divider][passage].isWall = false;
+    }
+    grid[divider][passage].isWall = false;
+   
+    // Recursively divide the area above and below the divider
+    this.createMaze(grid, x1, y1, x2, divider - 1, minSize);
+    this.createMaze(grid, x1, divider + 1, x2, y2, minSize);
+  } else {
+    let divider = x1 + Math.floor(Math.random() * (x2-x1-minSize+1))+minSize ;
+
+    // Create a passage through the divider
+    let passage = y1 + Math.floor(Math.random() * (y2-y1+1 ));
+    // Fill the area above and below the divider with walls
+    for (let i = y1; i <= y2; i++) {
+         if(divider ==1 || divider == x2){
+          break;
+         }
+          
+            grid[i][divider].isWall = true;
+            
+            grid[i][divider-1].isWall = false
+            grid[i][divider+1].isWall = false
+       
+            grid[passage][divider].isWall = false;
+    }
+    grid[passage][divider].isWall = false;
+   
+    // Recursively divide the area above and below the divider
+    this.verticalRecursive(grid, x1, y1,divider - 1,y2,minSize);
+    this.verticalRecursive(grid, divider + 1, y1, x2, y2, minSize);
+  }
+}
+verticalRecursive(grid,x1,y1,x2,y2,minSize){
+  
+  // Base case: if the area is too small, return
+  if (x1 >= x2 || y1 >= y2 || x2 - x1 < minSize || y2 - y1 < minSize) return;
+
+  // Randomly choose a horizontal or vertical line to divide the area
+  // if (Math.random() < 0.5) {
+      // Divide horizontally
+      let divider = x1 + Math.floor(Math.random() * (x2-x1-minSize+1))+minSize ;
+
+      // Create a passage through the divider
+      let passage = y1 + Math.floor(Math.random() * (y2-y1+1 ));
+      // Fill the area above and below the divider with walls
+      for (let i = y1; i <= y2; i++) {
+           if(divider ==1 || divider == x2){
+            break;
+           }
+            
+              grid[i][divider].isWall = true;
+              
+              grid[i][divider-1].isWall = false
+              grid[i][divider+1].isWall = false
+         
+              grid[passage][divider].isWall = false;
+      }
+      grid[passage][divider].isWall = false;
+     
+      // Recursively divide the area above and below the divider
+      this.verticalRecursive(grid, x1, y1,divider - 1,y2,minSize);
+      this.verticalRecursive(grid, divider + 1, y1, x2, y2, minSize);
+  // } else {
+  //     // Divide vertically
+  //     let divider = x1 + Math.floor(Math.random() * (x2 - x1 - minSize + 1)) + minSize;
+
+  //     // Create a passage through the divider
+  //     let passage = y1 + Math.floor(Math.random() * (y2 - y1 + 1));
+
+  //     // Fill the area left and right of the divider with walls
+  //     for (let i = y1; i <= y2; i++) {
+  //         if (i != passage) {
+  //             grid[i][divider].isWall = true;
+  //         }
+  //     }
+
+  //     // Recursively divide the area left and right of the divider
+  //     this.createMaze(grid, x1, y1, divider - 1, y2, minSize);
+  //     this.createMaze(grid, divider + 1, y1, x2, y2, minSize);
+    // }
+}
 
 drawWallsInCorners(){
   for(let i=0;i< Math.trunc(window.innerHeight / 35);i++){
