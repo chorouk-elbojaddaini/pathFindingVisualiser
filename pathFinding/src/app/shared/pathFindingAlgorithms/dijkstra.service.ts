@@ -1,6 +1,6 @@
 import { NgIf } from '@angular/common';
 import { Injectable } from '@angular/core';
-import { windowTime } from 'rxjs';
+import { min, windowTime } from 'rxjs';
 import { Board } from '../boardModele';
 import { Particle } from '../particleModele';
 import { Square } from '../squareModele';
@@ -401,31 +401,26 @@ export class DijkstraService {
     // Randomly choose a horizontal or vertical line to divide the area
     // if (Math.random() < 0.5) {
         // Divide horizontally
-        let divider = y1 + Math.floor(Math.random() * (y2 - y1 - minSize + 1)) +minSize ;
+        let divider = y1 + Math.floor(Math.random() * (y2-y1-minSize+1))+minSize ;
 
         // Create a passage through the divider
-        let passage = x1 + Math.floor(Math.random() * (x2 - x1 + 1));
+        let passage = x1 + Math.floor(Math.random() * (x2-x1+1 ));
         
         // Fill the area above and below the divider with walls
         for (let i = x1; i <= x2; i++) {
-          console.log("passage",i==passage);
-          console.log(grid[divider-1][i]);
-            if (i !== passage ) {
+             if(divider ==1 || divider == y2){
+              break;
+             }
               
-              if(!grid[divider-1][i].isWall  && !grid[divider+1][i].isWall){
                 grid[divider][i].isWall = true;
-                console.log("passage in the if ",passage==i);
-              }
-             
                 
-            }
-            else {
-              grid[divider-1][passage].isWall = false
-              grid[divider+1][passage].isWall = false
-            }
+                grid[divider-1][i].isWall = false
+                grid[divider+1][i].isWall = false
+           
+            
         }
-        // if (x1 < passage-1) grid[divider][passage-1].isWall = false;
-        // if (x2 > passage+1) grid[divider][passage+1].isWall = false;
+        grid[divider][passage].isWall = false;
+       
         // Recursively divide the area above and below the divider
         this.createMaze(grid, x1, y1, x2, divider - 1, minSize);
         this.createMaze(grid, x1, divider + 1, x2, y2, minSize);

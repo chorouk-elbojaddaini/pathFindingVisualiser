@@ -182,7 +182,7 @@ export class GrilleComponent {
           break;
           case'Recursive Division':
            this.dijkstraService.drawWallsInCorners()
-           this.dijkstraService.createMaze(this.nodes,0,0,Math.trunc(window.innerWidth / 30)-1, Math.trunc(window.innerHeight / 35)-1,1);
+           this.dijkstraService.createMaze(this.nodes,1,1,Math.trunc(window.innerWidth / 30)-2, Math.trunc(window.innerHeight / 35)-2,1);
            break;
     
     }
