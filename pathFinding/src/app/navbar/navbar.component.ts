@@ -27,11 +27,11 @@ export class NavbarComponent implements OnInit {
   }
   ngDoCheck() {
     this.chosenMaze();
-    if(this.dijkstraService.chosenAlgo != this.valueVisualise){
+    if(this.typeAlgorithm.value.algo != this.valueVisualise){
       this.chosenAlgoName();
     let btnVisualise = document.getElementById("button");
       this.valueVisualise = this.dijkstraService.chosenAlgo;
-      btnVisualise.innerHTML = 'visualise'+ this.dijkstraService.chosenAlgo;
+      btnVisualise.innerHTML = 'visualise ' + this.dijkstraService.chosenAlgo;
 
     }
     
