@@ -51,6 +51,9 @@ export class GrilleComponent {
     this.isPerson = this.dijkstraService.isPerson;
     if (!this.dijkstraService.ngDoCheckRunOnce && this.isPerson) {
       this.NotPersonfct();
+      if(this.nodes[3][25].isWall){
+        this.nodes[3][25].isWall = false;
+      }
       this.nodes[3][25].isPerson = true;
       this.personNode = this.nodes[3][25];
       this.dijkstraService.ngDoCheckRunOnce = true;
