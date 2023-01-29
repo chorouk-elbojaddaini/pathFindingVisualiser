@@ -46,19 +46,19 @@
               </form>
               </li>
           <li class="nav-item">
-            <a class="nav-link" href="#" (click) = "addPerson()">Add Person</a>
+            <a class="nav-link" href="#" (click) = "addPerson()" >Add Person</a>
           </li>
           <li class="nav-item">
             <button type="button" class="btn" (click)="choseAlgorithme()" id="button">Visualise {{dijkstraService.chosenAlgo}}</button>
           </li>
           <li class="nav-item">
-            <button type="button" class="btn" >Clear Board</button>
+            <button type="button" class="btn" (click)="clearBoard()">Clear Board</button>
           </li>
           <li class="nav-item">
-            <button type="button" class="btn ">Clear Walls </button>
+            <button type="button" class="btn " (click)="clearWalls()">Clear Walls </button>
           </li>
           <li class="nav-item">
-            <button type="button" class="btn ">Clear Path </button>
+            <button type="button" class="btn " (click) ="clearPath()">Clear Path </button>
           </li>
         </ul>
         <li class="nav-item dropdown">

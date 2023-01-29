@@ -27,7 +27,6 @@ export class NavbarComponent implements OnInit {
   }
   ngDoCheck() {
     this.chosenAlgoName();
-    // console.log("hadi choix",this.selectedMaze);
     this.chosenMaze();
 
   }
@@ -65,7 +64,9 @@ export class NavbarComponent implements OnInit {
     }
   }
   addPerson() {
-    this.dijkstraService.isPerson = true;
+    this.dijkstraService.isPerson = !this.dijkstraService.isPerson;
+    this.dijkstraService.ngDoCheckRunOnce = false;
+
   }
   chosenAlgoName() {
     this.dijkstraService.chosenAlgo = this.typeAlgorithm.value.algo;
@@ -73,5 +74,15 @@ export class NavbarComponent implements OnInit {
   chosenMaze(){
    
     this.dijkstraService.mazePattern = this.typeMazePattern.value.mazePattern;
+  }
+
+  clearBoard(){
+    this.dijkstraService.clearBoard = true;
+  }
+  clearWalls(){
+    this.dijkstraService.reinitialiseWall();
+  }
+  clearPath(){
+    this.dijkstraService.clearPath = true;
   }
 }

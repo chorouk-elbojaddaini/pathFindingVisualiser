@@ -46,7 +46,12 @@ export class DijkstraService {
   numberParticles:number;
   particles:Particle[];
   globalBest:Square;
+  clearBoard:boolean;
+  clearWalls:boolean;
+  clearPath:boolean;
+  ngDoCheckRunOnce:boolean=false;
   constructor() {}
+ 
   getNodes() {
     this.initialiseGrid();
     return this.nodes;
@@ -597,6 +602,59 @@ reinitialiseWall(){
       this.nodes[i][j].isWall = false;
     }
   }
+}
+reinitialisePath(){
+  this.board.path = [];
+  console.log("path",this.board.path);
+  this.visitedNode = [];
+  this.visitedNodeSet = [];
+  this.openSet = [];
+  this.closedSet = [];
+  for (let i = 0; i < window.innerHeight / 35; i++) {
+    for (let j = 0; j < Math.trunc(window.innerWidth / 30); j++) {
+      this.nodes[i][j].isPath = false;
+    }
+  }
+
+  
+}
+reinitialiseStatus(){
+  for (let i = 0; i < window.innerHeight / 35; i++) {
+    for (let j = 0; j < Math.trunc(window.innerWidth / 30); j++) {
+      this.nodes[i][j].isOpenSet = false;
+      this.nodes[i][j].isClosedSet = false;
+      this.nodes[i][j].isPerson = false;
+      this.nodes[i][j].visited = false;
+      this.nodes[i][j].queued = false;
+    
+    }
+  }
+}
+
+
+clearBoardfct(){
+  for (let i = 0; i < window.innerHeight / 35; i++) {
+    for (let j = 0; j < Math.trunc(window.innerWidth / 30); j++) {
+      this.nodes[i][j].isStartingbox = false;
+      this.nodes[i][j].isTargetBox = false;
+    }
+  }
+    //starting box
+    this.nodes[8][Math.trunc(this.numberSquares / 2) - 10].isStartingbox = true;
+    this.startingBox = this.nodes[8][Math.trunc(this.numberSquares / 2) - 10];
+    this.nodes[8][Math.trunc(this.numberSquares / 2) - 10].isNormal = false;
+    //target box
+    this.nodes[8][Math.trunc(this.numberSquares / 2) + 10].isTargetBox = true;
+    this.targetBox = this.nodes[8][Math.trunc(this.numberSquares / 2) + 10];
+    this.nodes[8][Math.trunc(this.numberSquares / 2) + 10].isNormal = false;
+    if(this.isPerson){
+      this.isPerson = !this.isPerson;
+    this.ngDoCheckRunOnce = false;
+    }
+    this.reinitialiseWall();
+    this.reinitialiseStatus();
+    this.reinitialisePath();
+
 }
 }
 
