@@ -630,6 +630,17 @@ reinitialiseStatus(){
     }
   }
 }
+reinitialisePathStatus(){
+  for (let i = 0; i < window.innerHeight / 35; i++) {
+    for (let j = 0; j < Math.trunc(window.innerWidth / 30); j++) {
+      this.nodes[i][j].isOpenSet = false;
+      this.nodes[i][j].isClosedSet = false;
+      this.nodes[i][j].visited = false;
+      this.nodes[i][j].queued = false;
+    
+    }
+  }
+}
 
 
 clearBoardfct(){

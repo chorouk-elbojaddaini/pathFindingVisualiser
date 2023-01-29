@@ -37,8 +37,9 @@ export class GrilleComponent {
   }
   ngDoCheck() {
     if(this.dijkstraService.clearPath){
-      this.dijkstraService.reinitialiseStatus();
+      this.dijkstraService.reinitialisePathStatus();
       this.dijkstraService.reinitialisePath();
+      
       this.dijkstraService.algo = null;
       this.dijkstraService.clearPath = false;
     }
