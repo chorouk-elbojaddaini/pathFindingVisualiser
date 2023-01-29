@@ -480,7 +480,7 @@ recursiveDivision(grid,x1,y1,x2,y2,minSize){
          if(divider ==1 || divider == y2){
           break;
          }
-          if( !grid[divider][i].isTargetBox ){
+          if( !grid[divider][i].isTargetBox && !grid[divider][i].isPerson ){
             grid[divider][i].isWall = true;
           }
            
@@ -505,7 +505,7 @@ recursiveDivision(grid,x1,y1,x2,y2,minSize){
          if(divider ==1 || divider == x2){
           break;
          }
-         if(!grid[i][divider].isTargetBox ){
+         if(!grid[i][divider].isTargetBox && !grid[i][divider].isPerson ){
           grid[i][divider].isWall = true;
         } 
 
