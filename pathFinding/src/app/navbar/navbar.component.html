@@ -46,10 +46,15 @@
               </form>
               </li>
           <li class="nav-item">
-            <a class="nav-link" href="#" (click) = "addPerson()" >Add Person</a>
+            <a  *ngIf="!dijkstraService.isPerson" class="nav-link" href="#" (click) = "addPerson()" >
+              Add person
+            </a>
+            <a  *ngIf="dijkstraService.isPerson" class="nav-link" href="#" (click) = "addPerson()" >
+              Remove Person
+            </a>
           </li>
           <li class="nav-item">
-            <button type="button" class="btn" (click)="choseAlgorithme()" id="button">Visualise {{dijkstraService.chosenAlgo}}</button>
+            <button type="button" class="btn" (click)="choseAlgorithme()"  id="button">Visualise</button>
           </li>
           <li class="nav-item">
             <button type="button" class="btn" (click)="clearBoard()">Clear Board</button>
