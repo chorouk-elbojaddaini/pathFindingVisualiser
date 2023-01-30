@@ -26,6 +26,10 @@ export class GrilleComponent {
   previousValue:string = 'maze';
   searchingDij = true;
   flag = false
+  flagBreadth = false;
+  flagDepth = false;
+  isSearchingBreadth = true;
+  isSearchingDepth = true;
   constructor(public dijkstraService: DijkstraService) {}
   ngOnInit(): void {
     let wi = window.innerWidth;
@@ -102,8 +106,8 @@ export class GrilleComponent {
     
 
       if(this.searchingDij){
-         let visited= this.dijkstraService.animatedDijkstraAlgorithm(this.startingBox , this.targetBox).queue;
-         this.board.path = this.dijkstraService.animatedDijkstraAlgorithm(this.startingBox , this.targetBox).path.reverse();
+         let visited= this.dijkstraService.dijkstraAlgorithm(this.startingBox , this.targetBox,true).queue;
+         this.board.path = this.dijkstraService.dijkstraAlgorithm(this.startingBox , this.targetBox,true).path.reverse();
          for(let i=0;i<visited.length;i++){
           setTimeout(()=>{
             this.currentBox = visited[i];
@@ -116,10 +120,10 @@ export class GrilleComponent {
                   this.currentBox = this.board.path[i];
                   console.log(this.currentBox);
                   this.currentBox.isPath = true;
-                }, 1000 * i)
+                }, 10000 * i)
               }
             }
-          }, 1000 * i)
+          }, 100 * i)
         } 
         
         
@@ -133,19 +137,23 @@ export class GrilleComponent {
          if (this.isPerson) {
            this.dijkstraService.dijkstraAlgorithm(
              this.startingBox,
-             this.personNode
+             this.personNode,
+             false
            );
       
            if (this.board.path.length != 0) {
              this.dijkstraService.dijkstraAlgorithm(
                this.personNode,
-               this.targetBox
+               this.targetBox,
+               false
              );
            }
          } else {
            this.dijkstraService.dijkstraAlgorithm(
              this.startingBox,
-             this.targetBox
+             this.targetBox,
+             false
+            
            );
          } 
        
@@ -175,47 +183,100 @@ export class GrilleComponent {
         }
         break;
       case 'breadth':
-        this.dijkstraService.reinitialisePathQueued();
-
-        if (this.isPerson) {
-          this.dijkstraService.breadthFirstSearch(
-            this.startingBox,
-            this.personNode
-          );
-          if (this.board.path.length != 0) {
+        if(this.isSearchingBreadth){
+          let visited= this.dijkstraService.breadthFirstSearch(this.startingBox , this.targetBox,true).visited;
+          this.board.path = this.dijkstraService.breadthFirstSearch(this.startingBox , this.targetBox,true).path.reverse();
+          for(let i=0;i<visited.length;i++){
+           setTimeout(()=>{
+             this.currentBox = visited[i];
+             console.log(this.currentBox);
+             this.currentBox.visited = true;
+             if (i === visited.length - 1) {
+               this.flagBreadth = true;
+               for(let i=0;i<this.board.path.length;i++){
+                 setTimeout(()=>{
+                   this.currentBox = this.board.path[i];
+                   console.log(this.currentBox);
+                   this.currentBox.isPath = true;
+                 }, 1000 * i)
+               }
+             }
+           }, 1000 *i)
+         } 
+         
+         
+         this.isSearchingBreadth =false;
+        }
+       
+        if(this.flagBreadth){
+          console.log("i am being executed");
+         this.dijkstraService.reinitialisePathQueued();
+       
+          if (this.isPerson) {
             this.dijkstraService.breadthFirstSearch(
+              this.startingBox,
               this.personNode,
-              this.targetBox
+              false
             );
-          }
-        } else {
-          this.dijkstraService.breadthFirstSearch(
-            this.startingBox,
-            this.targetBox
-          );
+       
+            if (this.board.path.length != 0) {
+              this.dijkstraService.breadthFirstSearch(
+                this.personNode,
+                this.targetBox,
+                false
+              );
+            }
+          } else {
+            this.dijkstraService.breadthFirstSearch(
+              this.startingBox,
+              this.targetBox,
+              false
+             
+            );
+          } 
+        
         }
-        break;
-        case 'depth':
-        this.dijkstraService.reinitialisePathQueued();
+        // this.dijkstraService.reinitialisePathQueued();
 
-        if (this.isPerson) {
-          this.dijkstraService.DepthFirstSearch(
-            this.startingBox,
-            this.personNode
-          );
-          if (this.board.path.length != 0) {
-            this.dijkstraService.DepthFirstSearch(
-              this.personNode,
-              this.targetBox
-            );
-          }
-        } else {
-          this.dijkstraService.DepthFirstSearch(
-            this.startingBox,
-            this.targetBox
-          );
-        }
-        break;
+        // if (this.isPerson) {
+        //   this.dijkstraService.breadthFirstSearch(
+        //     this.startingBox,
+        //     this.personNode
+        //   );
+        //   if (this.board.path.length != 0) {
+        //     this.dijkstraService.breadthFirstSearch(
+        //       this.personNode,
+        //       this.targetBox
+        //     );
+        //   }
+        // } else {
+        //   this.dijkstraService.breadthFirstSearch(
+        //     this.startingBox,
+        //     this.targetBox
+        //   );
+        // }
+        // break;
+        // case 'depth':
+        // this.dijkstraService.reinitialisePathQueued();
+
+        // if (this.isPerson) {
+        //   this.dijkstraService.DepthFirstSearch(
+        //     this.startingBox,
+        //     this.personNode
+        //   );
+        //   if (this.board.path.length != 0) {
+        //     this.dijkstraService.DepthFirstSearch(
+        //       this.personNode,
+        //       this.targetBox
+        //     );
+        //   }
+        // } else {
+        //   this.dijkstraService.DepthFirstSearch(
+        //     this.startingBox,
+        //     this.targetBox
+        //   );
+        // }
+         break;
       case 'swarm':
         this.dijkstraService.reinitialisePathQueued();
 

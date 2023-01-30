@@ -1,6 +1,6 @@
 import { NgIf } from '@angular/common';
 import { Injectable } from '@angular/core';
-import { min, windowTime } from 'rxjs';
+import { iif, min, windowTime } from 'rxjs';
 import { Board } from '../boardModele';
 import { Particle } from '../particleModele';
 import { Square } from '../squareModele';
@@ -120,7 +120,8 @@ export class DijkstraService {
     }
   }
 
-  animatedDijkstraAlgorithm(nodeStart: Square, nodeTarget: Square) {
+ 
+  dijkstraAlgorithm(nodeStart: Square, nodeTarget: Square,ifIsFirst) {
     this.searching = true;
     this.board.path = [];
 
@@ -135,8 +136,10 @@ export class DijkstraService {
       this.currentBox = this.queue.shift();
   
      
-         
-          // this.currentBox.visited = true;
+         if(!ifIsFirst){
+          this.currentBox.visited = true;
+         }
+          
           this.visitedNode.push(this.currentBox)
    
 
@@ -144,48 +147,10 @@ export class DijkstraService {
         this.searching = false;
         do {
           this.board.path.push(this.currentBox);
-          // this.currentBox.isPath = true;
-          this.currentBox = this.currentBox.prior;
-        } while (this.currentBox != nodeStart);
-      } else {
-        this.currentBox.neighbours.forEach((neighbour) => {
-          if (!neighbour.queued && !neighbour.isWall ) {
-            neighbour.queued = true;
-            neighbour.prior = this.currentBox;
-
-            this.queue.push(neighbour);
-          }
-        });
-      }
-    }
-   
-    return {queue:this.visitedNode,path:this.board.path};
-  }
-  dijkstraAlgorithm(nodeStart: Square, nodeTarget: Square) {
-    this.searching = true;
-    this.board.path = [];
-
-     this.reinitialiseQueued();
-      this.visitedNode = [];
-    this.queue = [];
-    this.queue.push(nodeStart);
-
-    nodeStart.queued = true;
-
-    while (this.queue.length > 0 && this.searching) {
-      this.currentBox = this.queue.shift();
-  
-     
-         
-           this.currentBox.visited = true;
-          this.visitedNode.push(this.currentBox)
-   
-
-      if (this.currentBox == nodeTarget) {
-        this.searching = false;
-        do {
-          this.board.path.push(this.currentBox);
+         if(!ifIsFirst){
           this.currentBox.isPath = true;
+         }
+          
           this.currentBox = this.currentBox.prior;
         } while (this.currentBox != nodeStart);
       } else {
@@ -320,22 +285,28 @@ export class DijkstraService {
     
     return [];
   }
-  breadthFirstSearch(nodeStart:Square,nodeTarget:Square){
+  breadthFirstSearch(nodeStart:Square,nodeTarget:Square,ifIsFirst){
     this.queue = [];
-    this.visitedNode = [];
+
     this.queue.push(nodeStart);
     this.board.path = [];
+    this.visitedNode = [];
     while(this.queue.length>0){
       this.currentBox = this.queue.shift();
-      this.currentBox.visited = true;
+      if(!ifIsFirst){
+        this.currentBox.visited = true;
+      }
       this.visitedNode.push(this.currentBox);
       if(this.currentBox == nodeTarget){
         do {
-          this.currentBox.isPath = true;
+          if(!ifIsFirst){
+            this.currentBox.isPath = true;
+          }
+          
           this.board.path.push(this.currentBox);
           this.currentBox = this.currentBox.prior;
         } while (this.currentBox != nodeStart);
-        return this.board.path;
+        break;
       }
       
       for (let neighbor of this.currentBox.neighbours) {
@@ -347,7 +318,7 @@ export class DijkstraService {
         }
     }
     }
-    return [];
+    return {visited:this.visitedNode,path:this.board.path};
   }
 
   swarmAlgorithm(startNode:Square,targetNode:Square){
