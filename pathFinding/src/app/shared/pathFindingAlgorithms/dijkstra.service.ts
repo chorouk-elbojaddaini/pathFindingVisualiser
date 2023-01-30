@@ -203,8 +203,8 @@ export class DijkstraService {
         this.board.path = [this.currentBox];
         do {
           this.board.path.push(this.currentBox);
-          if(!this.isAnimated){
-            // this.currentBox.isPath = true;
+          if(!isAnimated){
+            this.currentBox.isPath = true;
           }
           
           this.currentBox = this.currentBox.prior;
@@ -216,7 +216,8 @@ export class DijkstraService {
       this.removeElement(this.openSet, this.currentBox);
       this.closedSet.push(this.currentBox);
       if(!isAnimated){
-        // this.currentBox.isClosedSet = true;
+        console.log("isAnimated in the service",isAnimated);
+        this.currentBox.isClosedSet = true;
       }
       
       for (let neighbor of this.currentBox.neighbours) {
@@ -228,7 +229,8 @@ export class DijkstraService {
           if (!this.openSet.includes(neighbor)) {
             this.openSet.push(neighbor);
             if(!isAnimated){
-              // neighbor.isOpenSet = true;
+             
+              neighbor.isOpenSet = true;
             }
             
           } else if (tmpG >= neighbor.g) {
