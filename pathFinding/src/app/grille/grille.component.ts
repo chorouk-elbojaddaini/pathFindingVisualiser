@@ -103,7 +103,7 @@ export class GrilleComponent {
         break;
       case 'dijkstra':
       
-    
+    this.reinitialisePathQueued();
 
       if(this.searchingDij){
          let visited= this.dijkstraService.dijkstraAlgorithm(this.startingBox , this.targetBox,true).queue;
@@ -183,7 +183,11 @@ export class GrilleComponent {
         }
         break;
       case 'breadth':
+       
+        this.dijkstraService.reinitialisePathStatus();
+
         if(this.isSearchingBreadth){
+          console.log("drawing anim");
           let visited= this.dijkstraService.breadthFirstSearch(this.startingBox , this.targetBox,true).visited;
           this.board.path = this.dijkstraService.breadthFirstSearch(this.startingBox , this.targetBox,true).path.reverse();
           for(let i=0;i<visited.length;i++){
@@ -201,11 +205,13 @@ export class GrilleComponent {
                  }, 1000 * i)
                }
              }
-           }, 1000 *i)
+           }, 100 *i)
          } 
          
-         
+         this.searchingDij = true;
+        this.flag =false;
          this.isSearchingBreadth =false;
+
         }
        
         if(this.flagBreadth){
@@ -236,6 +242,7 @@ export class GrilleComponent {
           } 
         
         }
+        
         // this.dijkstraService.reinitialisePathQueued();
 
         // if (this.isPerson) {
