@@ -27,6 +27,7 @@ export class DijkstraService {
   visitedNode:Square[];
   visitedNodeSet;
  dividerArr = [];
+ isAnimated:boolean;
   board = new Board(
     window.innerWidth,
     this.numberSquares * 3,
@@ -179,7 +180,7 @@ export class DijkstraService {
     return arr;
   }
 
-  aStarSearchAlgo(nodeStart: Square, nodeTarget: Square) {
+  aStarSearchAlgo(nodeStart: Square, nodeTarget: Square,isAnimated) {
     //this.reinitialisePathQueued();
     this.openSet = [nodeStart];
     this.closedSet = [];
@@ -202,16 +203,22 @@ export class DijkstraService {
         this.board.path = [this.currentBox];
         do {
           this.board.path.push(this.currentBox);
-          this.currentBox.isPath = true;
+          if(!this.isAnimated){
+            // this.currentBox.isPath = true;
+          }
+          
           this.currentBox = this.currentBox.prior;
         } while (this.currentBox != nodeStart);
        
-        return this.board.path;
+         break;
       }
 
       this.removeElement(this.openSet, this.currentBox);
       this.closedSet.push(this.currentBox);
-      this.currentBox.isClosedSet = true;
+      if(!isAnimated){
+        // this.currentBox.isClosedSet = true;
+      }
+      
       for (let neighbor of this.currentBox.neighbours) {
         if (!neighbor.isWall) {
           if (this.closedSet.includes(neighbor)) {
@@ -220,7 +227,10 @@ export class DijkstraService {
           let tmpG = this.currentBox.g + 1;
           if (!this.openSet.includes(neighbor)) {
             this.openSet.push(neighbor);
-            neighbor.isOpenSet = true;
+            if(!isAnimated){
+              // neighbor.isOpenSet = true;
+            }
+            
           } else if (tmpG >= neighbor.g) {
             continue;
           }
@@ -232,7 +242,7 @@ export class DijkstraService {
         }
       }
     }
-    return [];
+    return {closed:this.closedSet,path:this.board.path};
   }
   greedyBestFirstSearch(nodeStart:Square,nodeTarget:Square){
     this.openSet = [nodeStart];
@@ -314,7 +324,7 @@ export class DijkstraService {
           
           neighbor.prior = this.currentBox;
             this.queue.push(neighbor);
-            this.visitedNode.push(neighbor);
+            // this.visitedNode.push(neighbor);
         }
     }
     }
@@ -654,6 +664,17 @@ reinitialisePathStatus(){
       this.nodes[i][j].visited = false;
       this.nodes[i][j].queued = false;
     
+    }
+  }
+}
+reinitialisePathVisitedStatus(){
+  for (let i = 0; i < window.innerHeight / 35; i++) {
+    for (let j = 0; j < Math.trunc(window.innerWidth / 30); j++) {
+      this.nodes[i][j].isOpenSet = false;
+      this.nodes[i][j].isClosedSet = false;
+      this.nodes[i][j].visited = false;
+      this.nodes[i][j].queued = false;
+      this.nodes[i][j].isPath = false;
     }
   }
 }

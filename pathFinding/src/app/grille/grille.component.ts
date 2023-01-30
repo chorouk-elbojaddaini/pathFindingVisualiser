@@ -30,6 +30,8 @@ export class GrilleComponent {
   flagDepth = false;
   isSearchingBreadth = true;
   isSearchingDepth = true;
+  isClosedArr :Square[] = [] ;
+  isAnimating = true;
   constructor(public dijkstraService: DijkstraService) {}
   ngOnInit(): void {
     let wi = window.innerWidth;
@@ -43,6 +45,9 @@ export class GrilleComponent {
    
    
   }
+  // initState(){
+  //   this.searchingDij = true;
+  // }
   ngDoCheck() {
     
 
@@ -80,32 +85,68 @@ export class GrilleComponent {
     
     switch (this.dijkstraService.algo) {
       case 'astar':
+      
+      this.flagBreadth = false;
+      this.flag = false;
+      this.isClosedArr ;
+      if(this.dijkstraService.isAnimated ){
+         this.isClosedArr= this.dijkstraService.aStarSearchAlgo(this.startingBox , this.targetBox,true,).closed;
+         this.board.path = this.dijkstraService.aStarSearchAlgo(this.startingBox , this.targetBox,true).path.reverse();
+        console.log("closed",closed);
+        console.log("path",this.board.path);
+         for(let i=0;i<this.isClosedArr.length;i++){
+          setTimeout(()=>{
+            this.currentBox = this.isClosedArr[i];
+            this.currentBox.isClosedSet = true;
+            console.log("ana current box",this.currentBox);
+            
+            if (i === this.isClosedArr.length - 1) {
+              this.flag = true;
+              for(let i=0;i<this.board.path.length;i++){
+                
+                  this.currentBox = this.board.path[i];
+                  console.log(this.currentBox);
+                  this.currentBox.isPath = true;
+                
+              }
+            }
+          }, 100 * i)
+        } 
         
+        
+        this.dijkstraService.isAnimated =false;
+       }  
+
+
         this.dijkstraService.reinitialisePathQueued();
         if (this.isPerson) {
           this.dijkstraService.aStarSearchAlgo(
             this.startingBox,
-            this.personNode
+            this.personNode,
+            false
           );
           if (this.board.path.length != 0) {
             this.dijkstraService.aStarSearchAlgo(
               this.personNode,
-              this.targetBox
+              this.targetBox,
+              false
             );
           }
         } else {
           this.dijkstraService.aStarSearchAlgo(
             this.startingBox,
-            this.targetBox
+            this.targetBox,
+            false
           );
         }
 
         break;
       case 'dijkstra':
-      
-    this.reinitialisePathQueued();
+    
+     
 
-      if(this.searchingDij){
+      this.flagBreadth = false;
+      if(this.dijkstraService.isAnimated ){
          let visited= this.dijkstraService.dijkstraAlgorithm(this.startingBox , this.targetBox,true).queue;
          this.board.path = this.dijkstraService.dijkstraAlgorithm(this.startingBox , this.targetBox,true).path.reverse();
          for(let i=0;i<visited.length;i++){
@@ -113,21 +154,22 @@ export class GrilleComponent {
             this.currentBox = visited[i];
             console.log(this.currentBox);
             this.currentBox.visited = true;
+       
             if (i === visited.length - 1) {
               this.flag = true;
               for(let i=0;i<this.board.path.length;i++){
-                setTimeout(()=>{
+                
                   this.currentBox = this.board.path[i];
                   console.log(this.currentBox);
                   this.currentBox.isPath = true;
-                }, 10000 * i)
+                
               }
             }
           }, 100 * i)
         } 
         
         
-        this.searchingDij =false;
+        this.dijkstraService.isAnimated =false;
        }
       
        if(this.flag){
@@ -183,10 +225,12 @@ export class GrilleComponent {
         }
         break;
       case 'breadth':
-       
-        this.dijkstraService.reinitialisePathStatus();
+        // this.searchingDij = true;
+       this.flag =false;
+         
+        // this.dijkstraService.reinitialisePathStatus();
 
-        if(this.isSearchingBreadth){
+        if(this.dijkstraService.isAnimated){
           console.log("drawing anim");
           let visited= this.dijkstraService.breadthFirstSearch(this.startingBox , this.targetBox,true).visited;
           this.board.path = this.dijkstraService.breadthFirstSearch(this.startingBox , this.targetBox,true).path.reverse();
@@ -198,19 +242,17 @@ export class GrilleComponent {
              if (i === visited.length - 1) {
                this.flagBreadth = true;
                for(let i=0;i<this.board.path.length;i++){
-                 setTimeout(()=>{
+                 
                    this.currentBox = this.board.path[i];
                    console.log(this.currentBox);
                    this.currentBox.isPath = true;
-                 }, 1000 * i)
+                
                }
              }
            }, 100 *i)
          } 
          
-         this.searchingDij = true;
-        this.flag =false;
-         this.isSearchingBreadth =false;
+         this.dijkstraService.isAnimated =false;
 
         }
        
@@ -241,7 +283,7 @@ export class GrilleComponent {
             );
           } 
         
-        }
+        }  
         
         // this.dijkstraService.reinitialisePathQueued();
 

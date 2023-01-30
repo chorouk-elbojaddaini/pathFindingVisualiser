@@ -72,6 +72,8 @@ export class NavbarComponent implements OnInit {
         default:  
       btnVisualise.innerHTML = 'pick an algorithm';
     }
+    this.dijkstraService.isAnimated = true;
+    this.dijkstraService.reinitialisePathVisitedStatus();
   }
   addPerson() {
     this.dijkstraService.isPerson = !this.dijkstraService.isPerson;
