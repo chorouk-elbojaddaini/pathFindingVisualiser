@@ -627,12 +627,18 @@ verticalRecursive(grid,x1,y1,x2,y2,minSize){
 
 drawWallsInCorners(){
   for(let i=0;i< Math.trunc(window.innerHeight / 35);i++){
-       this.nodes[i][0].isWall = true;
-       this.nodes[i][this.nodes[i].length-1].isWall = true;
+    setTimeout(()=>{
+      this.nodes[i][0].isWall = true;
+      this.nodes[i][this.nodes[i].length-1].isWall = true;
+    },100*i)
+       
   }
   for (let i = 0; i < this.nodes[0].length; i++) {
-    this.nodes[0][i].isWall = true;
-    this.nodes[this.nodes.length-1][i].isWall = true;
+    setTimeout(()=>{
+      this.nodes[0][i].isWall = true;
+      this.nodes[this.nodes.length-1][i].isWall = true;
+    },100*i)
+    
 }
 }
 reinitialiseWall(){
