@@ -120,7 +120,7 @@ export class DijkstraService {
     }
   }
 
-  dijkstraAlgorithm(nodeStart: Square, nodeTarget: Square) {
+  animatedDijkstraAlgorithm(nodeStart: Square, nodeTarget: Square) {
     this.searching = true;
     this.board.path = [];
 
@@ -145,6 +145,47 @@ export class DijkstraService {
         do {
           this.board.path.push(this.currentBox);
           // this.currentBox.isPath = true;
+          this.currentBox = this.currentBox.prior;
+        } while (this.currentBox != nodeStart);
+      } else {
+        this.currentBox.neighbours.forEach((neighbour) => {
+          if (!neighbour.queued && !neighbour.isWall ) {
+            neighbour.queued = true;
+            neighbour.prior = this.currentBox;
+
+            this.queue.push(neighbour);
+          }
+        });
+      }
+    }
+   
+    return {queue:this.visitedNode,path:this.board.path};
+  }
+  dijkstraAlgorithm(nodeStart: Square, nodeTarget: Square) {
+    this.searching = true;
+    this.board.path = [];
+
+     this.reinitialiseQueued();
+      this.visitedNode = [];
+    this.queue = [];
+    this.queue.push(nodeStart);
+
+    nodeStart.queued = true;
+
+    while (this.queue.length > 0 && this.searching) {
+      this.currentBox = this.queue.shift();
+  
+     
+         
+           this.currentBox.visited = true;
+          this.visitedNode.push(this.currentBox)
+   
+
+      if (this.currentBox == nodeTarget) {
+        this.searching = false;
+        do {
+          this.board.path.push(this.currentBox);
+          this.currentBox.isPath = true;
           this.currentBox = this.currentBox.prior;
         } while (this.currentBox != nodeStart);
       } else {

@@ -25,6 +25,7 @@ export class GrilleComponent {
   ngDoCheckRun: boolean = false;
   previousValue:string = 'maze';
   searchingDij = true;
+  flag = false
   constructor(public dijkstraService: DijkstraService) {}
   ngOnInit(): void {
     let wi = window.innerWidth;
@@ -35,7 +36,7 @@ export class GrilleComponent {
     this.initialiseNodesNeighbours();
     this.board = this.dijkstraService.getBoard();
     this.ngDoCheckRunOnce = false;
-
+   
    
   }
   ngDoCheck() {
@@ -98,18 +99,18 @@ export class GrilleComponent {
         break;
       case 'dijkstra':
       
-      let flag = false;
+    
 
       if(this.searchingDij){
-        let visited= this.dijkstraService.dijkstraAlgorithm(this.startingBox , this.targetBox).queue;
-         this.board.path = this.dijkstraService.dijkstraAlgorithm(this.startingBox , this.targetBox).path.reverse();
+         let visited= this.dijkstraService.animatedDijkstraAlgorithm(this.startingBox , this.targetBox).queue;
+         this.board.path = this.dijkstraService.animatedDijkstraAlgorithm(this.startingBox , this.targetBox).path.reverse();
          for(let i=0;i<visited.length;i++){
           setTimeout(()=>{
             this.currentBox = visited[i];
             console.log(this.currentBox);
             this.currentBox.visited = true;
             if (i === visited.length - 1) {
-              flag = true;
+              this.flag = true;
               for(let i=0;i<this.board.path.length;i++){
                 setTimeout(()=>{
                   this.currentBox = this.board.path[i];
@@ -125,9 +126,9 @@ export class GrilleComponent {
         this.searchingDij =false;
        }
       
-       if( flag){
+       if(this.flag){
          console.log("i am being executed");
-         this.dijkstraService.reinitialisePathQueued();
+        this.dijkstraService.reinitialisePathQueued();
       
          if (this.isPerson) {
            this.dijkstraService.dijkstraAlgorithm(
