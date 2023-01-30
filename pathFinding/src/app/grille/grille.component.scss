@@ -39,10 +39,11 @@
     background-size: contain;
 }
 .path{
-    background-color: yellow;
+    background-color: #FD8A8A;
 }
 .visited{
-    background-color: aqua;
+    animation: backgroundAnim 0.5s ease-in-out 0s 1 normal forwards;
+
 }
 .closed{
     background-color: darkblue;
@@ -57,4 +58,20 @@
 }
 .normal{
     
+}
+@keyframes backgroundAnim {
+  0%{
+    background-color: #baeeeb;
+   
+  }
+  50%{
+    background-color:#9ee2f3;
+  }
+  80%{
+    background-color: #84dbeb;
+  }
+  100%{
+    background-color: #82AAE3;
+
+  }
 }

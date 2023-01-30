@@ -246,7 +246,7 @@ export class DijkstraService {
     }
     return {closed:this.closedSet,path:this.board.path};
   }
-  greedyBestFirstSearch(nodeStart:Square,nodeTarget:Square){
+  greedyBestFirstSearch(nodeStart:Square,nodeTarget:Square,isAnimated){
     this.openSet = [nodeStart];
     this.closedSet = [];
     this.board.path = [];
@@ -267,15 +267,20 @@ export class DijkstraService {
         this.board.path = [this.currentBox];
         do {
           this.board.path.push(this.currentBox);
-          this.currentBox.isPath = true;
+          if(!isAnimated){
+            this.currentBox.isPath = true;
+          }
           this.currentBox = this.currentBox.prior;
         } while (this.currentBox != nodeStart);
-        return this.board.path;
+           break;
       }
 
       this.removeElement(this.openSet, this.currentBox);
       this.closedSet.push(this.currentBox);
-      this.currentBox.isClosedSet = true;
+      if(!isAnimated){
+       
+        this.currentBox.isClosedSet = true;
+      }
       for (let neighbor of this.currentBox.neighbours) {
         if (!neighbor.isWall) {
           if (this.closedSet.includes(neighbor)) {
@@ -284,7 +289,10 @@ export class DijkstraService {
           
           if (!this.openSet.includes(neighbor)) {
             this.openSet.push(neighbor);
-            neighbor.isOpenSet = true;
+            if(!isAnimated){
+             
+              neighbor.isOpenSet = true;
+            }
           } 
 
           neighbor.prior = this.currentBox;
@@ -295,7 +303,7 @@ export class DijkstraService {
       }
     }
     
-    return [];
+    return {closed:this.closedSet,path:this.board.path};
   }
   breadthFirstSearch(nodeStart:Square,nodeTarget:Square,ifIsFirst){
     this.queue = [];
@@ -326,7 +334,7 @@ export class DijkstraService {
           
           neighbor.prior = this.currentBox;
             this.queue.push(neighbor);
-            // this.visitedNode.push(neighbor);
+             this.visitedNode.push(neighbor);
         }
     }
     }
@@ -359,33 +367,37 @@ export class DijkstraService {
   
   
 
-    DepthFirstSearch(nodeStart:Square,nodeTarget:Square){
+    DepthFirstSearch(nodeStart:Square,nodeTarget:Square,isAnimated){
       this.stack = [nodeStart];
-      this.visitedNodeSet = new Set();
+      this.visitedNodeSet = [];
       this.board.path = [];
       while(this.stack.length>0){
         this.currentBox = this.stack.pop();
-        if(this.visitedNodeSet.has(this.currentBox))
+        if(this.visitedNodeSet.includes(this.currentBox))
           continue;
-        this.visitedNodeSet.add(this.currentBox);
-        this.currentBox.visited =true;
+        this.visitedNodeSet.push(this.currentBox);
+        if(!isAnimated){
+          this.currentBox.visited =true;
+        }
         if(this.currentBox == nodeTarget){
           do {
-            this.currentBox.isPath = true;
+            if(!isAnimated){
+              this.currentBox.isPath = true;
+            }
             this.board.path.push(this.currentBox);
             this.currentBox = this.currentBox.prior;
           } while (this.currentBox != nodeStart);
-          return this.board.path.reverse();
+          break;
         }
         
         for (let neighbor of this.currentBox.neighbours) {
-          if (!this.visitedNodeSet.has(neighbor) && !neighbor.isWall) {
+          if (!this.visitedNodeSet.includes(neighbor) && !neighbor.isWall) {
               neighbor.prior = this.currentBox;
               this.stack.push(neighbor);
           }
         }
       }
-      return [];
+      return {visited:this.visitedNodeSet,path:this.board.path};
     
   
   }

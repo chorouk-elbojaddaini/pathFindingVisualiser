@@ -33,6 +33,7 @@ export class GrilleComponent {
   isClosedArr :Square[] = [] ;
   isAnimating = true;
   flagAstar : boolean = false;
+  flagGreedy:boolean = false;
   constructor(public dijkstraService: DijkstraService) {}
   ngOnInit(): void {
     let wi = window.innerWidth;
@@ -88,7 +89,9 @@ export class GrilleComponent {
       case 'astar':
       
       this.flagBreadth = false;
+      this.flagGreedy = false;
       this.flag = false;
+      this.flagDepth = false;
       this.isClosedArr ;
       let closed = []
       let closedP = [];
@@ -181,9 +184,11 @@ export class GrilleComponent {
       let visited = [];
       let visitedP = [];
       let sommeVisited = [];
-       let delay;
+      this.flagGreedy = false;
       this.flagAstar = false
       this.flagBreadth = false;
+      this.flagDepth = false;
+
       if(this.dijkstraService.isAnimated ){
 
         if(this.isPerson){
@@ -208,7 +213,7 @@ export class GrilleComponent {
                   
                 }
               }
-            }, 100*delay)
+            }, 1000*delay)
             
           } 
      
@@ -275,35 +280,139 @@ export class GrilleComponent {
     
         break;
       case 'greedy':
-        this.dijkstraService.reinitialisePathQueued();
+        if(this.dijkstraService.isAnimated ){
+          this.flagBreadth = false;
+          this.flag = false;
+          this.flagAstar = false;
+          this.flagDepth = false;
+          this.isClosedArr ;
+          let closed = []
+          let closedP = [];
+          let someClosed = [];
+          
+              
+            if(this.isPerson){
+              closed= this.dijkstraService.greedyBestFirstSearch(this.startingBox , this.personNode,true).closed;
+              closedP = this.dijkstraService.greedyBestFirstSearch(this.personNode , this.targetBox,true).closed;
+              someClosed = closed.concat(closedP);
+              this.board.path = this.dijkstraService.greedyBestFirstSearch(this.startingBox , this.personNode,true).path.reverse();
+              for(let i=0;i<someClosed.length;i++){
+                setTimeout(()=>{
+                  this.currentBox = someClosed[i];
+                  this.currentBox.isClosedSet = true;
+                 
+                  if (i === someClosed.length - 1) {
+                    this.flagGreedy = true;
+                    for(let i=0;i<this.board.path.length;i++){
+                      
+                        this.currentBox = this.board.path[i];
+                        
+                        this.currentBox.isPath = true;
+                      
+                    }
+                  }
+                }, 100*i)
+              } 
+    
+            }
+            else{
+              this.isClosedArr= this.dijkstraService.greedyBestFirstSearch(this.startingBox , this.targetBox,true).closed;
+              this.board.path = this.dijkstraService.greedyBestFirstSearch(this.startingBox , this.targetBox,true).path.reverse();
+             
+              for(let i=0;i<this.isClosedArr.length;i++){
+               setTimeout(()=>{
+                 this.currentBox = this.isClosedArr[i];
+                 this.currentBox.isClosedSet = true;
+                 
+                 
+                 if (i === this.isClosedArr.length - 1) {
+                   this.flagGreedy = true;
+                   for(let i=0;i<this.board.path.length;i++){
+                     
+                       this.currentBox = this.board.path[i];
+                       
+                       this.currentBox.isPath = true;
+                     
+                   }
+                 }
+               }, 1000 * i)
+             } 
+             
+             
+          
+            }
+            this.dijkstraService.isAnimated =false;
+    
+           }  
+    
+        
+        //runs all the time
+        if(this.flagGreedy){
 
-        if (this.isPerson) {
-          this.dijkstraService.greedyBestFirstSearch(
-            this.startingBox,
-            this.personNode
-          );
-          if (this.board.path.length != 0) {
-            this.dijkstraService.greedyBestFirstSearch(
+       
+          this.dijkstraService.reinitialisePathQueued();
+          if (this.isPerson) {
+            this.dijkstraService.aStarSearchAlgo(
+              this.startingBox,
               this.personNode,
-              this.targetBox
+              false
+            );
+            if (this.board.path.length != 0) {
+              this.dijkstraService.aStarSearchAlgo(
+                this.personNode,
+                this.targetBox,
+                false
+              );
+            }
+          } else {
+            this.dijkstraService.aStarSearchAlgo(
+              this.startingBox,
+              this.targetBox,
+              false
             );
           }
-        } else {
-          this.dijkstraService.greedyBestFirstSearch(
-            this.startingBox,
-            this.targetBox
-          );
         }
         break;
       case 'breadth':
-        // this.searchingDij = true;
-       this.flag =false;
-        this.flagAstar = false;
-        // this.dijkstraService.reinitialisePathStatus();
-
-        if(this.dijkstraService.isAnimated){
-          console.log("drawing anim");
-          let visited= this.dijkstraService.breadthFirstSearch(this.startingBox , this.targetBox,true).visited;
+       
+        if(this.dijkstraService.isAnimated ){
+          this.flagGreedy = false;
+          this.flag = false;
+          this.flagDepth = false;
+          this.flagAstar = false;
+          this.isClosedArr ;
+          let visited = []
+          let visitedP = [];
+          let someVisited = [];
+          
+              
+            if(this.isPerson){
+              visited= this.dijkstraService.breadthFirstSearch(this.startingBox , this.personNode,true).visited;
+              visitedP = this.dijkstraService.breadthFirstSearch(this.personNode , this.targetBox,true).visited;
+              someVisited= visited.concat(visitedP);
+               this.board.path = this.dijkstraService.breadthFirstSearch(this.startingBox , this.personNode,true).path.reverse();
+               for(let i=0;i<someVisited.length;i++){
+              setTimeout(()=>{
+                 this.currentBox = someVisited[i];
+                this.currentBox.visited = true;
+                 
+                  
+                  if (i === someVisited.length - 1) {
+                    this.flagBreadth = true;
+                 for(let i=0;i<this.board.path.length;i++){
+                      
+                       this.currentBox = this.board.path[i];
+                        
+                         this.currentBox.isPath = true;
+                      
+                     }
+                   }
+                 }, 100*i)
+               } 
+    
+            }
+            else{
+              let visited= this.dijkstraService.breadthFirstSearch(this.startingBox , this.targetBox,true).visited;
           this.board.path = this.dijkstraService.breadthFirstSearch(this.startingBox , this.targetBox,true).path.reverse();
           for(let i=0;i<visited.length;i++){
            setTimeout(()=>{
@@ -322,13 +431,36 @@ export class GrilleComponent {
              }
            }, 100 *i)
          } 
-         
-         this.dijkstraService.isAnimated =false;
-
         }
+            this.dijkstraService.isAnimated =false;
+    
+           }  
+        // if(this.dijkstraService.isAnimated){
+        //   let visited= this.dijkstraService.breadthFirstSearch(this.startingBox , this.targetBox,true).visited;
+        //   this.board.path = this.dijkstraService.breadthFirstSearch(this.startingBox , this.targetBox,true).path.reverse();
+        //   for(let i=0;i<visited.length;i++){
+        //    setTimeout(()=>{
+        //      this.currentBox = visited[i];
+        //      console.log(this.currentBox);
+        //      this.currentBox.visited = true;
+        //      if (i === visited.length - 1) {
+        //        this.flagBreadth = true;
+        //        for(let i=0;i<this.board.path.length;i++){
+                 
+        //            this.currentBox = this.board.path[i];
+        //            console.log(this.currentBox);
+        //            this.currentBox.isPath = true;
+                
+        //        }
+        //      }
+        //    }, 100 *i)
+        //  } 
+         
+        //  this.dijkstraService.isAnimated =false;
+
+        // }
        
         if(this.flagBreadth){
-          console.log("i am being executed");
          this.dijkstraService.reinitialisePathQueued();
        
           if (this.isPerson) {
@@ -356,7 +488,6 @@ export class GrilleComponent {
         
         }  
         
-        // this.dijkstraService.reinitialisePathQueued();
 
         // if (this.isPerson) {
         //   this.dijkstraService.breadthFirstSearch(
@@ -375,8 +506,94 @@ export class GrilleComponent {
         //     this.targetBox
         //   );
         // }
-        // break;
-        // case 'depth':
+         break;
+        case 'depth':
+          if(this.dijkstraService.isAnimated ){
+            this.flagGreedy = false;
+            this.flag = false;
+            this.flagBreadth = false;
+            this.flagAstar = false;
+            this.isClosedArr ;
+            let visited = []
+            let visitedP = [];
+            let someVisited = [];
+            
+                
+              if(this.isPerson){
+                 visited= this.dijkstraService.DepthFirstSearch(this.startingBox , this.personNode,true).visited;
+                visitedP = this.dijkstraService.DepthFirstSearch(this.personNode , this.targetBox,true).visited;
+                 someVisited= visited.concat(visitedP);
+                 this.board.path = this.dijkstraService.DepthFirstSearch(this.startingBox , this.personNode,true).path.reverse();
+                for(let i=0;i<someVisited.length;i++){
+                  setTimeout(()=>{
+                 this.currentBox = someVisited[i];
+                  this.currentBox.visited = true;
+                   
+                    
+                    if (i === someVisited.length - 1) {
+                      this.flagDepth = true;
+                  for(let i=0;i<this.board.path.length;i++){
+                        
+                     this.currentBox = this.board.path[i];
+                          
+                    this.currentBox.isPath = true;
+                        
+                      }
+                    }
+                 }, 1000)
+                } 
+      
+               }
+              else{
+             let visited= this.dijkstraService.DepthFirstSearch(this.startingBox , this.targetBox,true).visited;
+            this.board.path = this.dijkstraService.DepthFirstSearch(this.startingBox , this.targetBox,true).path.reverse();
+           for(let i=0;i<visited.length;i++){
+             setTimeout(()=>{
+            this.currentBox = visited[i];
+              this.currentBox.visited = true;
+              if (i === visited.length - 1) {
+          this.flagDepth = true;
+               for(let i=0;i<this.board.path.length;i++){
+                   
+                  this.currentBox = this.board.path[i];
+                console.log(this.currentBox);
+                    this.currentBox.isPath = true;
+                  
+              }
+             }
+           }, 100 *i)
+           } 
+          }
+              this.dijkstraService.isAnimated =false;
+      
+             }  
+            
+         //runs all the time
+        if(this.flagDepth){
+
+            this.dijkstraService.reinitialisePathQueued();
+
+        if (this.isPerson) {
+          this.dijkstraService.DepthFirstSearch(
+            this.startingBox,
+            this.personNode,
+            false
+          );
+          if (this.board.path.length != 0) {
+            this.dijkstraService.DepthFirstSearch(
+              this.personNode,
+              this.targetBox,
+              false
+            );
+          }
+        } else {
+          this.dijkstraService.DepthFirstSearch(
+            this.startingBox,
+            this.targetBox,
+            false
+          );
+        }
+        }
         // this.dijkstraService.reinitialisePathQueued();
 
         // if (this.isPerson) {
@@ -397,24 +614,7 @@ export class GrilleComponent {
         //   );
         // }
          break;
-      case 'swarm':
-        this.dijkstraService.reinitialisePathQueued();
-
-        if (this.isPerson) {
-          this.dijkstraService.swarmAlgorithm(
-            this.startingBox,
-            this.personNode
-          );
-          if (this.board.path.length != 0) {
-            this.dijkstraService.swarmAlgorithm(
-              this.personNode,
-              this.targetBox
-            );
-          }
-        } else {
-          this.dijkstraService.swarmAlgorithm(this.startingBox, this.targetBox);
-        }
-        break;
+      
     }
   
     if (this.dijkstraService.mazePattern !== this.previousValue) {
