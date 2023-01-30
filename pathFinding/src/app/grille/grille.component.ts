@@ -143,7 +143,7 @@ export class GrilleComponent {
                  
                }
              }
-           }, 1000 * i)
+           }, 100 * i)
          } 
          
          
@@ -213,7 +213,7 @@ export class GrilleComponent {
                   
                 }
               }
-            }, 1000*delay)
+            },200*delay)
             
           } 
      
@@ -238,7 +238,7 @@ export class GrilleComponent {
                   
                 }
               }
-            }, 100 * i)
+            }, 50 * i)
           } 
         }
        
@@ -335,7 +335,7 @@ export class GrilleComponent {
                      
                    }
                  }
-               }, 1000 * i)
+               }, 100 * i)
              } 
              
              
@@ -507,7 +507,7 @@ export class GrilleComponent {
         //   );
         // }
          break;
-        case 'depth':
+      case 'depth':
           if(this.dijkstraService.isAnimated ){
             this.flagGreedy = false;
             this.flag = false;
@@ -698,25 +698,21 @@ export class GrilleComponent {
     if (node.isTargetBox) {
       return 'target';
     }
-    if (node.isWall && !node.yellowWall && !node.redWall && !node.greenWall) {
+    if (node.isWall && !node.treeWall) {
       return 'wall';
     }
-    if(node.redWall && node.isWall){
-      return 'redWall';
+   
+    if(node.treeWall && node.isWall){
+      return 'treeWall';
     }
-    if(node.yellowWall && node.isWall){
-      return 'yellowWall';
-    }
-    if(node.greenWall && node.isWall){
-      return 'greenWall';
-    }
-
+ 
     if (node.isPath && !node.isPerson) {
       return 'path';
     }
     if (node.visited && !node.isPerson) {
       return 'visited';
     }
+    
     if (node.isClosedSet && !node.isPerson) {
       return 'closed';
     }
