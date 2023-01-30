@@ -82,6 +82,9 @@ export class DijkstraService {
           0,
           false,
           false,
+          false,
+          false,
+          false,
           false
         );
 
@@ -460,7 +463,22 @@ export class DijkstraService {
           break;
          }
           if( !grid[divider][i].isTargetBox && !grid[divider][i].isPerson){
+            let random = Math.floor(Math.random() * 5) + 1
+            if(random==0){
+              grid[divider][i].redWall = true;
+            }
+            if(random==1){
+              grid[divider][i].greenWall = true;
+            }
+            if(random==2){
+              grid[divider][i].yellowWall = true;
+            }
+           
+
+
             grid[divider][i].isWall = true;
+
+            
           }
            
             
@@ -503,7 +521,7 @@ export class DijkstraService {
   }
 }
 recursiveDivision(grid,x1,y1,x2,y2,minSize){
-    
+  let compteur = 0
   // Base case: if the area is too small, return
   if (x1 >= x2 || y1 >= y2 || x2 - x1 < minSize || y2 - y1 < minSize) return;
 
@@ -520,8 +538,13 @@ recursiveDivision(grid,x1,y1,x2,y2,minSize){
          if(divider ==1 || divider == y2){
           break;
          }
+        
           if( !grid[divider][i].isTargetBox && !grid[divider][i].isPerson ){
-            grid[divider][i].isWall = true;
+
+          
+              grid[divider][i].isWall = true;
+            
+          
           }
            
             
@@ -546,6 +569,7 @@ recursiveDivision(grid,x1,y1,x2,y2,minSize){
           break;
          }
          if(!grid[i][divider].isTargetBox && !grid[i][divider].isPerson ){
+          
           grid[i][divider].isWall = true;
         } 
 
@@ -626,20 +650,51 @@ verticalRecursive(grid,x1,y1,x2,y2,minSize){
 }
 
 drawWallsInCorners(){
-  for(let i=0;i< Math.trunc(window.innerHeight / 35);i++){
-    setTimeout(()=>{
-      this.nodes[i][0].isWall = true;
-      this.nodes[i][this.nodes[i].length-1].isWall = true;
-    },100*i)
-       
-  }
+  let exexuteSecond = true;
+
   for (let i = 0; i < this.nodes[0].length; i++) {
     setTimeout(()=>{
       this.nodes[0][i].isWall = true;
-      this.nodes[this.nodes.length-1][i].isWall = true;
+      if(i==this.nodes[0].length-1){
+        for(let i=0;i< Math.trunc(window.innerHeight / 35);i++){
+          setTimeout(()=>{
+            this.nodes[i][0].isWall = true;
+             this.nodes[i][this.nodes[i].length-1].isWall = true;
+            // if(i ==this.nodes[0].length){
+              exexuteSecond = true;
+              if(i==Math.trunc(window.innerHeight / 35)-1){
+                for (let i = 0; i < this.nodes[0].length; i++) {
+                  setTimeout(()=>{
+                    // this.nodes[0][i].isWall = true;
+                    this.nodes[this.nodes.length-1][i].isWall = true;
+                  },100*i)
+                  
+                }
+              }
+            // }
+          },100*i)
+             
+        }
+      }
+      // this.nodes[this.nodes.length-1][i].isWall = true;
     },100*i)
     
 }
+if(exexuteSecond){
+  // console.log("hi");
+  // for(let i=0;i< Math.trunc(window.innerHeight / 35);i++){
+  //   setTimeout(()=>{
+  //     // this.nodes[i][0].isWall = true;
+  //     this.nodes[i][this.nodes[i].length-1].isWall = true;
+  //   },100*i)
+       
+  // }
+
+}
+
+
+
+
 }
 reinitialiseWall(){
   
