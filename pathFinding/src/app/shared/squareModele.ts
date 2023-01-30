@@ -12,6 +12,7 @@ export class Square {
     public isNormal: boolean,
     public neighbours: Square[],
     public visited: boolean,
+    public visitedAnimation:boolean,
     public queued: boolean,
     public prior: Square,
     public isPath: boolean,
@@ -39,13 +40,13 @@ export class Square {
     
   }
   multiply(arg0: number): Square {
-    return new Square(this.row*arg0,this.col*arg0,false,false,false,false,false,[],false,false,null,false,0,0,0,false,false,false,false);
+    return new Square(this.row*arg0,this.col*arg0,false,false,false,false,false,[],false,false,false,null,false,0,0,0,false,false,false,false);
   }
   subtract(position: Square) {
-    return new Square(this.row - position.row, this.col - position.col,false,false,false,false,false,[],false,false,null,false,0,0,0,false,false,false,false);
+    return new Square(this.row - position.row, this.col - position.col,false,false,false,false,false,[],false,false,false,null,false,0,0,0,false,false,false,false);
   }
   add(velocity:Velocity):Square{
-    return new Square(velocity.row,velocity.col,false,false,false,false,false,[],false,false,null,false,0,0,0,false,false,false,false);
+    return new Square(velocity.row,velocity.col,false,false,false,false,false,[],false,false,false,null,false,0,0,0,false,false,false,false);
   }
   distance(target: Square) {
    

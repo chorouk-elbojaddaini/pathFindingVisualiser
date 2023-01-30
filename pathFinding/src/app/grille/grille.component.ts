@@ -200,7 +200,7 @@ export class GrilleComponent {
             setTimeout(()=>{
               this.currentBox = sommeVisited[i];
               console.log(this.currentBox);
-              this.currentBox.visited = true;
+              this.currentBox.visitedAnimation = true;
          
               if (i === sommeVisited.length - 1) {
                 this.flag = true;
@@ -226,7 +226,7 @@ export class GrilleComponent {
             setTimeout(()=>{
               this.currentBox = visited[i];
               console.log(this.currentBox);
-              this.currentBox.visited = true;
+              this.currentBox.visitedAnimation = true;
          
               if (i === visited.length - 1) {
                 this.flag = true;
@@ -394,7 +394,7 @@ export class GrilleComponent {
                for(let i=0;i<someVisited.length;i++){
               setTimeout(()=>{
                  this.currentBox = someVisited[i];
-                this.currentBox.visited = true;
+                this.currentBox.visitedAnimation = true;
                  
                   
                   if (i === someVisited.length - 1) {
@@ -418,7 +418,7 @@ export class GrilleComponent {
            setTimeout(()=>{
              this.currentBox = visited[i];
              console.log(this.currentBox);
-             this.currentBox.visited = true;
+             this.currentBox.visitedAnimation = true;
              if (i === visited.length - 1) {
                this.flagBreadth = true;
                for(let i=0;i<this.board.path.length;i++){
@@ -527,7 +527,7 @@ export class GrilleComponent {
                 for(let i=0;i<someVisited.length;i++){
                   setTimeout(()=>{
                  this.currentBox = someVisited[i];
-                  this.currentBox.visited = true;
+                  this.currentBox.visitedAnimation = true;
                    
                     
                     if (i === someVisited.length - 1) {
@@ -550,7 +550,7 @@ export class GrilleComponent {
            for(let i=0;i<visited.length;i++){
              setTimeout(()=>{
             this.currentBox = visited[i];
-              this.currentBox.visited = true;
+              this.currentBox.visitedAnimation = true;
               if (i === visited.length - 1) {
           this.flagDepth = true;
                for(let i=0;i<this.board.path.length;i++){
@@ -711,6 +711,9 @@ export class GrilleComponent {
     }
     if (node.visited && !node.isPerson) {
       return 'visited';
+    }
+    if (node.visitedAnimation && !node.isPerson) {
+      return 'visitedAnimation';
     }
     
     if (node.isClosedSet && !node.isPerson) {

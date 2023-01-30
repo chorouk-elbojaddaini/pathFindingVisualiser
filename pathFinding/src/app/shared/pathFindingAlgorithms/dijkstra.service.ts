@@ -75,6 +75,7 @@ export class DijkstraService {
           [],
           false,
           false,
+          false,
           null,
           false,
           0,
@@ -109,6 +110,7 @@ export class DijkstraService {
         this.nodes[i][j].queued = false;
         this.nodes[i][j].isPath = false;
         this.nodes[i][j].visited = false;
+        this.nodes[i][j].visitedAnimation = false;
         this.nodes[i][j].isClosedSet = false;
         this.nodes[i][j].isOpenSet = false;
       }

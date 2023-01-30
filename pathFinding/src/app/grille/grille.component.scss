@@ -48,8 +48,12 @@
 .path{
     background-color: #FD8A8A;
 }
-.visited{
+.visitedAnimation{
     animation: backgroundAnim 0.5s ease-in-out 0s 1 normal forwards;
+}
+.visited{
+    background-color: #82AAE3;
+
 }
 .closed{
     background-color: darkblue;
