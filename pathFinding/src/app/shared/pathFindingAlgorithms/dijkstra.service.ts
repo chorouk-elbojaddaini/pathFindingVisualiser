@@ -125,7 +125,7 @@ export class DijkstraService {
     this.board.path = [];
 
      this.reinitialiseQueued();
-
+      this.visitedNode = [];
     this.queue = [];
     this.queue.push(nodeStart);
 
@@ -133,14 +133,18 @@ export class DijkstraService {
 
     while (this.queue.length > 0 && this.searching) {
       this.currentBox = this.queue.shift();
-
-      this.currentBox.visited = true;
+  
+     
+         
+          // this.currentBox.visited = true;
+          this.visitedNode.push(this.currentBox)
+   
 
       if (this.currentBox == nodeTarget) {
         this.searching = false;
         do {
           this.board.path.push(this.currentBox);
-          this.currentBox.isPath = true;
+          // this.currentBox.isPath = true;
           this.currentBox = this.currentBox.prior;
         } while (this.currentBox != nodeStart);
       } else {
@@ -155,7 +159,7 @@ export class DijkstraService {
       }
     }
    
-    return this.board.path;
+    return {queue:this.visitedNode,path:this.board.path};
   }
   getBoard() {
     return this.board;

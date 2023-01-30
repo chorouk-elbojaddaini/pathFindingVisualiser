@@ -24,6 +24,7 @@ export class GrilleComponent {
   ngDoCheckRunAlgo:boolean = false;
   ngDoCheckRun: boolean = false;
   previousValue:string = 'maze';
+  searchingDij = true;
   constructor(public dijkstraService: DijkstraService) {}
   ngOnInit(): void {
     let wi = window.innerWidth;
@@ -34,12 +35,17 @@ export class GrilleComponent {
     this.initialiseNodesNeighbours();
     this.board = this.dijkstraService.getBoard();
     this.ngDoCheckRunOnce = false;
+
+   
   }
   ngDoCheck() {
+    
+
+
     if(this.dijkstraService.clearPath){
       this.dijkstraService.reinitialisePathStatus();
       this.dijkstraService.reinitialisePath();
-      
+     
       this.dijkstraService.algo = null;
       this.dijkstraService.clearPath = false;
     }
@@ -92,26 +98,58 @@ export class GrilleComponent {
         break;
       case 'dijkstra':
       
-        this.dijkstraService.reinitialisePathQueued();
+      let flag = false;
 
-        if (this.isPerson) {
-          this.dijkstraService.dijkstraAlgorithm(
-            this.startingBox,
-            this.personNode
-          );
-
-          if (this.board.path.length != 0) {
-            this.dijkstraService.dijkstraAlgorithm(
-              this.personNode,
-              this.targetBox
-            );
-          }
-        } else {
-          this.dijkstraService.dijkstraAlgorithm(
-            this.startingBox,
-            this.targetBox
-          );
+      if(this.searchingDij){
+        let visited= this.dijkstraService.dijkstraAlgorithm(this.startingBox , this.targetBox).queue;
+         this.board.path = this.dijkstraService.dijkstraAlgorithm(this.startingBox , this.targetBox).path.reverse();
+         for(let i=0;i<visited.length;i++){
+          setTimeout(()=>{
+            this.currentBox = visited[i];
+            console.log(this.currentBox);
+            this.currentBox.visited = true;
+            if (i === visited.length - 1) {
+              flag = true;
+              for(let i=0;i<this.board.path.length;i++){
+                setTimeout(()=>{
+                  this.currentBox = this.board.path[i];
+                  console.log(this.currentBox);
+                  this.currentBox.isPath = true;
+                }, 1000 * i)
+              }
+            }
+          }, 1000 * i)
         } 
+        
+        
+        this.searchingDij =false;
+       }
+      
+       if( flag){
+         console.log("i am being executed");
+         this.dijkstraService.reinitialisePathQueued();
+      
+         if (this.isPerson) {
+           this.dijkstraService.dijkstraAlgorithm(
+             this.startingBox,
+             this.personNode
+           );
+      
+           if (this.board.path.length != 0) {
+             this.dijkstraService.dijkstraAlgorithm(
+               this.personNode,
+               this.targetBox
+             );
+           }
+         } else {
+           this.dijkstraService.dijkstraAlgorithm(
+             this.startingBox,
+             this.targetBox
+           );
+         } 
+       
+       }
+        
     
         break;
       case 'greedy':
@@ -226,6 +264,9 @@ export class GrilleComponent {
   
   
    
+  }
+  ngAfterViewInit(){
+  
   }
    NotPersonfct(){
     for (let i = 0; i < window.innerHeight / 35; i++) {
