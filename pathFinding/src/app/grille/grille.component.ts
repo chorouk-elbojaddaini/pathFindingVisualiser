@@ -149,21 +149,27 @@ export class GrilleComponent {
       case 'dijkstra':
     
       let visited = [];
+      let visitedP = [];
+      let sommeVisited = [];
+       let delay;
       this.flagAstar = false
       this.flagBreadth = false;
       if(this.dijkstraService.isAnimated ){
 
         if(this.isPerson){
           visited= this.dijkstraService.dijkstraAlgorithm(this.startingBox , this.personNode,true).queue;
+          visitedP = this.dijkstraService.dijkstraAlgorithm(this.personNode , this.targetBox,true).queue;
+          sommeVisited = visited.concat(visitedP);
           this.board.path = this.dijkstraService.dijkstraAlgorithm(this.startingBox , this.personNode,true).path.reverse();
-          for(let i=0;i<visited.length;i++){
+          for(let i=0,delay=1;i<sommeVisited.length;i++,delay++){
             setTimeout(()=>{
-              this.currentBox = visited[i];
+              this.currentBox = sommeVisited[i];
               console.log(this.currentBox);
               this.currentBox.visited = true;
          
-              if (i === visited.length - 1) {
+              if (i === sommeVisited.length - 1) {
                 this.flag = true;
+                
                 for(let i=0;i<this.board.path.length;i++){
                   
                     this.currentBox = this.board.path[i];
@@ -172,30 +178,36 @@ export class GrilleComponent {
                   
                 }
               }
-            }, 100 * i)
+            }, 100*delay)
+            
           } 
+        
+        //   let  visitedP= this.dijkstraService.dijkstraAlgorithm(this.personNode , this.targetBox,true).queue;
+        //   this.board.path = this.dijkstraService.dijkstraAlgorithm(this.personNode , this.targetBox,true).path.reverse();
+        //   for(let i=0,delay;i<visitedP.length;i++,delay++){
+        //     console.log("delay",delay);
+        //     setTimeout(()=>{
+        //       this.currentBox = visitedP[i];
+        //       console.log(this.currentBox);
+        //       this.currentBox.visited = true;
+         
+        //       if (i === visitedP.length - 1) {
+        //         this.flag = true;
+        //         for(let i=0;i<this.board.path.length;i++){
+                  
+        //             this.currentBox = this.board.path[i];
+        //             console.log(this.currentBox);
+        //             this.currentBox.isPath = true;
+                  
+        //         }
+        //       }
+        //     }, 100 * delay)
+            
 
-          let  visitedP= this.dijkstraService.dijkstraAlgorithm(this.personNode , this.targetBox,true).queue;
-          this.board.path = this.dijkstraService.dijkstraAlgorithm(this.personNode , this.targetBox,true).path.reverse();
-          for(let i=0;i<visitedP.length;i++){
-            setTimeout(()=>{
-              this.currentBox = visitedP[i];
-              console.log(this.currentBox);
-              this.currentBox.visited = true;
-         
-              if (i === visitedP.length - 1) {
-                this.flag = true;
-                for(let i=0;i<this.board.path.length;i++){
-                  
-                    this.currentBox = this.board.path[i];
-                    console.log(this.currentBox);
-                    this.currentBox.isPath = true;
-                  
-                }
-              }
-            }, 100 * i)
-          } 
-        }
+          
+        // }
+         }
+        
         else{
           visited= this.dijkstraService.dijkstraAlgorithm(this.startingBox , this.targetBox,true).queue;
           this.board.path = this.dijkstraService.dijkstraAlgorithm(this.startingBox , this.targetBox,true).path.reverse();
