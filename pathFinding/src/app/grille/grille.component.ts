@@ -90,34 +90,64 @@ export class GrilleComponent {
       this.flagBreadth = false;
       this.flag = false;
       this.isClosedArr ;
+      let closed = []
+      let closedP = [];
+      let someClosed = [];
       if(this.dijkstraService.isAnimated ){
-
-
-         this.isClosedArr= this.dijkstraService.aStarSearchAlgo(this.startingBox , this.targetBox,true).closed;
-         this.board.path = this.dijkstraService.aStarSearchAlgo(this.startingBox , this.targetBox,true).path.reverse();
-        console.log("closed",closed);
-        console.log("path",this.board.path);
-         for(let i=0;i<this.isClosedArr.length;i++){
-          setTimeout(()=>{
-            this.currentBox = this.isClosedArr[i];
-            this.currentBox.isClosedSet = true;
-            console.log("ana current box",this.currentBox);
-            
-            if (i === this.isClosedArr.length - 1) {
-              this.flagAstar = true;
-              for(let i=0;i<this.board.path.length;i++){
-                
-                  this.currentBox = this.board.path[i];
-                  console.log(this.currentBox);
-                  this.currentBox.isPath = true;
-                
+          
+        if(this.isPerson){
+          closed= this.dijkstraService.aStarSearchAlgo(this.startingBox , this.personNode,true).closed;
+          closedP = this.dijkstraService.aStarSearchAlgo(this.personNode , this.targetBox,true).closed;
+          someClosed = closed.concat(closedP);
+          this.board.path = this.dijkstraService.aStarSearchAlgo(this.startingBox , this.personNode,true).path.reverse();
+          for(let i=0;i<someClosed.length;i++){
+            setTimeout(()=>{
+              this.currentBox = someClosed[i];
+              this.currentBox.isClosedSet = true;
+             
+              
+              if (i === someClosed.length - 1) {
+                this.flagAstar = true;
+                for(let i=0;i<this.board.path.length;i++){
+                  
+                    this.currentBox = this.board.path[i];
+                    
+                    this.currentBox.isPath = true;
+                  
+                }
               }
-            }
-          }, 100 * i)
-        } 
-        
-        
+            }, 100*i)
+          } 
+
+        }
+        else{
+          this.isClosedArr= this.dijkstraService.aStarSearchAlgo(this.startingBox , this.targetBox,true).closed;
+          this.board.path = this.dijkstraService.aStarSearchAlgo(this.startingBox , this.targetBox,true).path.reverse();
+         
+          for(let i=0;i<this.isClosedArr.length;i++){
+           setTimeout(()=>{
+             this.currentBox = this.isClosedArr[i];
+             this.currentBox.isClosedSet = true;
+             
+             
+             if (i === this.isClosedArr.length - 1) {
+               this.flagAstar = true;
+               for(let i=0;i<this.board.path.length;i++){
+                 
+                   this.currentBox = this.board.path[i];
+                   
+                   this.currentBox.isPath = true;
+                 
+               }
+             }
+           }, 1000 * i)
+         } 
+         
+         
+      
+        }
         this.dijkstraService.isAnimated =false;
+
        }  
 
        if(this.flagAstar){
@@ -181,31 +211,7 @@ export class GrilleComponent {
             }, 100*delay)
             
           } 
-        
-        //   let  visitedP= this.dijkstraService.dijkstraAlgorithm(this.personNode , this.targetBox,true).queue;
-        //   this.board.path = this.dijkstraService.dijkstraAlgorithm(this.personNode , this.targetBox,true).path.reverse();
-        //   for(let i=0,delay;i<visitedP.length;i++,delay++){
-        //     console.log("delay",delay);
-        //     setTimeout(()=>{
-        //       this.currentBox = visitedP[i];
-        //       console.log(this.currentBox);
-        //       this.currentBox.visited = true;
-         
-        //       if (i === visitedP.length - 1) {
-        //         this.flag = true;
-        //         for(let i=0;i<this.board.path.length;i++){
-                  
-        //             this.currentBox = this.board.path[i];
-        //             console.log(this.currentBox);
-        //             this.currentBox.isPath = true;
-                  
-        //         }
-        //       }
-        //     }, 100 * delay)
-            
-
-          
-        // }
+     
          }
         
         else{

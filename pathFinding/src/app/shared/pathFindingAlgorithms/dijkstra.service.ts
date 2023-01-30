@@ -216,7 +216,7 @@ export class DijkstraService {
       this.removeElement(this.openSet, this.currentBox);
       this.closedSet.push(this.currentBox);
       if(!isAnimated){
-        console.log("isAnimated in the service",isAnimated);
+       
         this.currentBox.isClosedSet = true;
       }
       
