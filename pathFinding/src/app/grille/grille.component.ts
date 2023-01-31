@@ -106,7 +106,7 @@ export class GrilleComponent {
           for(let i=0;i<someClosed.length;i++){
             setTimeout(()=>{
               this.currentBox = someClosed[i];
-              this.currentBox.isClosedSet = true;
+              this.currentBox.visitedAnimation = true;
              
               
               if (i === someClosed.length - 1) {
@@ -130,7 +130,7 @@ export class GrilleComponent {
           for(let i=0;i<this.isClosedArr.length;i++){
            setTimeout(()=>{
              this.currentBox = this.isClosedArr[i];
-             this.currentBox.isClosedSet = true;
+             this.currentBox.visitedAnimation = true;
              
              
              if (i === this.isClosedArr.length - 1) {
@@ -719,9 +719,9 @@ export class GrilleComponent {
     if (node.isClosedSet && !node.isPerson) {
       return 'closed';
     }
-    if (node.isOpenSet && !node.isPerson) {
-      return 'openset';
-    }
+    // if (node.isOpenSet && !node.isPerson) {
+    //   return 'openset';
+    // }
     if (node.isPerson) {
       return 'person';
     }

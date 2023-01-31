@@ -35,8 +35,8 @@
               
               </form>
               </li>
-          <li class="nav-item">
-            <a  *ngIf="!dijkstraService.isPerson" class="nav-link" href="#" (click) = "addPerson()" >
+          <li class="nav-item person">
+            <a  *ngIf="!dijkstraService.isPerson" class="nav-link " href="#" (click) = "addPerson()" >
               Add person
             </a>
             <a  *ngIf="dijkstraService.isPerson" class="nav-link" href="#" (click) = "addPerson()" >
