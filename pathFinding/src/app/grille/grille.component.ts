@@ -104,12 +104,14 @@ export class GrilleComponent {
           someClosed = closed.concat(closedP);
           this.board.path = this.dijkstraService.aStarSearchAlgo(this.startingBox , this.personNode,true).path.reverse();
           for(let i=0;i<someClosed.length;i++){
+            this.dijkstraService.pointer = true;
             setTimeout(()=>{
               this.currentBox = someClosed[i];
               this.currentBox.visitedAnimation = true;
              
               
               if (i === someClosed.length - 1) {
+            this.dijkstraService.pointer = false;
                 this.flagAstar = true;
                 for(let i=0;i<this.board.path.length;i++){
                   
@@ -128,6 +130,7 @@ export class GrilleComponent {
           this.board.path = this.dijkstraService.aStarSearchAlgo(this.startingBox , this.targetBox,true).path.reverse();
          
           for(let i=0;i<this.isClosedArr.length;i++){
+            this.dijkstraService.pointer = true;
            setTimeout(()=>{
              this.currentBox = this.isClosedArr[i];
              this.currentBox.visitedAnimation = true;
@@ -135,6 +138,7 @@ export class GrilleComponent {
              
              if (i === this.isClosedArr.length - 1) {
                this.flagAstar = true;
+            this.dijkstraService.pointer = false;
                for(let i=0;i<this.board.path.length;i++){
                  
                    this.currentBox = this.board.path[i];
@@ -197,18 +201,18 @@ export class GrilleComponent {
           sommeVisited = visited.concat(visitedP);
           this.board.path = this.dijkstraService.dijkstraAlgorithm(this.startingBox , this.personNode,true).path.reverse();
           for(let i=0,delay=1;i<sommeVisited.length;i++,delay++){
+            this.dijkstraService.pointer = true;
             setTimeout(()=>{
               this.currentBox = sommeVisited[i];
-              console.log(this.currentBox);
               this.currentBox.visitedAnimation = true;
          
               if (i === sommeVisited.length - 1) {
                 this.flag = true;
+            this.dijkstraService.pointer = false;
                 
                 for(let i=0;i<this.board.path.length;i++){
                   
                     this.currentBox = this.board.path[i];
-                    console.log(this.currentBox);
                     this.currentBox.isPath = true;
                   
                 }
@@ -223,29 +227,35 @@ export class GrilleComponent {
           visited= this.dijkstraService.dijkstraAlgorithm(this.startingBox , this.targetBox,true).queue;
           this.board.path = this.dijkstraService.dijkstraAlgorithm(this.startingBox , this.targetBox,true).path.reverse();
           for(let i=0;i<visited.length;i++){
+            this.dijkstraService.pointer = true;
+
             setTimeout(()=>{
               this.currentBox = visited[i];
-              console.log(this.currentBox);
+              
               this.currentBox.visitedAnimation = true;
          
               if (i === visited.length - 1) {
+                this.dijkstraService.pointer = false;
                 this.flag = true;
                 for(let i=0;i<this.board.path.length;i++){
                   
                     this.currentBox = this.board.path[i];
-                    console.log(this.currentBox);
+                  
                     this.currentBox.isPath = true;
                   
                 }
               }
             }, 32 * i)
           } 
+        
+
         }
        
        
         
         
         this.dijkstraService.isAnimated =false;
+
        }
       
        if(this.flag){
@@ -297,11 +307,14 @@ export class GrilleComponent {
               someClosed = closed.concat(closedP);
               this.board.path = this.dijkstraService.greedyBestFirstSearch(this.startingBox , this.personNode,true).path.reverse();
               for(let i=0;i<someClosed.length;i++){
+            this.dijkstraService.pointer = true;
                 setTimeout(()=>{
                   this.currentBox = someClosed[i];
                   this.currentBox.isClosedSet = true;
                  
                   if (i === someClosed.length - 1) {
+                   this.dijkstraService.pointer = false;
+
                     this.flagGreedy = true;
                     for(let i=0;i<this.board.path.length;i++){
                       
@@ -320,12 +333,14 @@ export class GrilleComponent {
               this.board.path = this.dijkstraService.greedyBestFirstSearch(this.startingBox , this.targetBox,true).path.reverse();
              
               for(let i=0;i<this.isClosedArr.length;i++){
+            this.dijkstraService.pointer = true;
                setTimeout(()=>{
                  this.currentBox = this.isClosedArr[i];
                  this.currentBox.isClosedSet = true;
                  
                  
                  if (i === this.isClosedArr.length - 1) {
+                   this.dijkstraService.pointer = false;
                    this.flagGreedy = true;
                    for(let i=0;i<this.board.path.length;i++){
                      
@@ -392,6 +407,7 @@ export class GrilleComponent {
               someVisited= visited.concat(visitedP);
                this.board.path = this.dijkstraService.breadthFirstSearch(this.startingBox , this.personNode,true).path.reverse();
                for(let i=0;i<someVisited.length;i++){
+            this.dijkstraService.pointer = true;
               setTimeout(()=>{
                  this.currentBox = someVisited[i];
                 this.currentBox.visitedAnimation = true;
@@ -399,6 +415,7 @@ export class GrilleComponent {
                   
                   if (i === someVisited.length - 1) {
                     this.flagBreadth = true;
+                   this.dijkstraService.pointer = false;
                  for(let i=0;i<this.board.path.length;i++){
                       
                        this.currentBox = this.board.path[i];
@@ -415,11 +432,13 @@ export class GrilleComponent {
               let visited= this.dijkstraService.breadthFirstSearch(this.startingBox , this.targetBox,true).visited;
           this.board.path = this.dijkstraService.breadthFirstSearch(this.startingBox , this.targetBox,true).path.reverse();
           for(let i=0;i<visited.length;i++){
+            this.dijkstraService.pointer = true;
            setTimeout(()=>{
              this.currentBox = visited[i];
              console.log(this.currentBox);
              this.currentBox.visitedAnimation = true;
              if (i === visited.length - 1) {
+              this.dijkstraService.pointer = false;
                this.flagBreadth = true;
                for(let i=0;i<this.board.path.length;i++){
                  
@@ -435,31 +454,6 @@ export class GrilleComponent {
             this.dijkstraService.isAnimated =false;
     
            }  
-        // if(this.dijkstraService.isAnimated){
-        //   let visited= this.dijkstraService.breadthFirstSearch(this.startingBox , this.targetBox,true).visited;
-        //   this.board.path = this.dijkstraService.breadthFirstSearch(this.startingBox , this.targetBox,true).path.reverse();
-        //   for(let i=0;i<visited.length;i++){
-        //    setTimeout(()=>{
-        //      this.currentBox = visited[i];
-        //      console.log(this.currentBox);
-        //      this.currentBox.visited = true;
-        //      if (i === visited.length - 1) {
-        //        this.flagBreadth = true;
-        //        for(let i=0;i<this.board.path.length;i++){
-                 
-        //            this.currentBox = this.board.path[i];
-        //            console.log(this.currentBox);
-        //            this.currentBox.isPath = true;
-                
-        //        }
-        //      }
-        //    }, 100 *i)
-        //  } 
-         
-        //  this.dijkstraService.isAnimated =false;
-
-        // }
-       
         if(this.flagBreadth){
          this.dijkstraService.reinitialisePathQueued();
        
@@ -489,23 +483,7 @@ export class GrilleComponent {
         }  
         
 
-        // if (this.isPerson) {
-        //   this.dijkstraService.breadthFirstSearch(
-        //     this.startingBox,
-        //     this.personNode
-        //   );
-        //   if (this.board.path.length != 0) {
-        //     this.dijkstraService.breadthFirstSearch(
-        //       this.personNode,
-        //       this.targetBox
-        //     );
-        //   }
-        // } else {
-        //   this.dijkstraService.breadthFirstSearch(
-        //     this.startingBox,
-        //     this.targetBox
-        //   );
-        // }
+     
          break;
       case 'depth':
           if(this.dijkstraService.isAnimated ){
@@ -525,12 +503,15 @@ export class GrilleComponent {
                  someVisited= visited.concat(visitedP);
                  this.board.path = this.dijkstraService.DepthFirstSearch(this.startingBox , this.personNode,true).path.reverse();
                 for(let i=0;i<someVisited.length;i++){
+            this.dijkstraService.pointer = true;
                   setTimeout(()=>{
                  this.currentBox = someVisited[i];
                   this.currentBox.visitedAnimation = true;
                    
                     
                     if (i === someVisited.length - 1) {
+            this.dijkstraService.pointer = false;
+
                       this.flagDepth = true;
                   for(let i=0;i<this.board.path.length;i++){
                         
@@ -548,10 +529,12 @@ export class GrilleComponent {
              let visited= this.dijkstraService.DepthFirstSearch(this.startingBox , this.targetBox,true).visited;
             this.board.path = this.dijkstraService.DepthFirstSearch(this.startingBox , this.targetBox,true).path.reverse();
            for(let i=0;i<visited.length;i++){
+            this.dijkstraService.pointer = true;
              setTimeout(()=>{
             this.currentBox = visited[i];
               this.currentBox.visitedAnimation = true;
               if (i === visited.length - 1) {
+            this.dijkstraService.pointer = false;
           this.flagDepth = true;
                for(let i=0;i<this.board.path.length;i++){
                    

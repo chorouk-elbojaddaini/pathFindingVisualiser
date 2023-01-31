@@ -26,6 +26,7 @@ export class NavbarComponent implements OnInit {
     
   }
   ngDoCheck() {
+    this.stopClick();
     this.chosenMaze();
     if(this.typeAlgorithm.value.algo != this.valueVisualise){
       this.chosenAlgoName();
@@ -106,5 +107,19 @@ export class NavbarComponent implements OnInit {
       btnVisualise.innerHTML = 'pick an algorithm';
 
      
+  }
+
+  stopClick(){
+    let elmt = document.getElementById('navbar');
+    let btn = document.getElementById('button');
+    if(this.dijkstraService.pointer){
+      elmt.style.pointerEvents = "none";
+      btn.style.backgroundColor = "rgb(173, 9, 9)";
+    }
+    else{
+      elmt.style.pointerEvents = "auto";
+      btn.style.backgroundColor = "";
+
+    }
   }
 }

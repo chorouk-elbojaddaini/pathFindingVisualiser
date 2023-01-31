@@ -8,6 +8,7 @@
     font-size: 15px;
     box-shadow: rgba(85, 85, 85, 0.5) 0px 0px 10px;
     font-weight: 600;
+    
 }
 
 .navbar-brand,
@@ -25,6 +26,7 @@ ul li a {
     margin-left: 8px;
     margin-right: 5px;
     margin-top: 10px;
+    color: rgba(34,163,159,1);
     // -webkit-appearance: none;
     // -ms-appearance:none;
     // -moz-appearance: none;
@@ -72,5 +74,5 @@ transition: 0.7s;
 }
 .btn-clear:hover{
     color: rgb(18, 100, 97);
- 
+    
 }

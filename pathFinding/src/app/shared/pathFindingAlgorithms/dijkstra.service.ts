@@ -51,6 +51,7 @@ export class DijkstraService {
   clearWalls:boolean;
   clearPath:boolean;
   ngDoCheckRunOnce:boolean=false;
+  pointer:boolean;
   constructor() {}
  
   getNodes() {

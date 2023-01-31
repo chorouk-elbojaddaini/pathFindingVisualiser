@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
+<nav class="navbar navbar-expand-lg bg-body-tertiary" id="navbar">
     <div class="container-fluid">
       <a class="navbar-brand" href="#">PathFinding Visualiser</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
@@ -11,11 +11,12 @@
                 
                 <form [formGroup]="typeAlgorithm" >
                   <select formControlName="algo" class="select">
+                    <option value="" disabled selected>Choose an algorithm</option>
                 <option><a #dijkstra class="dropdown-item"  href="#">Dijkstra's Algorithm</a></option>
                 <option><a class="dropdown-item" href="#">A* Search</a></option>
                 <option><a class="dropdown-item" href="#">Greedy Best-first Search</a></option>
-                <option><a class="dropdown-item" href="#">Bellman Algorithm</a></option>
-                <option><a class="dropdown-item" href="#">Ford fulkrsen Algorithm</a></option>
+                <!-- <option><a class="dropdown-item" href="#">Bellman Algorithm</a></option>
+                <option><a class="dropdown-item" href="#">Ford fulkrsen Algorithm</a></option> -->
                 <option><a class="dropdown-item" href="#">Breadth-first Search</a></option>
                 <option><a class="dropdown-item" href="#">Depth-first Search</a></option>
               </select>
@@ -26,6 +27,7 @@
               <li class="nav-item dropdown">
                 <form [formGroup]="typeMazePattern" >
                   <select formControlName="mazePattern" class="select">
+                    <option value="" disabled selected>Mazes and Patterns</option>
                 <option><a #dijkstra class="dropdown-item"  href="#">Recursive Division</a></option>
                 <option><a class="dropdown-item" href="#">Vertical Recursive Division</a></option>
                 <option><a class="dropdown-item" href="#">Horizontal Recursive Division</a></option>
