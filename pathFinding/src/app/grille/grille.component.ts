@@ -213,7 +213,7 @@ export class GrilleComponent {
                   
                 }
               }
-            },200*delay)
+            },100*delay)
             
           } 
           
@@ -238,7 +238,7 @@ export class GrilleComponent {
                   
                 }
               }
-            }, 50 * i)
+            }, 32 * i)
           } 
         }
        
