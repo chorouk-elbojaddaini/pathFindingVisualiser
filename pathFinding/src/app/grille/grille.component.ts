@@ -577,25 +577,6 @@ export class GrilleComponent {
           );
         }
         }
-        // this.dijkstraService.reinitialisePathQueued();
-
-        // if (this.isPerson) {
-        //   this.dijkstraService.DepthFirstSearch(
-        //     this.startingBox,
-        //     this.personNode
-        //   );
-        //   if (this.board.path.length != 0) {
-        //     this.dijkstraService.DepthFirstSearch(
-        //       this.personNode,
-        //       this.targetBox
-        //     );
-        //   }
-        // } else {
-        //   this.dijkstraService.DepthFirstSearch(
-        //     this.startingBox,
-        //     this.targetBox
-        //   );
-        // }
          break;
       
     }
@@ -625,14 +606,9 @@ export class GrilleComponent {
     }
       this.previousValue = this.dijkstraService.mazePattern;
     }
-  
-  
-  
    
   }
-  ngAfterViewInit(){
-  
-  }
+ 
    NotPersonfct(){
     for (let i = 0; i < window.innerHeight / 35; i++) {
       for (let j = 0; j < Math.trunc(window.innerWidth / 30); j++) {
@@ -710,33 +686,36 @@ export class GrilleComponent {
     }
     return 'normal';
   }
-
+  
   mouseDown(node: Square) {
-    if (node.isStartingbox) {
-      this.board.mouseDown = true;
-      this.startingBox = node;
-
-   
-
-      this.board.currentNode = node;
-      this.board.isSelectedNodeStart = true;
-    } else if (node.isTargetBox) {
-      this.board.mouseDown = true;
-      this.targetBox = node;
-
-   
-      this.board.currentNode = node;
-      this.board.isSelectedNodeEnd = true;
-    } else if (node.isPerson && !node.isTargetBox) {
-      this.board.mouseDown = true;
-      this.personNode = node;
-      
-      this.board.currentNode = node;
-      this.board.isSelectedNodePerson = true;
-      this.board.isSelectedNodeEnd = false;
-    } else if (node.isNormal) {
-      this.board.isWallDrawing = true;
+    if(!this.dijkstraService.pointer){
+      if (node.isStartingbox) {
+        this.board.mouseDown = true;
+        this.startingBox = node;
+  
+     
+  
+        this.board.currentNode = node;
+        this.board.isSelectedNodeStart = true;
+      } else if (node.isTargetBox) {
+        this.board.mouseDown = true;
+        this.targetBox = node;
+  
+     
+        this.board.currentNode = node;
+        this.board.isSelectedNodeEnd = true;
+      } else if (node.isPerson && !node.isTargetBox) {
+        this.board.mouseDown = true;
+        this.personNode = node;
+        
+        this.board.currentNode = node;
+        this.board.isSelectedNodePerson = true;
+        this.board.isSelectedNodeEnd = false;
+      } else if (node.isNormal) {
+        this.board.isWallDrawing = true;
+      }
     }
+    
   }
   mouseLeave(node: Square) {
     if (this.board.mouseDown && this.board.isSelectedNodeStart) {
