@@ -216,7 +216,7 @@ export class GrilleComponent {
             },200*delay)
             
           } 
-     
+          
          }
         
         else{

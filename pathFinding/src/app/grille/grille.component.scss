@@ -1,4 +1,8 @@
-
+.content{
+    
+    background-color: rgb(255, 255, 255) !important;   
+    
+}
 .square{
     display: flex;
     flex-direction: row;
@@ -66,9 +70,7 @@
     background-repeat: no-repeat;
     background-size: contain;
 }
-.normal{
-    
-}
+
 @keyframes backgroundAnim {
   0%{
     background-color: #baeeeb;

@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg bg-body-tertiary"  style="background-color: #e3f2fd;">
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
       <a class="navbar-brand" href="#">PathFinding Visualiser</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
@@ -10,7 +10,7 @@
             <li class="nav-item dropdown">
                 
                 <form [formGroup]="typeAlgorithm" >
-                  <select formControlName="algo" >
+                  <select formControlName="algo" class="select">
                 <option><a #dijkstra class="dropdown-item"  href="#">Dijkstra's Algorithm</a></option>
                 <option><a class="dropdown-item" href="#">A* Search</a></option>
                 <option><a class="dropdown-item" href="#">Greedy Best-first Search</a></option>
@@ -24,18 +24,8 @@
               </li>
           
               <li class="nav-item dropdown">
-                <!-- <button class="btn  dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                  Mazes & Patterns
-                </button>
-                <ul class="dropdown-menu ">
-                  <li><a class="dropdown-item" href="#">Recursive Division</a></li>
-                  <li><a class="dropdown-item" href="#">Recursive Division (vertical skew)</a></li>
-                  <li><a class="dropdown-item" href="#">Recursive Division (horizontal skew)</a></li>
-                  <li><a class="dropdown-item" href="#">Basic Random Maze</a></li>
-                  <li><a class="dropdown-item" href="#">Simple Stair Pattern</a></li>
-                </ul> -->
                 <form [formGroup]="typeMazePattern" >
-                  <select formControlName="mazePattern" >
+                  <select formControlName="mazePattern" class="select">
                 <option><a #dijkstra class="dropdown-item"  href="#">Recursive Division</a></option>
                 <option><a class="dropdown-item" href="#">Vertical Recursive Division</a></option>
                 <option><a class="dropdown-item" href="#">Horizontal Recursive Division</a></option>
@@ -54,28 +44,18 @@
             </a>
           </li>
           <li class="nav-item">
-            <button type="button" class="btn" (click)="choseAlgorithme()"  id="button">Visualise</button>
+            <button type="button" class="btn Visualise-btn" (click)="choseAlgorithme()"  id="button" >Visualise</button>
           </li>
           <li class="nav-item">
-            <button type="button" class="btn" (click)="clearBoard()">Clear Board</button>
+            <button type="button" class="btn btn-clear" (click)="clearBoard()">Clear Board</button>
           </li>
           <li class="nav-item">
-            <button type="button" class="btn " (click)="clearWalls()">Clear Walls </button>
+            <button type="button" class="btn btn-clear" (click)="clearWalls()">Clear Walls </button>
           </li>
           <li class="nav-item">
-            <button type="button" class="btn " (click) ="clearPath()">Clear Path </button>
+            <button type="button" class="btn btn-clear" (click) ="clearPath()">Clear Path </button>
           </li>
         </ul>
-        <li class="nav-item dropdown">
-            <button class="btn  dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-              Speed : Fast
-            </button>
-            <ul class="dropdown-menu dropdown-menu-dark">
-              <li><a class="dropdown-item" href="#">Fast</a></li>
-              <li><a class="dropdown-item" href="#">Average</a></li>
-              <li><a class="dropdown-item" href="#">Slow</a></li>
-            </ul>
-          </li>
       </div>
     </div>
   </nav>

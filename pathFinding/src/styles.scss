@@ -1,16 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@600;700&display=swap');
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     list-style: none;
-    font-family: 'poppins';
+    font-family: 'poppins',sans-serif;
+    
 }
 
 html, body {
     height: 100%;
-    
+
+ 
 }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; 
+
+}
 a{
     text-decoration: none;
     color: black;

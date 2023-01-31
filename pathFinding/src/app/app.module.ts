@@ -10,6 +10,7 @@ import { GrilleComponent } from './grille/grille.component';
 import { StartingNodeComponent } from './starting-node/starting-node.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { DescriptionCardComponent } from './description-card/description-card.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -18,7 +19,8 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
     GridComponent,
     GrilleComponent,
     StartingNodeComponent,
-    NavbarComponent
+    NavbarComponent,
+    DescriptionCardComponent
   ],
   imports: [
     BrowserModule,
